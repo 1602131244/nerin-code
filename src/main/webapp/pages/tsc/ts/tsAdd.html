@@ -1,0 +1,85 @@
+<div class="row" style="margin: auto;">
+  <div id="div_add">
+    <button id="bu_save" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="glyphicon glyphicon-floppy-saved"></i>保存</button>
+    <button id="bu_submit" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="fa fa-sign-in"></i>提交</button>
+  </div>
+  <div id="div_audit">
+    <button id="bu_approved" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="glyphicon glyphicon-ok" style="color: green;"></i>批准</button>
+    <button id="bu_rejected" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="glyphicon glyphicon-remove" style="color: red;"></i>拒绝</button>
+  </div>
+</div>
+<div style="margin: 5px 0px 5px 0px; border-bottom: 1px solid #eee;"></div>
+<div class="panel panel-info" style="margin-bottom: 5px;">
+  <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">
+    基本信息
+  </div>
+  <div class="panel-body" style="padding-top: 5px; padding-bottom: 5px;">
+    <div class="row form-inline form-group">
+      <label style="width: 100px; text-align: right; padding-top: 3px;"><font color="red">*供应商名称：</font></label>
+      <input type="hidden" id="s_vendorId" name="s_vendorId" />
+      <input class="form-control input-sm" style="width: 608px;" type="text" name="s_vendorName" id="s_vendorName" placeholder="" onkeyup="javascript: loadPopoverVendorName(this);">
+      <div id="popoverVendorName" onmouseleave="javasrcipt: $('#popoverVendorName').hide();" style="max-height: 200px; overflow-y: auto; display: none; width:608px;margin-left: 104px; border:1px solid #ccc; position: absolute; background-color: white; padding: 5px 20px;">
+        <div class="row">供应商1</div>
+        <div class="row">供应商2</div>
+      </div>
+      <button id="bu_cc" type="button" class="btn btn-success" style="padding: 3px 10px; display: none;">查重</button>
+    </div>
+    <div class="row form-inline form-group">
+      <label style="width: 100px; text-align: right; padding-top: 3px;"><font color="red">*开户行：</font></label>
+      <input class="form-control input-sm" style="width: 250px;" type="text" name="s_bankName" id="s_bankName"  placeholder="">
+      <label style="width: 100px; text-align: right; padding-top: 3px;"><font color="red">*银行帐号：</font></label>
+      <input class="form-control input-sm" style="width: 250px;" type="text" name="s_bankAccountNum" id="s_bankAccountNum"   placeholder="">
+    </div>
+    <div class="row form-inline form-group">
+      <label style="width: 100px; text-align: right; padding-top: 3px;"><font color="red">*供应商地址：</font></label>
+      <input class="form-control input-sm" style="width: 608px;" type="text" name="s_address"  id="s_address" placeholder="">
+    </div>
+    <div class="row form-inline form-group">
+      <label style="width: 100px; text-align: right; padding-top: 3px;">供应商属性：</label>
+      <input class="form-control input-sm" style="width: 100px;" type="text" name="s_vendorTypeCode" id="s_vendorTypeCode" placeholder="" readonly="readonly"/>
+      <input type="hidden" id="s_vendorType" name="s_vendorType" />
+      <label style="width: 100px; text-align: right; padding-top: 3px;">申请状态：</label>
+      <input class="form-control input-sm" style="width: 100px;" type="text" name="s_statusCode" id="s_statusCode" placeholder="" readonly="readonly"/>
+      <input type="hidden" id="s_status" name="s_status" />
+      <label style="width: 90px; text-align: right; padding-top: 3px; display: none">供应商等级：</label>
+      <select class="form-control input-sm" type="text" name="s_vendorLevel" id="s_vendorLevel" style="display: none;"></select>
+      <label style="width: 90px; text-align: right; padding-top: 3px;">供应商性质：</label>
+      <select class="form-control input-sm" type="text" name="s_supplierNature" id="s_supplierNature"></select>
+    </div>
+    <div class="row form-inline form-group">
+      <label style="width: 100px; text-align: right; padding-top: 3px;">纳税登记编号：</label>
+      <input class="form-control input-sm" style="width: 100px;" type="text" name="s_vatRegistrationNum" id="s_vatRegistrationNum" placeholder="">
+      <label style="width: 100px; text-align: right; padding-top: 3px;">纳税人标识：</label>
+      <input class="form-control input-sm" style="width: 200px;" type="text" name="s_num_1099" id="s_num_1099" placeholder="">
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-info" style="margin-bottom: 5px;">
+  <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">
+    供应商联系人信息（至少一个联系人）
+  </div>
+  <div class="panel-body" style="padding: 5px;">
+    <div class="row" style="margin: auto;" id="div_lxr">
+      <button id="bu_addLxr" type="button" class="btn btn-default btn-xs" style="padding-top: 0px; padding-bottom: 0px;"><i class="fa fa-plus"></i>增加</button>
+      <button id="bu_delLxr" type="button" class="btn btn-default btn-xs" style="padding-top: 0px; padding-bottom: 0px;"><i class="fa fa-trash-o"></i>删除</button>
+    </div>
+    <div class="dataTable_wrapper" id="dataTables-lxrAll">
+
+    </div>
+  </div>
+</div>
+<div class="panel panel-info" style="margin-bottom: 5px;">
+  <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">
+    相关证明材料或资质证明附件信息（至少一个附件）
+  </div>
+  <div class="panel-body" style="padding: 5px;">
+    <div class="row" style="margin: auto;" id="div_zz">
+      <button id="bu_delZz" type="button" class="btn btn-default btn-xs" style="padding-top: 0px; padding-bottom: 0px;"><i class="fa fa-trash-o"></i>删除</button>
+      <button id="bu_addZz" type="button" class="btn btn-default btn-xs" style="padding-top: 0px; padding-bottom: 0px;"><i class="fa fa-upload"></i>批量上传</button>
+    </div>
+    <div class="dataTable_wrapper" id="dataTables-zzAll">
+
+    </div>
+  </div>
+</div>

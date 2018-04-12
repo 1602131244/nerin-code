@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>工时填报</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <style>
+        .textbox {
+            height: 16px;
+            margin: 0;
+            padding: 0 2px;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body class="easyui-layout" id="rootlayout">
+<div id="laycenter" data-options="region:'center'">
+	<div id="currlayout" class="easyui-layout" data-options="fit:true,border:false">
+		<div id="currcal" data-options="region:'west',title:'周工时',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+			return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+			}" style="width:235px"><!-- }" style="width:630px"> -->
+			<div id="currweekdgtb" style="height: 26px">
+				<a id="weekrefbtn">导入</a>
+					<div id="chooseref" class="easyui-menu" style="width:80px;" data-options="noline:true,minWidth:80">
+						<div id="reftask">任务</div>
+						<div id="refdate">工日</div>
+					</div>
+<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a id="currdg_publish">提交</a> -->
+			</div>
+			<div id="currweekgrid"></div>
+		</div>
+		<div id="currcenter" data-options="region:'center',title:'用户信息'" style="overflow:hidden;background-color:#f3f3fa">
+			<div id="currdgtb" style="text-align:left;height:26px">
+				<div style='float:left'>
+					<input id="dateswitch" type="text" style="width: 100px"></input>
+					<a id="currdg_add">加入</a>
+					<a id="currdg_del">删除</a>
+					<a id="currdg_edit">修改</a>  
+					<a id="currdg_cancel">放弃</a>
+					<a id="currdg_accept">继续</a>
+					<a id="currdg_save">保存</a>
+					<a id="currdg_reset">重置</a>
+				</div>
+				<div id='batchdiv' style='padding-top:2px;display:none;float:left'>&nbsp;&nbsp;<b>*选择导入模式：</b><input id='batchmode' style='width:65px'>&nbsp;&nbsp;&nbsp;</div>
+				<div style="float:right;padding-top:4px">
+					<input id="currshowall" type="checkbox">显示更多列&nbsp;&nbsp;
+				</div>
+			</div>
+			<table id="currgrid"></table>
+		</div>
+	</div>
+</div>
+<div id="Drawdiv" class="easyui-window" style="width: 850px; height: 215px;" data-options="title:'图纸任务流程记录',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+	<div style="float:left" id="Drawdg"></div>
+	<div id="DrawTool"><a id="btnDraw">校审</a>&nbsp;&nbsp;<a id="btnAppr">会签</a>&nbsp;&nbsp;<a id="btnecm">查档</a></div>
+</div>
+<div id="Calculationdiv" class="easyui-window" style="width: 850px; height: 215px;" data-options="title:'计算书任务流程记录',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+	<div style="float:left" id="Calculationdg"></div>
+	<div id="CalculationTool"><a id="btnCalculation">编制</a><a id="btnCalculationup">升版</a></div>
+</div>
+<div id="Conditiondiv" class="easyui-window" style="width: 850px; height: 215px;" data-options="title:'接口条件任务',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+	<div style="float:left" id="Conditiondg"></div>
+	<div id="ConditionTool"><a id="btnCondition">编制</a><a id="btnConditionup">升版</a>&nbsp;&nbsp;<a id="ConditionDescr"></a></div>
+</div>
+<div id="conditionuser" class="easyui-window" style="width: 240px;" data-options="title:'选择审批执行人员',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+	<form id="form1" method="post" style="padding:5px">
+		<div style="float:left">
+			接收专业负责人：
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'perNum',textField:'perName',editable:false,hasDownArrow:false,required:true" name="zychgr" id="zychgr" style="width: 65px" />
+		</div>
+		<div style="clear:both;height: 5px;"></div>
+		<div align="center"><br /><a id="btnconuserapply">应用</a></div>
+	</form>
+</div>
+<div id="NBCCformdiv" class="easyui-window" style="width: 850px; height: 211px;" data-options="title:'协作文本任务',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+	<div style="float:left" id="NBCCdg"></div>
+</div>
+<div id="NBCCcheckdiv" class="easyui-window" style="width: 800px; height: 211px;" data-options="title:'专业校审流程记录',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+	<div style="float:left" id="NBCCcheckdg"></div>
+</div>
+<div id="NBCCreviewdiv" class="easyui-window" style="width: 800px; height: 215px;" data-options="title:'公司级评审流程记录',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+	<div style="float:left" id="NBCCreviewdg"></div>
+</div>
+<div id="laysouth" data-options="region:'south',title:'我的任务',split:true,collapsed:true,hideCollapsedContent:false" style="height:320px">
+	<div id="reftabs" class="easyui-tabs" data-options="fit:true,border:false">
+		<div id="tabindate" title="期内任务" data-options="closable:false" >
+			<div id="intimelayout" class="easyui-layout" data-options="fit:true,border:false">
+				<div id="intimenav" data-options="region:'west',title:'任务导航',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+					return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+					}" style="width:430px">
+					<div id="intimetgtb" style="text-align:left;height: 26px">
+						<div id="ontimemenu" class="easyui-menu" style="width:80px;" data-options="noline:true"></div>
+						<input id="intimeprjSearch" class="easyui-searchbox" style="width: 320px;height:26px" data-options="prompt:'项目简称、全称、编号模糊查找' ">
+						<a id="collapsebtn" style="float:right">折叠</a><a style="float:right">&nbsp;&nbsp;</a>
+						<a id="expandbtn" style="float:right">展开</a>
+					</div>
+					<table id="intimenavgrid"></table>
+				</div>
+				<div id="intimecenter" data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+					<div id="ontimedgtb" style="text-align:left;height:26px">
+						<div style="float:right;padding-top:4px">
+							<input id="ontimeshowall" type="checkbox">显示更多列&nbsp;&nbsp;
+						</div>
+					</div>
+					<table id="ontimegrid"></table>
+				</div>
+			</div>
+		</div>
+		<div id="taboutdate" title="超期任务" data-options="closable:false" >
+			<div id="outdatelayout" class="easyui-layout" data-options="fit:true,border:false">
+				<div id="outnav" data-options="region:'west',title:'任务导航',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+					return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+					}" style="width:430px">
+					<div id="outtimetgtb" style="text-align:left;height: 26px">
+						<div id="outtimemenu" class="easyui-menu" style="width:80px;" data-options="noline:true"></div>
+						<input id="outtimeprjSearch" class="easyui-searchbox" style="width: 320px;height:26px" data-options="prompt:'项目简称、全称、编号模糊查找' ">
+						<a id="outcollapsebtn" style="float:right">折叠</a><a style="float:right">&nbsp;&nbsp;</a>
+						<a id="outexpandbtn" style="float:right">展开</a>
+					</div>
+					<table id="outtimenavgrid"></table>
+				</div>
+				<div id="outcenter" data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+					<div id="outtimedgtb" style="text-align:left;height:26px">
+						<div style="float:right;padding-top:4px">
+							<input id="outtimeshowall" type="checkbox">显示更多列&nbsp;&nbsp;
+						</div>
+					</div>
+					<table id="outtimegrid"></table>
+				</div>
+			</div>
+		</div>
+		<div id="tabhis" title="历史任务" data-options="closable:false" >
+			<div id="hislayout" class="easyui-layout" data-options="fit:true,border:false">
+				<div id="hiscal" data-options="region:'west',title:'周工时',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+					return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+					}" style="width:235px">
+					<div id="hisweekgrid"></div>
+				</div>
+				<div id="hiscenter" data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+					<div id="hisdgtb" style="text-align:left;height:26px">
+						<input id="hisdate" type="text" style="width: 100px"></input>
+						<div style="float:right;padding-top:4px">
+							<input id="hisshowall" type="checkbox">显示更多列&nbsp;&nbsp;
+						</div>
+					</div>
+					<table id="hisgrid"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="loaddiv" class="easyui-window" style="width: 380px; height: 70px;" data-options="title:'登录 NIMS 2.0，请稍候...',minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+</div>
+<script type="text/javascript" src="../../jquery.min.js"></script>
+<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/workCalendar.js?v=1"></script>
+<script type="text/javascript" src="js/datagrid-dnd.js"></script>
+
+</body>
+</html>

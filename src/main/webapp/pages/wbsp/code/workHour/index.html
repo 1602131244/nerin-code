@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>工时管理</title>
+<link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+<link rel="stylesheet" type="text/css" href="plugins/jquery.fullcalendar.css">
+
+<script type="text/javascript" src="/bower_components/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+<script type="text/javascript" src="plugins/jquery.fullcalendar.js"></script>
+
+</head>
+
+<body class="easyui-layout">
+    <div data-options="region:'north',title:'状态栏',split:false">
+    </div>
+    <div data-options="region:'center'" style="height:50%">
+        <div id="cd" class="easyui-layout" style="height:400px;">
+            <div data-options="region:'west'" style="width:505px;">
+                <!--<div id="history-calendar" class="easyui-fullCalendar" data-options="fit:true,history:true"></div>-->
+                <div id="edit-calendar" class="easyui-fullCalendar"></div>
+            </div>
+            <div data-options="region:'center',title:'编辑'" style="background:#eee;">
+                <div id="edit-detail" class="easyui-datagrid"></div>
+            </div>
+        </div>
+    </div>
+    <div data-options="region:'south',title:'历史',split:true" style="height:50%">
+        <div id="cc" class="easyui-layout" style="height:400px;">
+            <div data-options="region:'west'" style="width:505px;">
+                <div id="history-calendar" class="easyui-fullCalendar" data-options="fit:true,history:true"></div>
+            </div>
+            <div data-options="region:'center',title:'详情',fit:true" style="background:#eee;">
+                <div id="history-detail" class="easyui-datagrid"></div>
+            </div>
+        </div>
+    </div>
+    <div id="history-table-footer" style="padding:2px 5px;">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="chedkAll">全选</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="reverseCheck">反选</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" id="getChedked">已选</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true"></a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true"></a>
+    </div>
+    <div id="edit-table-toolbar" style="height:auto">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="">Append</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="">Remove</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="">Accept</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="">Reject</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="">GetChanges</a>
+    </div>
+
+    <script type="text/javascript" src="workHour.js"></script>
+</body>
+</html>

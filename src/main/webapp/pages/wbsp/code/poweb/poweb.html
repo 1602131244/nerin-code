@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>NBCC文本协作平台</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <style>
+        .textbox {
+            height: 16px;
+            margin: 0;
+            padding: 0 2px;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body class="easyui-layout" id="rootlayout">
+<div id="layouttree" data-options="region:'west',title:'协作任务名称',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+		 return '<div style=font-weight:bold;text-align:center>' +title.split('').join('<br />')+'</div>';
+	}" style="width:520px">
+	<div class="easyui-layout" id="layoutwest" data-options="fit:true">
+		<div data-options="region:'center',border:false">
+			<ul id="divtree"></ul>
+		</div>
+		<div id="OAlist" data-options="region:'south',title:'审批流程记录',split:true,hideCollapsedContent:false" style="height:300px">
+			<div class="easyui-tabs" data-options="fit:true,border:false">
+				<div title="专业校审">
+					<div id="spedgtb" style="text-align:right"><input id="viewworkall" type="checkbox">不限于当前工作包查看&nbsp;&nbsp;</div>
+					<div id="spedg"></div>
+				</div>
+				<div title="公司级评审">
+					<div id="entdgtb" style="text-align:right"><input id="viewspeall" type="checkbox">不限于当前专业查看&nbsp;&nbsp;</div>
+					<div id="entdg"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="dgLayout" data-options="region:'center',border:false,onResize:function(width, height){if($('#iframepage').height()>0&&$('#iframepage').width()>0){$('#iframepage').height(height);$('#iframepage').width(width);}}" style="overflow:hidden;background-color:#f3f3fa;text-align:center">
+	<iframe src='' id='iframepage' frameborder=0 scrolling='no' marginheight=0 marginwidth=0></iframe>
+</div>
+<div id="modal" class="easyui-window" style="width: 300px; height: 198px;" data-options="title:'加载中，请稍候...',collapsed:true,minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+</div>
+<script type="text/javascript" src="../../jquery.min.js"></script>
+<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/wordlist.js"></script>
+</body>
+</html>

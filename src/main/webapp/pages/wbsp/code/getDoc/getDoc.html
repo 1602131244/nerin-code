@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>编辑设计变更通知书</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <style>
+        .textbox {
+            height: 16px;
+            margin: 0;
+            padding: 0 2px;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body style="text-align:center;background-color:#f3f3fa;width:auto;height:auto">
+
+<div id="speformdiv" class="easyui-window" style="width: 240px; height: 98px;" data-options="title:'请选择操作',minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+	<form method="post" style="padding:15px">
+		<a id="create">新建覆盖</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<a id="edit">编辑现有</a>
+	</form>
+</div>
+<form id="titleform" action="http://192.168.15.91:8080/cux/DesignChange/DataRegionCreate.jsp" method="post">
+	<input type="hidden" id="check" name="check" value=""/>
+	<input type="hidden" id="prjName" name="prjName" value=""/>
+	<input type="hidden" id="drawsName" name="drawsName" value=""/>
+	<input type="hidden" id="drawsNum" name="drawsNum" value=""/>
+	<input type="hidden" id="subName" name="subName" value=""/>
+	<input type="hidden" id="major" name="major" value=""/>
+	<input type="hidden" id="requestid" name="requestid" value=""/>
+</form>
+
+<script type="text/javascript" src="../../jquery.min.js"></script>
+<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/getDoc.js"></script>
+</body>
+</html>

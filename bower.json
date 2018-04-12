@@ -1,0 +1,49 @@
+{
+  "name": "nerinopt",
+  "private": true,
+  "appPath": "src/main/webapp/app/",
+  "testPath": "src/test/javascript/",
+  "dependencies": {
+    "bootstrap": "^3.3.5",
+    "jquery": "1.12.3",
+    "modernizr": "~2.8.1",
+    "jquery.fancytree": "fancytree#^2.18.0",
+    "datatables": "~1.10.4",
+    "datatables-plugins": "~1.0.1",
+    "flot": "~0.8.3",
+    "holderjs": "~2.4.1",
+    "morrisjs": "~0.5.1",
+    "datatables-responsive": "~1.0.3",
+    "bootstrap-social": "~4.8.0",
+    "flot.tooltip": "~0.8.4",
+    "font-awesome": "^4.6.3",
+    "metisMenu": "~1.1.3",
+    "jquery.cookie": "^1.4.1",
+    "jquery-iframe-auto-height": "^2.0.0",
+    "requirejs": "^2.2.0",
+    "jquery.serializeJSON": "^2.7.2",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.37",
+    "bootstrapvalidator": "0.5.3",
+    "bootstrap-select": "^1.10.0"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "less/bootstrap.less",
+        "dist/css/bootstrap.css",
+        "dist/js/bootstrap.js",
+        "dist/fonts/*"
+      ]
+    },
+    "font-awesome": {
+      "main": [
+        "fonts/fontawesome-webfont.woff",
+        "css/font-awesome.css"
+      ]
+    }
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
+  }
+}

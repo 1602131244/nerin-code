@@ -1,0 +1,129 @@
+@nav-background : #eee;
+@nav-active-background : #1d5987;
+@nav-active-color :#fff;
+@nav-default-color :#1d5987;
+@nav-height: 30px;
+@nav-header-space: 70px;
+
+//navigation
+.nav-scroll-tool{
+  line-height: 10px;
+}
+
+.navbar-brand > img{
+  //float:left;
+  height: 20px;
+  @media (min-width: 768px){
+    height: 26px;
+    margin-left: -20px;
+  }
+}
+
+.navbar-default{
+    background: @nav-background;
+    //height: 80px;
+    font-size: 20px;
+}
+
+.navbar-default .navbar-nav > li > a{
+  color: @nav-default-color;
+}
+.navbar-nav > li > a{
+  line-height: @nav-height;
+  //padding-top: 30px;
+}
+.navbar-default .navbar-nav > li > a:active{
+  background: @nav-active-background;
+  color: @nav-active-color;
+}
+
+.navbar-default .navbar-nav > li > a:focus{
+  background: @nav-active-background;
+  color: @nav-active-color;
+}
+
+.navbar-default .navbar-nav > li > a:hover{
+  background: @nav-active-background;
+  color: @nav-active-color;
+}
+
+.navbar-default .navbar-nav > .open > a{
+  background: @nav-active-background;
+  color: @nav-active-color;
+}
+
+.navbar-default .navbar-nav > .open >a:active{
+  background: @nav-active-background;
+  color: @nav-active-color;
+}
+
+.navbar-default .navbar-nav > .open >a:focus{
+  background: @nav-active-background;
+  color: @nav-active-color;
+}
+
+.navbar-default .navbar-nav > .open >a:hover{
+  background: @nav-active-background;
+  color: @nav-active-color;
+}
+
+//panel drag drop
+.placeholder {
+  border: 1px dotted black;
+  background: #e4f1fb;
+  margin: -10px;
+  margin-bottom: 40px;
+  height: 200px;
+  float:left;
+  width: 100%;
+}
+
+.panel{
+  float:left;
+  width: 100%;
+}
+
+.col-lg-6 {
+  @media (min-width: 960px){
+    width: 50%;
+    float:left;
+  }
+}
+
+.pagecontainer {
+  padding: 20px;
+  padding-top: 40px;
+}
+
+.headerSpaces{
+  margin-top: @nav-header-space;
+}
+
+//login
+@login-magin: 40px;
+#loginPopup, #userProfile{
+  display: none;
+}
+
+.loginnav{
+  @media (min-width: 768px) {
+    margin-left: @login-magin;
+    margin-right: -40px;
+  }
+}
+
+//#currentUser{
+//  color: #00AA00;
+//}
+//#currentUser:hover{
+//  background: @nav-active-background;
+//  color: @nav-active-color;
+//}
+//#currentUser:focus{
+//  background: @nav-active-background;
+//  color: @nav-active-color;
+//}
+//#currentUser:active{
+//  background: @nav-active-background;
+//  color: @nav-active-color;
+//}

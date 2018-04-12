@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-script-type" content="text/javascript">
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>项目工时维护</title>
+
+    <!--基础CSS样式 -->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link href="/bower_components/bootstrapvalidator/dist/css/bootstrapValidator.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
+    <link href="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+    <link href="/bower_components/jquery.fancytree/dist/skin-bootstrap/ui.fancytree.css" rel="stylesheet" type="text/css" class="skinswitcher">
+    <link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <!--strat bootstrap 所用到的css 直接引用即可-->
+    <link rel="stylesheet" href="/styles/common/sb-admin-2.css" />
+
+    <!-- 右上角提示消息样式,一般情况外部框架已经引用,就不需要再引用了 CSS -->
+    <link rel="stylesheet" href="/bower_components/bootstrap-notify-master/css/bootstrap-notify.css" />
+
+    <!--这里引入你自己的CSS文件-->
+
+    <!--如果你想获取浏览器相关的信息,引入此JS-->
+    <!-- build:js scripts/vendor/modernizr.js -->
+    <script src="/bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--如果要让IE9以下的浏览器支持HTML5的一些响应式布局特性,需要引入如下js-->
+    <!--[if lt IE 9]>
+    <script src="/scripts/common/html5shiv.js"></script>
+    <script src="/scripts/common/respond.min.js"></script>
+
+    <![endif]-->
+    <style>
+        .fancytree-active {
+            background-color: #f5f5f5;
+        }
+        .dt-select {
+            background-color: #C6E2FF !important;
+        }
+        .dt_center {
+            text-align: center;
+        }
+        span.fancytree-title {
+            display: none;
+        }
+    </style>
+</head>
+<body style="min-height: 800px">
+<div class="page-header gyl-page-header">
+    <h5>项目工时维护</h5>
+</div>
+
+<!--查询结果部分-->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+            <div class="panel-heading gyl_panel_header">
+                &nbsp;
+                <div class="pull-left">
+                    <i class="fa fa-table"></i>
+                    项目信息
+                </div>
+
+                <div class="pull-right" style="margin-top: -6px; margin-left: 0px; width:85%">
+
+                    <div  class="col-md-5" style="padding-left: 0px;" >
+                        <input class="form-control input-sm" style="height: 29px;" type="text" name="projSearch" id="projSearch" placeholder="项目信息模糊检索">
+                    </div>
+
+                    <div class="col-md-1" style="padding-left: 0px;">
+                        <button type="button" style="height: 29px; width: 80px;" class="btn btn-default btn-sm" id="bu_queryData" >
+                            <i class="glyphicon glyphicon-search" style="color: #3CB371; font-size: 13px;"></i> 查询
+                        </button>
+                    </div>
+
+                    <button style="height: 29px; width: 100px;"id="bu_edit" type="button" class="btn btn-default btn-xs" disabled ="disabled">
+                        <i class="fa fa-pencil-square-o" style="color: #B8860B;font-size: 13px;"></i> 编辑
+                    </button>
+
+                </div>
+
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper" id="dataTables-listProj">
+
+                </div>
+                <!-- /.table-responsive -->
+
+            </div>
+            <!-- /.panel-body -->
+
+            <!--</div>-->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="addLabel">
+    <div class="modal-dialog" style="min-width: 600px; width: 30%; " role="document">
+        <div class="modal-content">
+            <!--显示标题-->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="editLineLabel">项目工时维护</h5>
+            </div>
+
+            <!--显示输入表体-->
+            <div class="modal-body" style="padding-top: 0px;">
+                <form id="form_budgetLine" class="form-horizontal" role="form">
+                    <div class="row">`
+                        <div class="col-sm-12">
+                            <div class="row" style="margin-right: 5px;">
+                                <div class="col-sm-12 col-md-12">
+
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading gyl_panel_header">
+                                            &nbsp;
+                                            <div class="pull-left">
+                                                <i class="fa fa-table"></i>
+                                                项目工时维护
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body">
+                                            <!--1-->
+                                            <div class="row">
+                                                <div class="form-group">
+
+                                                    <div class="col-md-3" style="padding-right: 0px;">
+                                                        <label style="width:100%; text-align: right;  padding-top: 5px; ">项目信息：</label>
+                                                    </div>
+                                                    <div class="col-md-8" style="padding-left: 0px;">
+                                                        <!--<div class='input-group'>-->
+                                                            <input class="form-control input-sm"  type="text" name="projectName" id="projectName" disabled ="disabled"   />
+                                                            <input type="hidden" name="projectId" id="projectId" />
+                                                            <input type="hidden" name="extensioId" id="extensioId" />
+                                                        <!--</div>-->
+
+                                                    </div>
+
+                                                    <!--<div class="col-md-2" style="padding-right: 0px;">-->
+                                                        <!--<label style="width:100%;  text-align: right; padding-top: 5px;"><font color="red">*</font>总工时（小时）：</label>-->
+                                                    <!--</div>-->
+                                                    <!--<div class="col-md-2" style="padding-left: 0px;">-->
+                                                        <!--<input class="form-control input-sm" type="number" style="text-align: right;" name="cExtAttr4" id="cExtAttr4" >-->
+                                                    <!--</div>-->
+
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="form-group">
+
+                                                    <div class="col-md-3" style="padding-right: 0px;">
+                                                        <label style="width:100%;  text-align: right; padding-top: 5px;"><font color="red">*</font>总工时（小时）：</label>
+                                                    </div>
+                                                    <div class="col-md-8" style="padding-left: 0px;">
+                                                        <input class="form-control input-sm" type="number" style="text-align: right;" name="cExtAttr4" id="cExtAttr4" >
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!--显示按钮-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="height: 29px; width: 100px;">
+                    <i class="fa fa-window-close-o" style="font-size: 13px;"></i>关闭
+                </button>
+                <button type="button" class="btn btn-default btn-xs" style="height: 29px; width: 100px;" id="bu_save_line"  disabled ="disabled">
+                    <i class="fa fa-save" style="color: #B8860B; font-size: 13px;"></i>保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 基础JS脚本 -->
+<script src="/bower_components/jquery/dist/jquery.js" ></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js" ></script>
+<script src="/bower_components/moment/min/moment.min.js" ></script>
+<script src="/bower_components/moment/locale/zh-cn.js" ></script>
+<script src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js" ></script>
+<script src="/bower_components/bootstrapvalidator/dist/js/bootstrapValidator.js"></script>
+<!-- 如果需要做拖拽等操作,需要引入 -->
+<script src="/bower_components/jquery-ui/jquery-ui.js" ></script>
+<script src="/bower_components/assets/js/jquery.ui-contextmenu.min.js" type="application/javascript"></script>
+<!-- 如果需要使用cookie -->
+<script src="/bower_components/jquery.cookie/jquery.cookie.js" ></script>
+
+<!--如果需要使用数据列表,引入以下JS-->
+<script src="/bower_components/datatables/media/js/jquery.dataTables.js" ></script>
+<script src="/bower_components/datatables-responsive/js/dataTables.responsive.js" ></script>
+<script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.edit.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.glyph.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.table.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.wide.js" type="text/javascript"></script>
+<script src="/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+
+<!--在提交form表单的时候,需要将form数据转换成json格式字符串时使用-->
+<script src="/bower_components/jquery.serializeJSON/jquery.serializejson.js"></script>
+<script src="/bower_components/bootstrap/js/tooltip.js"></script>
+
+<!--  右上角提示消息脚本,一般情况外部框架已经引用,就不需要再引用了 -->
+<script src="/bower_components/bootstrap-notify-master/js/bootstrap-notify.js" ></script>
+
+<!--引入 config js信息-->
+<script src="/scripts/common/config.js" ></script>
+<script src="/scripts/common/jquery.params.js" nerinend></script>
+<script src="/scripts/budget/projectMainHour.js" nerinend></script>
+
+</body>
+</html>

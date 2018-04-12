@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>设计文印管理</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<script type="text/javascript" src="../../jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="js/dschange.js?v=1"></script>
+	<script type="text/javascript" src="js/datagrid-dnd.js"></script>
+    <style>
+        .textbox {
+            height: 16px;
+            margin: 0;
+            padding: 0 2px;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body class="easyui-layout" id="rootlayout">
+
+<div id="prj_center" data-options="region:'center'">
+	<div id="prj_layout" class="easyui-layout" data-options="fit:true,border:false">
+		<div id="north" data-options="region:'north',title:'项目阶段选择',split:true,collapsed:false,hideCollapsedContent:false,collapsedContent: function(title){
+			return title;}" style="height:245px">
+			<div id="Div1" class="easyui-layout" data-options="fit:true">
+				<div id="Div2" data-options="region:'north',border:false">
+					<table style="border-spacing:0">
+						<tr>
+							<td>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="easyui-menubutton"
+																 id="btnprjphase">本项目阶段切换</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<div id="menuphase" style="width:120px;"></div>
+							</td>
+							<td>
+								<input id="prjsearch" class="easyui-searchbox" style="width:250px"
+									   data-options="prompt:'其他项目简称、全称、编号、项目经理模糊查找' ">
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div data-options="region:'center',border:false">
+					<div id="prjgrid"></div>
+				</div>
+			</div>
+		</div>
+		<div data-options="region:'center'">
+			<div id="pubdraw_layout" class="easyui-layout" data-options="fit:true,border:false">
+				<div id="spewest" data-options="region:'west',title:'图纸文印专业选择',split:true,collapsed:true,hideCollapsedContent:false,collapsedContent: function(title){
+						return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+					}" style="width:220px">
+					<div id="majortb" style="text-align:right">
+						<div style="float:left;padding-top:4px">&nbsp;<input id="modecheck" type="checkbox">标准模式&nbsp;&nbsp;</div>
+						<a id="filtermajorbtn">继续</a>&nbsp;&nbsp;
+						</div>
+					<div id="gridPrjmajors"></div>
+				</div>
+				<div id="dgLayout" data-options="region:'center'">
+					<div id="wbs_layout" class="easyui-layout" data-options="fit:true,border:false">
+						<div id="wbswest" data-options="region:'west',title:'图纸工作包树',split:true,collapsed:true,hideCollapsedContent:false,collapsedContent: function(title){
+								 return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+							}" style="width:280px">
+							<ul id="divtree"></ul>
+						</div>
+						<div id="wbscenter" data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+							<div id="draw_layout" class="easyui-layout" data-options="fit:true,border:false">
+								<div id="drawwest" data-options="region:'west',title:'图纸查找',split:true,collapsed:true,hideCollapsedContent:false,collapsedContent: function(title){
+										 return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+									}" style="width:500px">
+									<div id="drawtb" style="text-align:left">&nbsp;
+										<a id="autocheck">智能勾选</a>
+										<input id="drawNumSearch" class="easyui-searchbox" style="width:250px" data-options="prompt:'图纸名称、图号模糊查找' ">
+										<div style="float:right;padding-top:4px"><input id="drawshowall" type="checkbox">显示更多列&nbsp;&nbsp;</div>
+									</div>
+									<table id="gridDraw"></table>
+								</div>
+								<div id="drawcenter" data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+									<div class="easyui-layout" data-options="fit:true,border:false">
+										<div id="selectdrawwest" data-options="region:'west',title:'图纸选择',split:true,collapsed:true,hideCollapsedContent:false,collapsedContent: function(title){
+												 return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+											}" style="width:500px">
+											<div id="dstabs" class="easyui-tabs" data-options="fit:true,border:false">
+												<div id="tabaddds" title="图纸排序" data-options="closable:false" >
+													<div id="adddstb" style="text-align:left">&nbsp;
+														<div style="float:left">
+															<a id="adddrawbtn"></a>
+															<a id="deldrawbtn"></a>&nbsp;
+														</div>
+														<div style="float:left;padding-top:7px">图纸目录</div>
+														<input id='templatecombo' style='width:90px'>
+														<a id="newDSbtn">继续</a>
+														<div id="menuDS" style="width:180px;"></div>
+														<div style="float:right;padding-top:4px">
+															<input id="adddssinglepub" type="checkbox">勾选零星增晒&nbsp;&nbsp;
+															<input id="adddsshowall" type="checkbox">显示更多列&nbsp;&nbsp;
+														</div>
+													</div>
+													<table id="gridDrawDS"></table>
+												</div>
+												<div id="tabviewds" title="新晒图纸包" data-options="closable:false" >
+													<div id="viewdstb" style="text-align:left">&nbsp;
+														<a id="delcat">删除</a>
+														<a id="gocat">继续</a>
+														<div id="menuCat" style="width:120px;"></div>
+														<div style="float:right;padding-top:4px">
+															<input id="viewdsshowall" type="checkbox">显示更多列&nbsp;&nbsp;
+														</div>
+													</div>
+													<div id="gridViewDS"></div>
+												</div>
+												<div id="tabreplt" title="增晒图纸明细" data-options="closable:false" >
+													<div id="replttb" style="text-align:left">&nbsp;
+														<a id="delreplt">删除</a>
+														<a id="goreplt">继续</a>
+														<div id="menureplt" style="width:140px;"></div>
+													</div>
+													<div id="gridreplt"></div>
+												</div>
+											</div>
+										</div>
+										<div data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+											<div id="publayout" class="easyui-layout" data-options="fit:true,border:false">
+												<div data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+													<div class="easyui-layout" data-options="fit:true,border:false">
+														<div data-options="region:'west',title:'文印分类',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+																 return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+															}" style="width:150px">
+															<div id="oalistgrid"></div>
+														</div>
+														<div data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+															<div id="pubdgtb" style="text-align:left;display:none">
+																&nbsp;&nbsp;<a id="addpub">提交</a>
+																<div id='withdrawdiv' style='padding-top:2px;display:none;float:left'>&nbsp;&nbsp;<b>是否文印附图：</b><input id='withdrawpub' style='width:135px'>&nbsp;&nbsp;&nbsp;</div>
+																<div style="float:right;padding-top:4px">
+																	<input id="viewprjall" type="checkbox">不限于当前项目查看&nbsp;&nbsp;
+																</div>
+															</div>
+															<div id="pubdg"></div>
+														</div>
+													</div>
+												</div>
+												<div data-options="region:'south',title:'文本选择<div style=float:right>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div id=repock style=float:right;display:none;font-weight:normal><input id=repoprjall type=checkbox>不限于当前项目查看</div>',split:true,collapsed:true,hideCollapsedContent:false,collapsedContent: function(title){
+													return title;}" style="height:245px">
+													<div id="oadatagrid"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="loaddiv" class="easyui-window" style="width: 380px; height: 70px;" data-options="title:'登录 NIMS 2.0，请稍候...',minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+</div>
+<div id="pdfdiv" class="easyui-window" style="width: 960px; height: 600px;" data-options="title:'预览图纸目录',minimizable:false,collapsible:false,closable:true,closed:true,modal:true,onResize:function(width, height){if($('#iframepage').height()>0&&$('#iframepage').width()>0){$('#iframepage').height(height-71);$('#iframepage').width(width-17);}}">
+	<div class="easyui-layout" data-options="fit:true,border:false">
+		<div data-options="region:'center'">
+			<iframe src='sec.html' id='iframepage' frameborder=0 scrolling='no' marginheight=0 marginwidth=0></iframe>
+		</div>
+		<div data-options="region:'south',split:false,border:false" style="height: 30px;text-align:center">
+			<input id="confirmCatck" type="checkbox">
+			<label id="confirmCatlb"></label>
+			<a id="confirmCatbtn"><u><b>&nbsp;提&nbsp;交&nbsp;</b></u></a>
+		</div>
+	</div>
+</div>
+<div id="formuser" class="easyui-window" style="width: 240px;" data-options="title:'选择审批执行人员',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+	<form id="form1" method="post" style="padding:5px">
+		<div style="float:left">
+			项目负责人<br /><div style="height: 5px;"></div>
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false,required:true" name="wfchgr" id="wfchgr" style="width: 65px" />
+		</div>
+		<div id="zychgrdiv" style="float:left;padding-left:10px;">
+			专业负责人<br /><div style="height: 5px;"></div>
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'perNum',textField:'perName',editable:false,hasDownArrow:false,required:true" name="zychgr" id="zychgr" style="width: 65px" />
+		</div>
+		<div id="leaderdiv" style="float:left;padding-left:10px;">
+			分管领导<br /><div style="height: 5px;"></div>
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'perNum',textField:'perName',editable:false,hasDownArrow:false,required:true" name="leader" id="leader" style="width: 65px" />
+		</div>
+		<div id="scradiv" style="float:left;padding-left:10px;">
+			项目秘书<br /><div style="height: 5px;"></div>
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'perNum',textField:'perName',editable:false,hasDownArrow:false,required:true" name="scra" id="scra" style="width: 65px" />
+		</div>
+		<div style="clear:both;height: 5px;"></div>
+		<div align="center"><br /><a id="btnuserapply">应用</a></div>
+	</form>
+</div>
+</body>
+</html>

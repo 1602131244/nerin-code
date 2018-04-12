@@ -1,0 +1,74 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-info">
+
+      <div class="panel-heading gyl_panel_header">
+        <i class="glyphicon glyphicon-search"></i>
+        查询条件
+        <div class="pull-right">
+          <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/tsList#queryGysBars">
+            <i class="glyphicon glyphicon-menu-down" ></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="queryGysBars" class="panel-collapse collapse in">
+        <div class="panel-body" style="padding-top: 10px; padding-bottom: 5px;">
+          <form id="selectFrom_1">
+            <div class="row form-inline">
+              <label style="width: 70px; text-align: right; padding-top: 3px;">供应商：</label>
+              <input class="form-control input-sm" type="text" name="vendorName" placeholder="名称">
+              <label style="width: 90px; text-align: right; padding-top: 3px;">供应商属性：</label>
+              <select class="form-control input-sm" type="text" name="vendorType" id="gys_vendorType">
+                <option value="">请选择</option>
+                <option value="L-VENDOR">零星</option>
+                <option value="VENDOR">正式</option>
+              </select>
+              <label style="width: 90px; text-align: right; padding-top: 3px;">供应商性质：</label>
+              <select class="form-control input-sm" type="text" name="nature" id="gys_nature"></select>
+            </div>
+
+            <div class="gyl-panel-line"></div>
+
+            <div class="row">
+              <button type="button" class="btn btn-default btn-sm" id="bu_queryGysData" style="margin-left: 75px;">
+                <i class="glyphicon glyphicon-search"></i>查询
+              </button>
+              <button type="reset" class="btn btn-default btn-sm" id="bu_resetGysQuery">
+                <i class="glyphicon glyphicon-remove"></i>重置
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-info">
+      <div class="panel-heading gyl_panel_header">
+        &nbsp;
+        <div class="pull-left">
+          <i class="fa fa-table"></i>
+          查询结果
+        </div>
+
+      </div>
+      <!-- /.panel-heading -->
+      <div class="panel-body" style="padding: 5px;">
+        <div class="dataTable_wrapper" id="dataTables-gysAll">
+
+        </div>
+
+      </div>
+      <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+  </div>
+  <!-- /.col-lg-12 -->
+</div>

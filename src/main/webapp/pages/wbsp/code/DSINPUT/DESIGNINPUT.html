@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>设计输入管理</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <style>
+        .textbox {
+            height: 16px;
+            margin: 0;
+            padding: 0 2px;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body class="easyui-layout" id="rootlayout">
+<div id="north" data-options="region:'north',title:'项目阶段选择',split:true,collapsed:false,hideCollapsedContent:false,collapsedContent: function(title){
+         return title;}" style="height:245px">
+    <div id="Div1" class="easyui-layout" data-options="fit:true">
+        <div id="Div2" data-options="region:'north',border:false">
+            <table style="border-spacing:0">
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="easyui-menubutton"
+                                                         id="btnprjphase">本项目阶段切换</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div id="menuphase" style="width:120px;"></div>
+                    </td>
+                    <td>
+                        <input id="prjsearch" class="easyui-searchbox" style="width:250px"
+                               data-options="prompt:'其他项目简称、全称、编号、项目经理模糊查找' ">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div data-options="region:'center',border:false">
+            <div id="prjgrid">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+    <div id="center_layout" class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'north',border:false" style="height:37px; padding:5px">
+			<div style="float:left">
+				<a id="subitem_toolbar_search">加载</a>
+				<a id="subitem_toolbar_add">新增</a>
+				<a id="subitem_toolbar_del">删除</a>
+				<a id="subitem_toolbar_edit">编辑</a>
+				<a id="subitem_toolbar_summit">评审</a>
+			</div>
+        </div>
+        <div data-options="region:'center',border:false">
+            <div id="tabs" class="easyui-tabs" data-options="fit:true,border:false">
+                <div title="项目输入" style="display:none;">
+                    <div id="tabgrid_0"></div>
+                </div>
+                <div title="专业输入" data-options="closable:false" style="display:none;">
+					<div id="spelayout" class="easyui-layout" data-options="fit:true">
+						<div data-options="region:'west',title:'项目类型',collapsed:true,split:true,hideCollapsedContent:false,collapsedContent: function(title){
+							return '<div style=font-weight:bold;text-align:center>项<br />目<br />类<br />型</div>';
+						}" style="width:180px;padding:5px">
+							<div id="checkbox" style="padding:2px"></div>
+						</div>
+						<div data-options="region:'center'">
+							<div class="easyui-layout" data-options="fit:true">
+								<div data-options="region:'west',title:'类别选择',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+				 return '<div style=font-weight:bold;text-align:center>类<br />别<br />选<br />择</div>';
+			},tools:[
+				{iconCls:'icon-input_prof',handler:function(){_prof_1();}},
+				{iconCls:'icon-input_cont',handler:function(){_cont_1();}},
+				{iconCls:'icon-input_docu',handler:function(){_docu_1();}}
+			]" style="width:320px">
+									<ul id="tabtree_1"></ul>
+								</div>
+								<div data-options="region:'center'">
+									<div id="tabgrid_1"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+                <div title="设备反馈资料" data-options="closable:false"
+                     style="display:none;">
+                    <div id ="tab_layout_2" class="easyui-layout" data-options="fit:true">
+                        <div  data-options="region:'west',title:'专业选择',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+         return '<div style=font-weight:bold;text-align:center>专<br />业<br />选<br />择</div>';
+    },tools:[
+		{iconCls:'icon-input_prof',handler:function(){_prof_2();}},
+		{iconCls:'icon-input_equp',handler:function(){_equp_2();}}
+	]" style="width:280px">
+                            <ul id="tabtree_2"></ul>
+                        </div>
+                        <div data-options="region:'center'">
+                            <div id="tabgrid_2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div title="客户财产代管" data-options="closable:false"
+                     style="display:none;">
+                    <div id="tabgrid_3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loaddiv" class="easyui-window" style="width: 380px; height: 70px;" data-options="title:'登录 NIMS 2.0，请稍候...',minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+<ul id="tabtree_x"></ul></div>
+<div id="oarecdiv" class="easyui-window" style="width: 800px; height: 215px;" data-options="title:'设计输入评审记录',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+	<div style="float:left" id="oarecdg"></div>
+</div>
+<div id="speformdiv" class="easyui-window" style="width: 380px; height: 228px;" data-options="title:'选择一个专业',minimizable:false,maximizable:false,collapsible:false,closable:true,closed:true,modal:true">
+    <form method="post" style="padding:15px">
+        <div id="majorsdiv_w"></div>
+    </form>
+</div>  <!--引入 config js信息-->
+  <script src="/scripts/common/config.js" ></script>
+<script type="text/javascript" src="../../jquery.min.js"></script>
+<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/designinput.js?v=1"></script>
+</body>
+</html>

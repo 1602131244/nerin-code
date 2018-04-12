@@ -1,0 +1,244 @@
+<!doctype html>
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>后台管理</title>
+
+    <!-- build:css styles/vendor.css -->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" nerinend/>
+    <link rel="stylesheet" href="/bower_components/datatables/media/css/jquery.dataTables.css" nerinend/>
+    <link rel="stylesheet" href="/bower_components/mocha/mocha.css" nerinend/>
+    <link rel="stylesheet" href="/bower_components/morrisjs/morris.css" nerinend/>
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" nerinend/>
+    <link rel="stylesheet" href="/bower_components/bootstrap-social/bootstrap-social.css" nerinend/>
+    <link rel="stylesheet" href="/bower_components/metisMenu/dist/metisMenu.css" nerinend/>
+    <!-- endbuild -->
+    <!-- Notify CSS -->
+    <link rel="stylesheet" href="/bower_components/bootstrap-notify-master/css/bootstrap-notify.css" nerinend/>
+    <!-- build:css styles/back-main.css -->
+    <link rel="stylesheet" href="/styles/common/back-main.css" nerinend/>
+    <link rel="stylesheet" href="/styles/common/timeline.css" nerinend/>
+    <link rel="stylesheet" href="/styles/common/sb-admin-2.css" nerinend/>
+    <!-- endbuild -->
+
+    <!-- build:js scripts/vendor/modernizr.js -->
+    <script src="/bower_components/modernizr/modernizr.js" nerinend></script>
+    <!-- endbuild -->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script  src="/scripts/common/html5shiv.js"></script>
+    <script  src="/scripts/common/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+      <!--<div class="row">-->
+        <!--<div class="col-lg-12">-->
+          <!--<h1 class="page-header">仪表盘</h1>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; /.col-lg-12 &ndash;&gt;-->
+      <!--</div>-->
+      <!--&lt;!&ndash; /.row &ndash;&gt;-->
+      <!--<div class="row">-->
+        <!--<div class="col-lg-3 col-md-6">-->
+          <!--<div class="panel panel-primary">-->
+            <!--<div class="panel-heading">-->
+              <!--<div class="row">-->
+                <!--<div class="col-xs-3">-->
+                  <!--<i class="fa fa-comments fa-5x"></i>-->
+                <!--</div>-->
+                <!--<div class="col-xs-9 text-right">-->
+                  <!--<div class="huge">26</div>-->
+                  <!--<div>New Comments!</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<a href="#">-->
+              <!--<div class="panel-footer">-->
+                <!--<span class="pull-left">View Details</span>-->
+                <!--<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>-->
+                <!--<div class="clearfix"></div>-->
+              <!--</div>-->
+            <!--</a>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-3 col-md-6">-->
+          <!--<div class="panel panel-green">-->
+            <!--<div class="panel-heading">-->
+              <!--<div class="row">-->
+                <!--<div class="col-xs-3">-->
+                  <!--<i class="fa fa-tasks fa-5x"></i>-->
+                <!--</div>-->
+                <!--<div class="col-xs-9 text-right">-->
+                  <!--<div class="huge">12</div>-->
+                  <!--<div>New Tasks!</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<a href="#">-->
+              <!--<div class="panel-footer">-->
+                <!--<span class="pull-left">View Details</span>-->
+                <!--<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>-->
+                <!--<div class="clearfix"></div>-->
+              <!--</div>-->
+            <!--</a>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-3 col-md-6">-->
+          <!--<div class="panel panel-yellow">-->
+            <!--<div class="panel-heading">-->
+              <!--<div class="row">-->
+                <!--<div class="col-xs-3">-->
+                  <!--<i class="fa fa-shopping-cart fa-5x"></i>-->
+                <!--</div>-->
+                <!--<div class="col-xs-9 text-right">-->
+                  <!--<div class="huge">124</div>-->
+                  <!--<div>New Orders!</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<a href="#">-->
+              <!--<div class="panel-footer">-->
+                <!--<span class="pull-left">View Details</span>-->
+                <!--<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>-->
+                <!--<div class="clearfix"></div>-->
+              <!--</div>-->
+            <!--</a>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-3 col-md-6">-->
+          <!--<div class="panel panel-red">-->
+            <!--<div class="panel-heading">-->
+              <!--<div class="row">-->
+                <!--<div class="col-xs-3">-->
+                  <!--<i class="fa fa-support fa-5x"></i>-->
+                <!--</div>-->
+                <!--<div class="col-xs-9 text-right">-->
+                  <!--<div class="huge">13</div>-->
+                  <!--<div>Support Tickets!</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<a href="#">-->
+              <!--<div class="panel-footer">-->
+                <!--<span class="pull-left">View Details</span>-->
+                <!--<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>-->
+                <!--<div class="clearfix"></div>-->
+              <!--</div>-->
+            <!--</a>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--&lt;!&ndash; /.row &ndash;&gt;-->
+
+      <!--<div class="row">-->
+
+        <!--&lt;!&ndash; /.col-lg-8 &ndash;&gt;-->
+        <!--<div class="col-lg-4">-->
+          <!--<div class="panel panel-default">-->
+            <!--<div class="panel-heading">-->
+              <!--<i class="fa fa-bell fa-fw"></i> Notifications Panel-->
+            <!--</div>-->
+            <!--&lt;!&ndash; /.panel-heading &ndash;&gt;-->
+            <!--<div class="panel-body">-->
+              <!--<div class="list-group">-->
+                <!--<a href="#" class="list-group-item">-->
+                  <!--<i class="fa fa-comment fa-fw"></i> New Comment-->
+                                    <!--<span class="pull-right text-muted small"><em>4 minutes ago</em>-->
+                                    <!--</span>-->
+                <!--</a>-->
+                <!--<a href="#" class="list-group-item">-->
+                  <!--<i class="fa fa-twitter fa-fw"></i> 3 New Followers-->
+                                    <!--<span class="pull-right text-muted small"><em>12 minutes ago</em>-->
+                                    <!--</span>-->
+                <!--</a>-->
+                <!--<a href="#" class="list-group-item">-->
+                  <!--<i class="fa fa-envelope fa-fw"></i> Message Sent-->
+                                    <!--<span class="pull-right text-muted small"><em>27 minutes ago</em>-->
+                                    <!--</span>-->
+                <!--</a>-->
+                <!--<a href="#" class="list-group-item">-->
+                  <!--<i class="fa fa-tasks fa-fw"></i> New Task-->
+                                    <!--<span class="pull-right text-muted small"><em>43 minutes ago</em>-->
+                                    <!--</span>-->
+                <!--</a>-->
+                <!--<a href="#" class="list-group-item">-->
+                  <!--<i class="fa fa-upload fa-fw"></i> Server Rebooted-->
+                                    <!--<span class="pull-right text-muted small"><em>11:32 AM</em>-->
+                                    <!--</span>-->
+                <!--</a>-->
+                <!--<a href="#" class="list-group-item">-->
+                  <!--<i class="fa fa-bolt fa-fw"></i> Server Crashed!-->
+                                    <!--<span class="pull-right text-muted small"><em>11:13 AM</em>-->
+                                    <!--</span>-->
+                <!--</a>-->
+                <!--<a href="#" class="list-group-item">-->
+                  <!--<i class="fa fa-warning fa-fw"></i> Server Not Responding-->
+                                    <!--<span class="pull-right text-muted small"><em>10:57 AM</em>-->
+                                    <!--</span>-->
+                <!--</a>-->
+                <!--<a href="#" class="list-group-item">-->
+                  <!--<i class="fa fa-shopping-cart fa-fw"></i> New Order Placed-->
+                                    <!--<span class="pull-right text-muted small"><em>9:49 AM</em>-->
+                                    <!--</span>-->
+                <!--</a>-->
+                <!--<a href="#" class="list-group-item">-->
+                  <!--<i class="fa fa-money fa-fw"></i> Payment Received-->
+                                    <!--<span class="pull-right text-muted small"><em>Yesterday</em>-->
+                                    <!--</span>-->
+                <!--</a>-->
+              <!--</div>-->
+              <!--&lt;!&ndash; /.list-group &ndash;&gt;-->
+              <!--<a href="#" class="btn btn-default btn-block">View All Alerts</a>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; /.panel-body &ndash;&gt;-->
+          <!--</div>-->
+          <!--&lt;!&ndash; /.panel &ndash;&gt;-->
+          <!--<div class="panel panel-default">-->
+            <!--<div class="panel-heading">-->
+              <!--<i class="fa fa-bar-chart-o fa-fw"></i> Donut Chart Example-->
+            <!--</div>-->
+            <!--<div class="panel-body">-->
+              <!--<div id="morris-donut-chart"></div>-->
+              <!--<a href="#" class="btn btn-default btn-block">View Details</a>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; /.panel-body &ndash;&gt;-->
+          <!--</div>-->
+          <!--&lt;!&ndash; /.panel &ndash;&gt;-->
+
+
+        <!--</div>-->
+        <!--&lt;!&ndash; /.col-lg-4 &ndash;&gt;-->
+      <!--</div>-->
+      <!-- /.row -->
+
+
+    <!-- build:js scripts/vendor.js -->
+    <script src="/bower_components/jquery/dist/jquery.js" nerinend></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.js" nerinend></script>
+    <script src="/bower_components/jquery-ui/jquery-ui.js" nerinend></script>
+    <script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.js" type="text/javascript"></script>
+    <script src="/bower_components/datatables/media/js/jquery.dataTables.js" nerinend></script>
+    <script src="/bower_components/flot/jquery.flot.js" nerinend></script>
+    <script src="/bower_components/holderjs/holder.js" nerinend></script>
+    <script src="/bower_components/eve/eve.js" nerinend></script>
+    <script src="/bower_components/raphael/raphael.min.js" nerinend></script>
+    <script src="/bower_components/mocha/mocha.js" nerinend></script>
+    <script src="/bower_components/morrisjs/morris.js" nerinend></script>
+    <script src="/bower_components/datatables-responsive/js/dataTables.responsive.js" nerinend></script>
+    <script src="/bower_components/flot.tooltip/js/jquery.flot.tooltip.js" nerinend></script>
+    <script src="/bower_components/metisMenu/dist/metisMenu.js" nerinend></script>
+
+      <!-- endbuild -->
+
+    <!-- build:js scripts/back-main.js -->
+    <script src="/scripts/common/message.js" nerinend></script>
+    <script src="/scripts/common/sb-admin-2.js" nerinend></script>
+    <script src="/bower_components/bootstrap-notify-master/js/bootstrap-notify.js" nerinend></script>
+    <!-- endbuild -->
+  </body>
+</html>

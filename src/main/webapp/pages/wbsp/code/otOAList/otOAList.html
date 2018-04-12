@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>更多流程</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <style>
+        .textbox {
+            height: 16px;
+            margin: 0;
+            padding: 0 2px;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body class="easyui-layout" id="rootlayout">
+<div id="north" data-options="region:'north',title:'项目阶段选择',split:true,collapsed:false,hideCollapsedContent:false,collapsedContent: function(title){
+         return title;}" style="height:245px">
+    <div id="Div1" class="easyui-layout" data-options="fit:true">
+        <div id="Div2" data-options="region:'north',border:false">
+            <table style="border-spacing:0">
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="easyui-menubutton"
+                                                         id="btnprjphase">本项目阶段切换</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div id="menuphase" style="width:120px;"></div>
+                    </td>
+                    <td>
+                        <input id="prjsearch" class="easyui-searchbox" style="width:250px"
+                               data-options="prompt:'其他项目简称、全称、编号、项目经理模糊查找' ">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div data-options="region:'center',border:false">
+            <div id="prjgrid">
+            </div>
+        </div>
+    </div>
+</div>
+<div data-options="region:'west',title:'<div style=float:left>流程种类&nbsp;&nbsp;&nbsp;</div><div style=float:left><input id=nophase type=checkbox></div><div style=float:bottom;font-weight:normal;padding-top:2px id=nophasetext>不限阶段</div>',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+		 return '<div style=font-weight:bold;text-align:center>流<br />程<br />种<br />类</div>';
+	}" style="width:320px">
+	<div id="oalistgrid"></div>
+</div>
+<div id="dgLayout" data-options="region:'center',title:'◀◀&nbsp;请先在左侧边栏选择流程种类'" style="overflow:hidden;background-color:#f3f3fa">
+	<div id="oadatagrid"></div>
+</div>
+<script type="text/javascript" src="../../jquery.min.js"></script>
+<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/otoa.js?v=1"></script>
+</body>
+</html>

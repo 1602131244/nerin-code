@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>协作文本任务公司级评审导航</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <style>
+        .textbox {
+            height: 16px;
+            margin: 0;
+            padding: 0 2px;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body class="easyui-layout" id="rootlayout">
+<div id="north" data-options="region:'north',title:'协作任务选择',split:true,collapsed:false,hideCollapsedContent:false,collapsedContent: function(title){
+         return title;}" style="height:320px">
+	<div class="easyui-layout" data-options="fit:true">
+		<div data-options="region:'west',title:'协作任务查找',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+				 return '<div style=font-weight:bold;text-align:center>协<br />作<br />任<br />务<br />查<br />找</div>';
+			}" style="width:320px">
+			<div id="Div1" class="easyui-layout" data-options="fit:true">
+				<div id="Div2" data-options="region:'north',border:false" style="text-align:center;">
+					<input id="prjsearch" class="easyui-searchbox" style="width:250px"> <a id="listtask" class="easyui-linkbutton"></a>
+				</div>
+				<div data-options="region:'center',border:false">
+					<ul id="prjtree"></ul>
+				</div>
+			</div>
+		</div>
+		<div data-options="region:'center',border:true">
+			<div id="taskdg">
+			</div>
+		</div>
+    </div>
+</div>
+<div data-options="region:'west',title:'专业工作包树',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+		 return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+	}" style="width:320px">
+	<ul id="divtree"></ul>
+</div>
+<div id="dgLayout" data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+	<div id="oadatagrid"></div>
+</div>
+<div id="loaddiv" class="easyui-window" style="width: 380px; height: 70px;" data-options="title:'登录 NIMS 2.0，请稍候...',minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+<script type="text/javascript" src="../../jquery.min.js"></script>
+<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/nbccAppr.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>二级策划</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <style>
+        .textbox
+        {
+            height: 16px;
+            margin: 0;
+            padding: 0 2px;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body class="easyui-layout" id="rootlayout">
+    <div id="north" data-options="region:'north',title:'项目阶段选择',split:true,collapsed:false,hideCollapsedContent:false,collapsedContent: function(title){
+         return title;}" style="height:245px">
+		<div id="Div1" class="easyui-layout" data-options="fit:true">
+            <div id="Div2" data-options="region:'north',border:false">
+                <table style="border-spacing:0">
+                    <tr>
+                        <td>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="easyui-menubutton" id="btnprjphase">本项目阶段切换</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div id="menuphase" style="width:120px;"></div>
+                        </td>
+                        <td>
+                            <input id="prjsearch" class="easyui-searchbox" style="width:250px" data-options="prompt:'其他项目简称、全称、编号、项目经理模糊查找' ">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div data-options="region:'center',border:false">
+                <div id="prjgrid">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="west" data-options="region:'west',title:'发布版及查找引用',split:true,hideCollapsedContent:false,collapsed:true,collapsedContent: function(title){
+         return '<div style=font-weight:bold;text-align:center>' +title.split('').join('<br />')+'</div>';
+    }" style="width:600px">
+    <div id="reftabs" class="easyui-tabs" data-options="fit:true,border:false">
+        <div title="发布版" style="" id="pubTab">
+            <div id="pub_layout" class="easyui-layout" data-options="fit:true">
+                <div id="pub_layout_north" data-options="region:'north',border:false,split:true,hideCollapsedContent:false,title:'双击名称查看详细内容'" style="height:215px;">
+                    <div id="pub_grid"></div>
+                </div>
+                <div data-options="region:'center',border:false,split:true">
+                    <div id="pub_layout_center" class="easyui-layout" data-options="fit:true">
+						<div data-options="region:'west',title:'导航 - 系统子项树',collapsed:true,hideCollapsedContent:false,collapsedContent: function(){return '<div style=font-weight:bold;text-align:center>系<br/>统<br/>子<br/>项<br/>树</div>';},split:true" style="width:260px"><ul id="pubtree"></ul></div>
+						<div id="pubpage" data-options="region:'center',title:'发布版WBS详细内容'">
+							<div id="pubgrid"></div>
+						</div>
+					</div>
+                </div>
+                <div id="pub_layout_south" data-options="region:'south',border:false">
+                    <input type="checkbox" id="prjpubcheck">含子节点一并引用
+                </div>
+            </div>
+        </div>
+        <div title="历史项目" data-options="closable:false" style="">
+            <div id="his_layout" class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'north',split:true,collapsible:true,hideCollapsedContent:false,title:'搜索项目并展开其WBS/PBS，双击名称查看详细内容'" style="height:262px;">
+                    <div id="Div3" class="easyui-layout" data-options="fit:true">
+                        <div id="Div4" data-options="region:'north',border:false">
+                            <table style="border-spacing:0">
+                                <tr>
+                                    <td>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="easyui-menubutton" id="btnprjindustry" style="width:100px;">全部行业</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <div id="menuindustry" data-options="noline:true" style="width:100px;"></div>
+                                    </td>
+                                    <td>
+                                        <input id="prjhissearch" class="easyui-searchbox" style="width:250px" data-options="prompt:'项目简称、全称、编号、项目经理模糊查询' ">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="Div6" data-options="region:'center',border:false,split:true">
+                            <div id="prjhisgrid" style="height:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div data-options="region:'center',border:false">
+                    <div class="easyui-layout" data-options="fit:true">
+                        <div data-options="region:'center',border:false">
+                            <div id="his_layout_center" class="easyui-layout" data-options="fit:true">
+								<div data-options="region:'west',title:'导航 - 系统子项树',collapsed:true,hideCollapsedContent:false,collapsedContent: function(){return '<div style=font-weight:bold;text-align:center>系<br/>统<br/>子<br/>项<br/>树</div>';},split:true" style="width:260px"><ul id="histree"></ul></div>
+								<div id="hispage" data-options="region:'center',title:'历史项目PBS/WBS详细内容'">
+									<div id="hisgrid"></div>
+								</div>
+							</div>
+                        </div>
+                        <div id="prjhis_layout_south" data-options="region:'south',border:false">
+                            <input id="prjhischeck" type="checkbox">含子节点一并引用
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tabsys" title="系统" data-options="closable:false" style="">
+            <div id="Sys_layout" class="easyui-layout" data-options="fit:true">
+                <div id="prjSysbuttons" data-options="region:'north',border:false">
+                    <table style="border-spacing:0">
+                        <tr>
+                            <td>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="easyui-menubutton" id="btnprjindustrysys" style="width:100px;">全部行业</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div id="menuindustrysys" data-options="noline:true" style="width:100px;"></div>
+                            </td>
+                            <td>
+                                <input id="prjsyssearch" class="easyui-searchbox" style="width:250px" data-options="prompt:'系统名称模糊查询' ">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div data-options="region:'center',border:false">
+                    <div id="gridPrjSys"></div>
+                </div>
+            </div>
+        </div>
+        <div id="tabsubitem" title="子项" data-options="closable:false" style="">
+            <div id="Sub_layout" class="easyui-layout" data-options="fit:true">
+                <div id="prjSubbuttons" data-options="region:'north',border:false">
+                    <table style="border-spacing:0">
+                        <tr>
+                            <td>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="easyui-menubutton" id="btnprjindustrysub" style="width:100px;">全部行业</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div id="menuindustrysub" data-options="noline:true" style="width:100px;"></div>
+                            </td>
+                            <td>
+                                <input id="prjsubsearch" class="easyui-searchbox" style="width:250px" data-options="prompt:'子项名称模糊查询' ">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div data-options="region:'center',border:false">
+                    <div id="gridPrjsub"></div>
+                </div>
+            </div>
+        </div>
+        <div title="专业" data-options="closable:false" style="">
+            <div id="major_layout" class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'north',border:false">
+                    <table style="border-spacing:0;width:100%">
+                        <tr>
+                            <td>
+                                <input id="prjmajorsearch" class="easyui-searchbox" style="width:250px" data-options="prompt:'专业名称,代字模糊查找' ">
+								<a id="refreshspelist">刷新</a>
+                                <a id="prjmajorrates">比例</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div data-options="region:'center',border:false">
+                    <div id="gridPrjmajors"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+        <div id="wbs_layout" class="easyui-layout" data-options="fit:true">
+            <div id="wbs_layout_north" data-options="region:'north',collapsed:true,hideCollapsedContent:false,title:'WBS未发布版'" style="height:81px">
+                <div id="prjdrftgrid"></div>
+            </div>
+
+            <div data-options="region:'center',border:false"><div class="easyui-layout" data-options="fit:true"><div data-options="region:'north',border:false" style="padding:3px;height:32px">
+				<div id="subitem_toolbar_centerbtn">
+					<a href="javascript:void(0)" id="subitem_collapse" class="easyui-menubutton" data-options="menu:'#chooselevels'">展开</a>
+					<div id="chooselevels" style="width:70px;">
+						<div data-options="iconCls:'icon-sysbr'" onclick=" _collapseSet($('#divtree'),'sys');">系统</div>
+						<div data-options="iconCls:'icon-divbr'" onclick=" _collapseSet($('#divtree'),'div');">子项</div>
+					</div>
+					<a id="subitem_toolbar_checkout">签出</a>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<a id="subitem_toolbar_ref">引用</a>
+					<a id="subitem_toolbar_add">新增</a>
+					<div id="subitem_toolbar_addmenu"></div>
+					<a id="subitem_toolbar_edit">修改</a>
+					<div id="chooseedits"></div>
+					<a id="subitem_toolbar_del">删除</a>
+					<div id="subitem_toolbar_delmenu"></div>
+					<a id="subitem_toolbar_cancel">放弃</a>
+					<a id="subitem_toolbar_accept">继续</a>
+					<a id="subitem_toolbar_save">保存</a>                        &nbsp;&nbsp;&nbsp;&nbsp;
+					<a id="subitem_toolbar_reset">重置</a>
+					<a id="subitem_toolbar_checkin">签入</a>
+					<a id="subitem_toolbar_update">发布</a>
+				</div>
+			</div>
+			<div data-options="region:'west',title:'导航 - 系统子项树',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+         return '<div style=font-weight:bold;text-align:center>导<br />航</div>';
+    }" style="width:380px"><ul id="divtree"></ul></div>
+			<div id="spepage" data-options="region:'center',title:'请进入系统子项树中的相关节点以展示详情'">
+                <div id="spegrid_toolbar">
+					<div id="chnname" style="clear:both">
+						<div id="inputdivname" style="padding:2px;color:#333;clear:both">
+							节点名称：<input type="text" class="textbox" id="tbxdivname" style="width:258px">
+						</div>
+					</div>
+					<div id="dualname" style="clear:both">
+						<div id="dualdivname" style="padding:2px;color:#333;clear:both">
+							双语名称：<input type="text" class="textbox" id="tbxdivdual" style="width:258px">
+						</div>
+					</div>
+					<div id="startdate" style="float:left">
+						<div id="divsdate" style="padding:2px;color:#333;clear:both">
+							计划起始日期：<input type="text" class="textbox" id="tbxdivsdate" style="width:70px">
+						</div>
+					</div>
+					<div id="enddate" style="float:left">
+						<div id="divedate" style="padding:2px;color:#333;clear:both">
+							计划完成日期：<input type="text" class="textbox" id="tbxdivedate" style="width:70px">
+						</div>
+					</div>
+					<br style="clear:both;" />
+				</div>
+				<div id="spegrid"></div>
+				<div id="subitem_grid_ContextMenu"></div>
+            </div>
+            <div data-options="region:'south',border:true" data-options="fit:true" style="height:23px;width:100%">
+                <div style="float:left">
+                    <input id="driftchecksub" type="checkbox" checked disabled>分子项管理&nbsp;&nbsp;&nbsp;
+                </div>
+                <div style="float:left">
+                    <input id="driftshowall" type="checkbox">显示节点来源列&nbsp;&nbsp;
+                </div>
+                <div style="float:left;padding:1.3px">
+                    <a href="javascript:void(0)" id="changelist">图纸状态变更记录</a>
+                </div>
+            </div></div></div></div>
+        </div>
+    </div>
+	<div id="speformdiv" class="easyui-window" style="width: 380px; height: 198px;" data-options="title:'正在执行，请稍候...',collapsed:true,minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+	</div>
+	<div id="loaddiv" class="easyui-window" style="width: 380px; height: 70px;" data-options="title:'正在处理，请稍候...',minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+		温馨提示：<br>为避免长时间等待，单次批量处理表格行数不宜超过10行。
+	</div>
+    <div id="dateformdiv" class="easyui-window" style="width: 350px; height: 140px;" data-options="title:'批量修改计划起止日期',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+        <form id="form1" method="post" style="padding:15px">
+            <div style="float:left">
+                <input id="ckbdatestart" type="checkbox" onchange="_enableCombo('#ckbdatestart', '#dateplanstart')">计划开始日期<br />
+                <input class="easyui-datebox" type="text" name="sdate" id="dateplanstart" style="width: 100px" />
+            </div>
+            <div style="float:left;padding-left:10px;">
+                <input id="ckbdateend" type="checkbox" onchange="_enableCombo('#ckbdateend', '#dateplanend')">计划结束日期<br />
+                <input class="easyui-datebox" type="text" name="edate" id="dateplanend" style="width: 100px" />
+            </div>
+            <div style="float:right"><br /><a id="btndateapply" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">应用</a></div>
+			<div style="clear:both;padding:5px">原区间：<a id="oldstartdate"></a> 至 <a id="oldenddate"></a></div>
+        </form>
+    </div>
+    <div id="startformdiv" class="easyui-window" style="width:260px;padding:10px;" data-options="title:'设置起始代号',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+        <a id="startcodetxt"></a><br>
+		<div style="float:left">
+			<label for="name">请输入正整数:</label>
+            <input id="startnumber" class="easyui-numberspinner" value="01" style="width:50px;" required="required" data-options="min:1,max:99,editable:true">
+        </div>
+        <div style="float: right"><a id="btnstartapply" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">应用</a></div>
+    </div>
+    <div id="divmajorset" class="easyui-window" style="width:550px;height:420px;" data-options="title:'专业总工作量比例（此数据不用于结算分配，仅用于估算进度）',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+		<div id="majortb">
+			<a id="majorratesave" data-options="iconCls:'icon-save'" class="easyui-linkbutton">保存</a>&nbsp;&nbsp;
+			<a id="majorratesplit" data-options="iconCls:'icon-avg'" class="easyui-linkbutton">等分</a>&nbsp;&nbsp;
+			<a id="majorratesum" data-options="iconCls:'icon-sum'" class="easyui-linkbutton">求和</a>&nbsp;&nbsp;
+			<label id="majorsetmsgs" style="color:red;"></label>
+		</div>
+		<table id="grid_majorsets" style="width: 100%; height: 100%"
+			   data-options="toolbar:'#majortb',rownumbers:true,singleSelect:false,fitColumns:true,pagination:false,method:'get'">
+			<thead>
+				<tr>
+					<th data-options="field:'ck', checkbox: true "></th>
+					<th data-options="field:'code',width:60">专业代字</th>
+					<th data-options="field:'name',width:120">专业名称</th>
+					<th data-options="field:'dual'">双语名称</th>
+					<th data-options="field:'ratio',width:100,align:'center',editor:{type:'numberbox',options:{precision:2}}">比例%</th>
+				</tr>
+			</thead>
+		</table>
+    </div>
+
+    <div id="divpubwindow" class="easyui-window" style="width:900px;height:400px;" data-options="title:'发布：图纸状态变更预览',minimizable:false,maximizable:true,collapsible:false,closed:true,modal:false">
+        <div id="divpubwindow_layout" class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'north',border:false">
+                <table style="border-spacing:0;width:100%">
+                    <tr>
+                        <td>
+                            <a id="pubwindowupdate" data-options="iconCls:'icon-mini-refresh'" class="easyui-linkbutton">更新</a>&nbsp;&nbsp;
+                            <a id="pubwindowexecute" data-options="iconCls:'icon-ok'" class="easyui-linkbutton">执行</a>&nbsp;&nbsp;
+                        </td>
+                        <td style="width:20px;"></td>
+                        <td><label id="pubwindowmsgs" style="color:red;">提示：请勾选要发布的记录,必须完成更新且图纸状态变更全部确认后方可执行发布。</label></td>
+                    </tr>
+                </table>
+            </div>
+            <div data-options="region:'center',border:false">
+                <table id="grid_publists" style="width: 100%; height: 100%" class="easyui-datagrid"
+                       data-options="rownumbers:true,singleSelect:false,fit:true,pagination:false,method:'get'">
+                    <thead data-options="frozen:true">
+                        <tr>
+                            <th data-options="field:'divisionNum',width:60">子项号</th>
+                            <th data-options="field:'divisionName',width:120">子项名称</th>
+                            <th data-options="field:'specialty',width:50">专业</th>
+                            <th data-options="field:'workName',width:140">工作包名称</th>
+                            <th data-options="field:'status',width:120">状态</th>
+                            <th data-options="field:'ck', checkbox: true,width:60">确认变更</th>
+                            <th data-options="field:'design',width:70">设计人</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th data-options="field:'check',width:70">校核人</th>
+                            <th data-options="field:'review',width:70">审核人</th>
+                            <th data-options="field:'approve',width:70">审定人</th>
+                            <th data-options="field:'certified',width:70">注册工程师</th>
+                            <th data-options="field:'scheme',width:70">方案设计人</th>
+                            <th data-options="field:'workID',width:70">工作包号</th>
+                            <th data-options="field:'grandNum',width:70">专业孙项号</th>
+                            <th data-options="field:'grandName',width:80">专业孙项名称</th>
+                            <th data-options="field:'dual',width:60">双语名称</th>
+                            <th data-options="field:'matcode',width:80">关联物料编码</th>
+                            <th data-options="field:'matName',width:80">关联物料名称</th>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="divchangviewwindow" class="easyui-window" style="width:900px;height:400px;" data-options="title:'图纸状态变更记录',minimizable:false,maximizable:true,collapsible:false,closed:true,modal:true">
+        <div id="divchangeviewwindow_layout" class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'center',border:false">
+                <table id="grid_changelists" style="width: 100%; height: 100%" class="easyui-datagrid"
+                       data-options="rownumbers:true,singleSelect:false,fit:true,pagination:true,method:'get'">
+                    <thead data-options="frozen:true">
+                        <tr>
+                            <th data-options="field:'time',width:60">变更时间</th>
+                            <th data-options="field:'pubwbsVer',width:60">发布版次</th>
+                            <th data-options="field:'divisionNum',width:60">子项号</th>
+                            <th data-options="field:'divisionName',width:120">子项名称</th>
+                            <th data-options="field:'specialty',width:50">专业</th>
+                            <th data-options="field:'workName',width:140">工作包名称</th>
+                            <th data-options="field:'status',width:120">状态</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th data-options="field:'design',width:70">设计人</th>
+                            <th data-options="field:'check',width:70">校核人</th>
+                            <th data-options="field:'review',width:70">审核人</th>
+                            <th data-options="field:'approve',width:70">审定人</th>
+                            <th data-options="field:'certified',width:70">注册工程师</th>
+                            <th data-options="field:'scheme',width:70">方案设计人</th>
+                            <th data-options="field:'workID',width:70">工作包号</th>
+                            <th data-options="field:'grandNum',width:70">专业孙项号</th>
+                            <th data-options="field:'grandName',width:80">专业孙项名称</th>
+                            <th data-options="field:'dual',width:60">双语名称</th>
+                            <th data-options="field:'matcode',width:80">关联物料编码</th>
+                            <th data-options="field:'matName',width:80">关联物料名称</th>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="../../jquery.min.js"></script>
+    <script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="js/WBSLV2.js?v=1"></script>
+
+    <!--    <script type="text/javascript" src="js/treegrid-dnd-noappend.js"></script>
+ 	<script type="text/javascript" src="js/treegrid-dnd.js"></script>
+        <script type="text/javascript" src="js/CollapseTitle.js"></script>-->
+</body>
+</html>

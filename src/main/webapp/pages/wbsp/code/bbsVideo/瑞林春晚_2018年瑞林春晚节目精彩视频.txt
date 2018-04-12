@@ -1,0 +1,2 @@
+<p style="text-align: center">
+	<iframe allowtransparency="" border="0" frameborder="no" height="461" marginheight="0" marginwidth="0" src="http://192.168.27.55:8080/pages/wbsp/code/bbsVideo/bbsVideo.html?clip=2018spring_festival&listnum=Y" width="968"></iframe></p>

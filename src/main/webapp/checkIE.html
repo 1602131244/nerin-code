@@ -1,0 +1,33 @@
+<!doctype html>
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="description" content=""/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>NIMS 2.0</title>
+</head>
+<body>
+
+<script>
+  alert(getBrowserVersion());
+  alert(navigator.userAgent.toLowerCase());
+  function getBrowserVersion() {
+    var userAgent = navigator.userAgent.toLowerCase();
+    if(userAgent.match(/msie ([\d.]+)/)!=null){//ie6--ie9
+      var uaMatch = userAgent.match(/msie ([\d.]+)/);
+      return 'IE'+uaMatch[1];
+    } else if (userAgent.match(/(trident)\/([\w.]+)/)) {
+      var uaMatch = userAgent.match(/trident\/([\w.]+)/);
+      switch (uaMatch[1]){
+        case "4.0": return "IE8" ;break;
+        case "5.0": return "IE9" ;break;
+        case "6.0": return "IE10";break;
+        case "7.0": return "IE11";break;
+        default:return "undefined" ;
+      }
+    }
+    return "undefined";
+  }
+</script>
+</body>
+</html>

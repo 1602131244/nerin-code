@@ -1,0 +1,20 @@
+2018-03-26 15:35:20,905 INFO  [main] NimsOptApplication: Starting NimsOptApplication on N104515 with PID 18888 (started by 104515 in E:\nerin code test)
+2018-03-26 15:35:20,907 DEBUG [main] NimsOptApplication: Running with Spring Boot v1.3.4.RELEASE, Spring v4.2.6.RELEASE
+2018-03-26 15:35:20,907 INFO  [main] NimsOptApplication: The following profiles are active: dev
+2018-03-26 15:35:21,156 DEBUG [background-preinit] logging: Logging Provider: org.jboss.logging.Slf4jLoggerProvider found via system property
+2018-03-26 15:35:23,900 DEBUG [main] AsyncConfiguration: Creating Async Task Executor
+2018-03-26 15:35:25,128 INFO  [localhost-startStop-1] WebConfigurer: Web application configuration, using profiles: [dev]
+2018-03-26 15:35:25,129 INFO  [localhost-startStop-1] WebConfigurer: Web application startup in development mode
+2018-03-26 15:35:25,130 INFO  [localhost-startStop-1] WebConfigurer: Web application fully configured
+2018-03-26 15:35:29,935 DEBUG [main] SwaggerConfiguration: Starting Swagger
+2018-03-26 15:35:29,943 DEBUG [main] SwaggerConfiguration: Started Swagger in 6 ms
+2018-03-26 15:35:29,949 DEBUG [main] CacheConfiguration: Starting Ehcache
+2018-03-26 15:35:29,950 DEBUG [main] CacheConfiguration: Registering Ehcache Metrics gauges
+2018-03-26 15:35:29,951 DEBUG [main] CacheConfiguration: entity name:Menu
+2018-03-26 15:35:29,952 DEBUG [main] CacheConfiguration: entity name:EbsDuty
+2018-03-26 15:35:29,952 DEBUG [main] CacheConfiguration: entity name:User
+2018-03-26 15:35:29,952 DEBUG [main] CacheConfiguration: entity name:UserMenu
+2018-03-26 15:35:29,952 DEBUG [main] CacheConfiguration: entity name:Authority
+2018-03-26 15:35:29,953 DEBUG [main] CacheConfiguration: entity name:EbsDutyCode
+2018-03-26 15:35:30,335 WARN  [main] ThymeleafAutoConfiguration: Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2018-03-26 15:35:33,635 INFO  [main] NimsOptApplication: Started NimsOptApplication in 13.319 seconds (JVM running for 16.378)

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="ckplayer/ckplayer.js"></script>
+    <script src="js/jquery.raty.min.js"></script>
+    <script src="js/swiper.jquery.min.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/vPlayer.js"></script>
+    <title>Nerin视频中心</title>
+    <style type="text/css">
+        .clearfix {
+            position: relative;
+            z-index: 99;
+            padding: 30px 0 30px;
+            display: block;
+            width: 1100px;
+            margin: 0 auto;
+
+        }
+        .player_row{overflow: hidden;}
+        .player_oper{height: 48px;line-height: 48px;border-top: 2px solid #666; background-color: #eee;}
+        .poper_item{float: left; padding: 0 10px; text-align: center;font-size: 18px; border-right: 1px solid #999;cursor: pointer;}
+        .poper_item .fa{font-size: 24px;margin-right: 12px;}
+        .poper_item span{display: inline-block;max-width: 3em;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;vertical-align: top;}
+        #a1 {
+            width: calc(100% - 240px);
+            height: 580px;
+            background-color: #fff;
+            text-align: center;
+            float: left;
+        }
+        #a2, #a3 {
+            width: 10px;
+            height: 580px;
+            line-height: 580px;
+            text-align: center;
+            float: left;
+            background: #666;
+            color: #fff;
+            cursor: pointer;
+        }
+        .video_opera{float: left;width: 230px;height: 580px; border: 1px solid #000;border-left: none;}
+        .opr_tabs{overflow: hidden;}
+        .opr_tabs>button{display: block;float: left; width: 100%;height: 32px;line-height: 32px;text-align: center;font-size: 14px; background: #242424;color: #fff; cursor: pointer;}
+        .opr_tabs>button.active{background: #014389;}
+    </style>
+        </head>
+<body>
+<div class="bg">
+    <div id="particles"></div>
+</div>
+<div class="header wow fadeInDown">
+    <div class="inner">
+        <a href="index.html" class="logo fl">
+
+        </a>
+        <div class="nav fr">
+            <ul>
+                <li class="favorite"><a href="videoPlayer.html?type=myFavorite">我的收藏</a></li>
+                <li class="myRecord"><a href="videoPlayer.html?type=myRecord">观看记录</a></li>
+                <li>
+                    <div class="search_ipt">
+                        <input type="text" placeholder="请输入您想搜索的视频">
+                        <a href="videoPlayer.html?type=search" id="search"><i class="fa fa-search"></i> 搜索</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="clearfix" id="video_list">
+    <div class="player_row">
+        <div id="a1">
+            <p style="font-size: 24px;line-height: 580px;" v-cloak>暂无数据</p>
+        </div>
+        <div id="a2" onclick="Close()">></div>
+        <div id="a3" onclick="Open()" style="display: none"><</div>
+        <div class="video_opera">
+            <div class="opr_tabs">
+                <button type="button" class="active">集选</button>
+                <!--<button type="button">详情</button>-->
+            </div>
+            <div class="opr_view">
+                <div class="video_list">
+                    <ul>
+                        <li v-cloak v-for="(index,item) in items" v-bind:class="{active:iscur==index}" v-on:click="checkVideo(index)">
+                            <div class="video_item">
+                                <span v-if="item.title" title="{{item.title}}">{{item.title}}</span>
+                                <span v-else title="{{item.name}}">{{item.name}}</span>
+                                <i v-if="item.fav" class="checked collect fa fa-heart" v-on:click.stop="favClick(index)"></i>
+                                <i v-else class="collect fa fa-heart" v-on:click.stop="favClick(index)"></i>
+                            </div>
+                            <div class="raty">
+                                <span class="raty_tit">评分：</span>
+                                <span class="raty_con{{index}}"></span>
+                                <span class="target"></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!--<div class="detail">
+                    <p><span>作者：</span>李新宇</p>
+                    <p><span>上传时间：</span>2017-08-05</p>
+                    <p><span>播放量：</span>1000次</p>
+                    <p><span>收藏量：</span>1000次</p>
+                </div>-->
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>输出</title>
+    <meta charset="UTF-8"/>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <style>
+        .textbox {
+            height: 16px;
+            margin: 0;
+            padding: 0 2px;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body style="text-align:center;background-color:#f3f3fa;width:auto;height:auto">
+
+<div id="speformdiv" class="easyui-window" style="width: 240px; height: 98px;" data-options="title:'请选择操作',minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+	<form method="post" style="padding:15px">
+		<a id="create">新建覆盖</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<a id="view">浏览现有</a>
+	</form>
+</div>
+<form id="titleform" action="http://192.168.15.91:8080/cux/DesignChange/FileMakerPDF.jsp" method="post">
+	<input type="hidden" id="s1" name="s1" value=""/>
+	<input type="hidden" id="i1" name="i1" value=""/>
+	<input type="hidden" id="s2" name="s2" value=""/>
+	<input type="hidden" id="i2" name="i2" value=""/>
+	<input type="hidden" id="s3" name="s3" value=""/>
+	<input type="hidden" id="i3" name="i3" value=""/>
+	<input type="hidden" id="s4" name="s4" value=""/>
+	<input type="hidden" id="i4" name="i4" value=""/>
+	<input type="hidden" id="changer" name="changer" value=""/>
+	<input type="hidden" id="changer02" name="changer02" value=""/>
+	<input type="hidden" id="checker" name="checker" value=""/>
+	<input type="hidden" id="checker02" name="checker02" value=""/>
+	<input type="hidden" id="checker03" name="checker03" value=""/>
+	<input type="hidden" id="checker04" name="checker04" value=""/>
+	<input type="hidden" id="certier" name="certier" value=""/>
+	<input type="hidden" id="PM" name="PM" value=""/>
+	<input type="hidden" id="changerDate" name="changerDate" value=""/>
+	<input type="hidden" id="checkerDate" name="checkerDate" value=""/>
+	<input type="hidden" id="certiDate" name="certiDate" value=""/>
+	<input type="hidden" id="PMdate" name="PMdate" value=""/>
+	<input type="hidden" id="tabNum" name="tabNum" value=""/>
+	<input type="hidden" id="requestid" name="requestid" value=""/>
+</form>
+<script type="text/javascript" src="../../jquery.min.js"></script>
+<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/getPDF.js"></script>
+</body>
+</html>

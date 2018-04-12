@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="generator"
+    content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
+    <title>合同及投标文件模板库</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:8080/pages/wbsp/themes/material/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:8080/pages/wbsp/themes/icon.css" />
+	<script type="text/javascript" src="http://127.0.0.1:8080/pages/wbsp/jquery.min.js"></script> 
+    <script type="text/javascript" src="http://127.0.0.1:8080/pages/wbsp/jquery.easyui.min.js"></script> 
+    <script type="text/javascript" src="http://127.0.0.1:8080/pages/wbsp/locale/easyui-lang-zh_CN.js"></script> 
+    <script type="text/javascript" src="http://127.0.0.1:8080/pages/wbsp/code/Tdata/js/Tdata.js"></script>
+    <style>
+                .textbox{
+                        height:20px;
+                        margin:0;
+                        padding:0 2px;
+                        box-sizing:content-box;
+                }
+        
+</style>
+  </head>
+  <body class="easyui-layout" data-options="border:false">
+    <div id="center_west" data-options="region:'west',split:true" style="width:560px">
+		<div class="easyui-layout" data-options="fit:true">
+			<div id="treenorth" data-options="region:'north'" style="padding:3px;height:32px">
+				<a id="selectbtn" style="float:right"> >> </a>
+				<a style="float:right">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a id="expandbtn" style="float:right">展开</a>
+				<a style="float:right">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a id="collapsebtn" style="float:right">折叠</a>
+				<a id="updatebtn" style="float:left;padding:4px;font-weight:bold">合同及投标文件模板库</a>
+			</div>
+			<div data-options="region:'center'">
+				<div id="tabs">
+					<div id="public" title="共享文件（不需要审批）">
+						<div class="easyui-layout" data-options="fit:true">
+							<div data-options="region:'center',border:false">
+								<ul id="pTree"></ul>
+							</div>
+							<div data-options="region:'south'" style="height:18px">&nbsp;&nbsp;帮助：1、双击下载（仅文件）；2、Ctrl+F开启查找工具栏即可搜索（先展开树）</div>
+						</div>
+					</div>
+					<div id="controlled" title="受控文件（需要审批）">
+						<div class="easyui-layout" data-options="fit:true">
+							<div data-options="region:'center',border:false">
+								<ul id="Ttree"></ul>
+							</div>
+							<div data-options="region:'south'" style="height:18px">&nbsp;&nbsp;帮助：1、双击移入审批列表（仅文件）；2、Ctrl+F开启查找工具栏即可搜索（先展开树）</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'center'">
+		<div class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'north'" style="padding:3px;height:32px">
+				<a id="unselectbtn"> << </a>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<a id="applybtn">提交审批</a>
+				<div id="toolbar">&nbsp;&nbsp;提示：勾选功能仅用于批量移除，未勾选行也将被提交审批。</div>
+			</div>
+			<div data-options="region:'center'">
+				<div id="Tgrid"></div>
+			</div>
+		</div>
+	</div>
+	<div id="loaddiv" class="easyui-window" style="width: 380px; height: 70px;" data-options="title:'正在执行，请稍候...',minimizable:false,maximizable:false,collapsible:false,collapsed:true,closable:false,closed:true,modal:true">
+	</div>
+  </body>
+</html>

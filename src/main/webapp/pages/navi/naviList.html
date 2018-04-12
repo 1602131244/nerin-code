@@ -1,0 +1,1696 @@
+<!doctype html>
+<html class="no-js" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta http-equiv="content-script-type" content="text/javascript">
+  <meta charset="utf-8"/>
+  <meta name="description" content=""/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>后台管理</title>
+
+
+  <!--基础CSS样式 -->
+  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+  <link href="/bower_components/bootstrapvalidator/dist/css/bootstrapValidator.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
+  <link href="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+  <link href="/bower_components/datatables/FixedColumns/css/fixedColumns.bootstrap.scss" rel="stylesheet">
+  <link href="/bower_components/jquery.fancytree/dist/skin-bootstrap/ui.fancytree.css" rel="stylesheet" type="text/css" class="skinswitcher">
+  <!--strat bootstrap 所用到的css 直接引用即可-->
+  <link rel="stylesheet" href="/styles/common/sb-admin-2.css" />
+
+  <!-- 右上角提示消息样式,一般情况外部框架已经引用,就不需要再引用了 CSS -->
+  <link rel="stylesheet" href="/bower_components/bootstrap-notify-master/css/bootstrap-notify.css" />
+
+  <!--这里引入你自己的CSS文件-->
+  <link rel="stylesheet" href="/styles/common/bootstrap-addtabs.css" />
+
+  <!--如果你想获取浏览器相关的信息,引入此JS-->
+  <!-- build:js scripts/vendor/modernizr.js -->
+  <script src="/bower_components/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--如果要让IE9以下的浏览器支持HTML5的一些响应式布局特性,需要引入如下js-->
+  <!--[if lt IE 9]>
+  <script src="/scripts/common/html5shiv.js"></script>
+  <script src="/scripts/common/respond.min.js"></script>
+
+  <![endif]-->
+  <style>
+    .dt-select {
+      background-color: #C6E2FF !important;
+    }
+    .dt_center {
+      text-align: center;
+    }
+    /*.table>tbody>tr>td {*/
+      /*text-overflow:ellipsis; overflow:hidden; white-space:nowrap;*/
+    /*}*/
+    .table-condensed > tbody > tr > td,
+    .table-condensed > tfoot > tr > td {
+      padding: 3px;
+    }
+    .fancytree-active {
+      background-color: #f5f5f5;
+    }
+    .dt-select {
+      background-color: #C6E2FF !important;
+    }
+
+    .highlight {
+      padding: 9px 14px;
+      margin-bottom: 14px;
+      background-color: #f7f7f9;
+      border: 1px solid #e1e1e8;
+      border-radius: 4px;
+    }
+
+    .tab_context {
+      border-bottom: 1px solid #ddd;
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      height: 500px;
+
+
+    }
+    .displayTitle span.fancytree-title {
+      /*display: block;!*不显示树形结构中的title，以防止有空title*!*/
+      margin-left: 0px;
+    }
+
+    .unDisplayTitle span.fancytree-title {
+      display: none;/*不显示树形结构中的title，以防止有空title*/
+    }
+
+    .nav-tabs2 {
+      border-bottom: 1px solid #ddd;
+    }
+    .nav-tabs2 > li {
+      float: left;
+      margin-bottom: -1px;
+    }
+    .nav-tabs2 > li > a {
+      margin-right: 2px;
+      line-height: 1.42857143;
+      border: 1px solid transparent;
+      border-radius: 4px 4px 0 0;
+    }
+    .nav-tabs2 > li > a:hover {
+      border-color: #eee #eee #ddd;
+    }
+    .nav-tabs2 > li.active > a,
+    .nav-tabs2 > li.active > a:hover,
+    .nav-tabs2 > li.active > a:focus {
+      color: #555;
+      cursor: default;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-bottom-color: transparent;
+    }
+    span.fancytree-checkbox {
+      margin-left: 0px !important;
+    }
+  </style>
+</head>
+<body style="min-height: 800px">
+<div class="page-header gyl-page-header">
+  <!--<h5>项目导航</h5>-->&nbsp;
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+      <div id="tabs">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist" id="homeTab">
+          <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">切换项目</a></li>
+          <!--<li role="presentation"><a href="#home2" aria-controls="home2" role="tab" data-toggle="tab">切换项目2</a></li>-->
+        </ul>
+        <!-- Tab panes -->
+
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane fade in active" id="home">
+                <div class="col-sm-2 col-md-3" style="padding: 5px 5px 0px 0px;">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="panel panel-info">
+                        <div class="panel-heading gyl_panel_header">
+                          <i class="fa fa-list"></i>
+                          工时填报
+                          <div class="pull-right" style="margin-right: 3px;">
+                            <i class="fa fa-refresh" style="cursor: pointer;" id="flash_Worktime"></i>
+                            <i class="glyphicon glyphicon-pencil" style="cursor: pointer;" id="query_WorktimeList"></i>
+                          </div>
+                        </div>
+
+                        <div class="panel-body" style="padding: 5px;">
+                          <div class="dataTable_wrapper" id="dataTables-right">
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="panel panel-info" style="margin-bottom: 5px;">
+                        <div class="panel-heading gyl_panel_header">
+                          <i class="fa fa-list"></i>
+                          最近进入的项目列表
+                          <div class="pull-right" style="margin-right: 3px;">
+                            <i class="fa fa-refresh" style="cursor: pointer;" id="query_logonLog"></i>
+                          </div>
+                        </div>
+
+                        <div class="panel-body" style="padding: 5px;">
+                          <div class="dataTable_wrapper" id="dataTables-right2">
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                </div>
+                <div class="col-sm-10 col-md-9">
+                  <div class="row">
+                    <div class="col-md-12" style="padding: 5px 0px 0px 5px;">
+                      <div class="panel panel-info">
+                        <div class="panel-heading gyl_panel_header">
+                          <i class="fa fa-list"></i>
+                          我的所有项目列表
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 5px; min-height: 660px;">
+                          <div class="row form-inline" style="margin: auto;">
+                            <div id="div_template" class="input-group">
+                              <span class="input-group-addon" id="sizing-addon2" style="padding: 3px 8px; font-size: 13px;">项目信息</span>
+                              <input type="text" id="taskTypeDesc" name="taskTypeDesc" style="width: 260px;" class="form-control input-sm" placeholder="名称、全称、编号或者项目经理模糊查询"/>
+                            </div>
+                            <button type="button" class="btn btn-default btn-sm" id="bu_queryData" style="padding: 3px 10px;">
+                              <i class="glyphicon glyphicon-search"></i>查询
+                            </button>
+
+                            <div class="btn-group topbar" id="allProTab">
+                              <button type="button" class="btn btn-default btn-sm dropdown-toggle" style="padding: 3px 10px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                进入<span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu">
+                                <!--<li><a href="#1" id="bu_goAll" data-addtab="message" url="/admin/message" content="指定内容">全局</a></li>-->
+                                <!--<li><a href="#1" id="bu_stage_1" data-addtab="message" url="/admin/message" content="指定内容">初步设计</a></li>-->
+                                <!--<li><a href="#1" id="bu_stage_2">施工图设计</a></li>-->
+                              </ul>
+                            </div>
+                          </div>
+
+                          <div style="margin: 5px 0px 5px 0px; border-bottom: 1px solid #eee;"></div>
+                          <div class="dataTable_wrapper" id="dataTables-listAll">
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div role="tabpanel" class="tab-pane fade" id="home2">
+
+                <div class="col-md-12">
+                  <div class="row" style="padding-top: 5px;">
+                    <div class="panel panel-info" id="index_div">
+                      <div class="panel-heading gyl_panel_header" id="div_pro_header">
+
+                      </div>
+                      <div class="panel-body" style="padding-top: 5px; padding-bottom: 0px;">
+                        <div class="row" id="div_phase">
+                          <!--<div class="btn-group" data-toggle="buttons" style="margin-left: 5px;">-->
+                            <!--<label class="btn btn-default btn-primary2 active" name="tab_l_stage">-->
+                              <!--<input type="radio" name="in_stage" id="tab_in_stage_1" autocomplete="off" value="A" checked>全局-->
+                            <!--</label>-->
+                            <!--<label class="btn btn-default btn-primary2" name="tab_l_stage">-->
+                              <!--<input type="radio" name="in_stage" id="tab_in_stage_2" autocomplete="off" value="B">BD0初步设计-->
+                            <!--</label>-->
+                            <!--<label class="btn btn-default btn-primary2" name="tab_l_stage">-->
+                              <!--<input type="radio" name="in_stage" id="tab_in_stage_3" autocomplete="off" value="C">DD0施工图设计-->
+                            <!--</label>-->
+                          <!--</div>-->
+
+                          <div class="gyl-panel-line"></div>
+
+                        </div>
+
+                        <!--<div class="row">-->
+                           <div class="col-md-2" style="padding-left: 5px;" id="navi_left">
+                             <div class="row">
+                               <div class="panel panel-info" id="div_ch_navi" style="margin-bottom: 5px;">
+                                 <div class="panel-heading gyl_panel_header">
+                                   策划导航
+                                   <div class="pull-right" style="margin-left: 10px;">
+                                     <button onclick="javascript:setNaviLeftButton();" title="关闭策划导航" type="button" class="btn btn-default btn-xs">
+                                       <i class="glyphicon glyphicon-menu-left" ></i>
+                                     </button>
+                                   </div>
+                                 </div>
+                                 <div id="content_ch_navi" class="panel-collapse collapse in">
+                                 <div class="panel-body" style="padding: 2px;">
+                                   <div class="list-group" id="div_plan" style="margin-bottom: 5px;">
+                                     <a href="#plan" class="list-group-item" onclick="javascript: goPlan(this);">阶段与里程碑计划</a>
+                                     <a href="#plan" class="list-group-item" onclick="javascript: goPlan(this);">收款计划</a>
+                                     <a href="#plan" class="list-group-item" onclick="javascript: goPlan(this);">项目概况</a>
+                                     <a href="#plan" class="list-group-item" onclick="javascript: goPlan(this);">综合管理报告</a>
+
+                                     <a href="#plan" class="list-group-item" style="display: none;" onclick="javascript: goPlan(this);">一级策划（项目管理部完成）</a>
+                                     <a href="#plan" class="list-group-item" style="display: none;" onclick="javascript: goPlan(this);">二级策划（项目经理）</a>
+                                     <a href="#plan" class="list-group-item" style="display: none;" onclick="javascript: goPlan(this);">三级策划（专业负责人）</a>
+
+                                     <a href="#plan" class="list-group-item" onclick="javascript: goPlan(this);">协作文本策划</a>
+                                     <a href="#plan" class="list-group-item" style="display: none;" onclick="javascript: goPlan(this);">专业开工报告</a>
+                                     <a href="#plan" class="list-group-item" onclick="javascript: goPlan(this);">条件单策划</a>
+                                     <a href="#plan" class="list-group-item" onclick="javascript: goPlan(this);">设计输入管理 </a>
+                                     <a href="#plan" class="list-group-item" onclick="javascript: goPlan(this);">更多流程</a>
+                                     <!-- 分公司轻量化，标识为建筑设计院的项目的才需要展示这些信息 -->
+                                     <div id="div_lightWeight_base" style="display: none;">
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan1(this);">建筑院项目管理流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan1(this);">建筑院项目负责人、主管总建筑师、总工程师任命调整流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan1(this);">建筑院项目专业需求及项目成员推荐流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan1(this);">建筑院项目成员变更申请流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan1(this);">建筑院图纸新晒（ECM发起）</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan1(this);">建筑院线下项目图纸新晒流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan1(this);">建筑院图纸增晒（内部收费）（ECM发起）</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan1(this);">建筑院线下项目图纸增晒流程（内部收费）</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan1(this);">建筑院图纸增晒流程（外部收费）</a>
+                                     </div>
+                                     <div id="div_lightWeight_phase" style="display: none;">
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan2(this);">建筑院项目方案评审流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan2(this);">建筑院专业统一技术规定审批流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan2(this);">建筑院专业方案评审流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan2(this);">建筑院项目开工报告审批流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan2(this);">建筑院计算书校审流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan2(this);">建筑院条件单审批流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan2(this);">建筑院图纸校审流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan2(this);">建筑院高阶段成果专业校审流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan2(this);">建筑院高阶段成果评审流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan2(this);">建筑院图纸会签流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan2(this);">建筑院高阶段文本文印流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan2(this);">建筑院设计输入评审流程</a>
+                                       <a href="#plan" class="list-group-item" onclick="javascript: goPlan2(this);">建筑院项目设计变更审批流程</a>
+                                     </div>
+                                   </div>
+
+                                   <div id="div_pro_roles" style="display: none;"></div>
+                                   <!--<div class="btn-group" data-toggle="buttons" style="margin-left: 5px;">-->
+                                     <!--<label class="btn btn-default btn-primary2 btn-xs active" name="tab_l_role_1">-->
+                                       <!--<input type="radio" name="tag" id="tab_in_role_1" autocomplete="off" value="A" checked>项目经理-->
+                                     <!--</label>-->
+                                     <!--<label class="btn btn-default btn-primary2 btn-xs" name="tab_l_role_2">-->
+                                       <!--<input type="radio" name="tag" id="tab_in_role_2" autocomplete="off" value="B">专业负责人-->
+                                     <!--</label>-->
+                                     <!--<label class="btn btn-default btn-primary2 btn-xs" name="tab_l_role_3">-->
+                                       <!--<input type="radio" name="tag" id="tab_in_role_3" autocomplete="off" value="C">其他人员-->
+                                     <!--</label>-->
+                                   <!--</div>-->
+                                 </div>
+
+                                 </div>
+
+                               </div>
+                             </div>
+                           </div>
+
+                        <div id="navi_close" class="row" style="display: none; position: absolute;">
+                          <div class="panel panel-info">
+                            <div class="panel-heading gyl_panel_header" style="padding: 5px;cursor: pointer;" onclick="javascript:setNaviRightButton();" title="显示策划导航">
+                              策<br>划<br>导<br>航<br>
+                              <!--<button title="显示策划导航" type="button" class="btn btn-default btn-xs" style="margin-left: -1px; font-size: 12px !important;">-->
+                                <!--<i class="glyphicon glyphicon-menu-right" ></i>-->
+                              <!--</button>-->
+                            </div>
+                          </div>
+                        </div>
+
+                           <div class="col-md-10" style="padding-right: 5px; padding-left: 5px;"  id="navi_right">
+                             <div class="row" id="div_overall" style="margin-left: auto;">
+                               <div class="panel-body" style="padding: 0px;">
+                                 <ul id="myTab" class="nav nav-tabs2">
+                                   <li class="active"><a href="#milepost" data-toggle="tab">阶段与里程碑计划</a></li>
+                                   <li><a href="#recePlan" data-toggle="tab">收款计划</a></li>
+                                   <li><a href="#proSurvey" data-toggle="tab">项目概况</a></li>
+                                   <li><a href="#proTask" data-toggle="tab">综合管理报告</a></li>
+                                   <li><a href="#buildingInstitutePro" data-toggle="tab" style="display: block;">建筑院项目管理流程</a></li>
+                                   <li><a href="#probudget" data-toggle="tab" id="probudget_init">项目预算与成本</a></li>
+                                 </ul>
+
+                                 <div id="myTabContent" class="tab-content "> <!--tab_context-->
+                                   <div class="tab-pane fade in active" id="milepost">
+                                     <div class="col-md-12" style="padding: 5px 0px 0px 0px;">
+
+                                       <div class="panel panel-default" style="margin-bottom: 5px;">
+
+                                         <div class="panel-body" style="padding:  10px 5px 5px 5px;">
+                                           <div class="row form-inline">
+                                             <label style="width: 90px; text-align: right; padding-top: 5px;">版本：</label>
+                                             <select id='s_milepost_version' name="s_milepost_version" class='form-control input-sm' placeholder='请选择'></select>
+                                             <button type="button" class="btn btn-default btn-sm" id="bu_queryMilepostVersion">
+                                               <i class="glyphicon glyphicon-search"></i>查询
+                                             </button>
+                                             <label style="margin-left: 100px;">状态：</label>
+                                             <input style="width: 70px;" class="form-control input-sm" placeholder="状态" disabled readonly="readonly" id="status" name="status"/>
+                                           </div>
+                                           <!--aaa-->
+                                           <div class="gyl-panel-line"></div>
+                                           <div class="btn-group" role="group" aria-label="..." style="margin-left: 5px;">
+                                             <div class="btn-group" role="group" aria-label="..." style="margin-left: 5px;">
+                                               <button id="bu_adj" type="button" class="btn btn-default btn-xs1"><i class="glyphicon glyphicon-pencil"></i> 调整计划
+                                               </button>
+                                               <button id="bu_del_v" type="button" class="btn btn-default btn-xs1" ><i class="glyphicon glyphicon-remove"></i> 删除版本
+                                               </button>
+                                               <button id="bu_add"  type="button" class="btn btn-default btn-xs1"><i class="glyphicon glyphicon-plus"></i>新增
+                                               </button>
+                                               <button id="bu_del" type="button" class="btn btn-default btn-xs1"><i class="glyphicon glyphicon-minus"></i>删除
+                                               </button>
+                                               <button id="bu_saveas" type="button" class="btn btn-default btn-xs1"><i class="glyphicon glyphicon-inbox"></i>保存
+                                               </button>
+                                               <button id="bu_effective" type="button" class="btn btn-default btn-xs1"><i class="glyphicon glyphicon-ok"></i>发布
+                                               </button>
+
+                                             </div>
+                                             <div class="btn-group">
+                                               <button id="bu_milestone_status" type="button" class="btn btn-default btn-xs1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                 <i class="glyphicon glyphicon-pencil" ></i>更新里程牌状态<span class="caret"></span>
+                                               </button>
+                                               <ul class="dropdown-menu">
+                                                 <li><a href="#1" id="complete">完成</a></li>
+                                                 <li><a href="#1" id="uncomplete">未完成</a></li>
+                                               </ul>
+                                             </div>
+                                             <div class="btn-group">
+                                               <button id="bu_avgQuanzhong" type="button" class="btn btn-default btn-xs1"><i class="fa fa-bars"></i>均分剩余权重
+                                               </button>
+                                               </div>
+                                           </div>
+                                           <div class="gyl-panel-line"></div>
+                                           <!--bb-->
+                                           <div class="row" style="margin: auto; overflow-x:auto; width: 100%; overflow-y: auto; min-height: 100%; height: 500px;">
+                                             <table id="treetable" class="table table-condensed table-hover table-bordered unDisplayTitle">
+                                               <colgroup>
+                                                 <col width="20"></col>
+                                                 <col width="70"></col>
+                                                 <col width="*"></col>
+                                                 <col width="70"></col>
+                                                 <col width="70"></col>
+                                                 <col width="110"></col>
+                                                 <col width="130"></col>
+                                                 <col width="130"></col>
+                                                 <col width="*"></col>
+                                                 <col width="*"></col>
+                                               </colgroup>
+                                               <thead>
+                                               <tr> <th></th> <th></th><th>节点名称</th>
+                                                 <th>阶段权重</th><th>估算进度</th> <th>里程碑完成情况</th> <th>计划开始时间</th> <th>计划完成时间</th> <th>实际完成时间</th><th>相关流程</th>
+                                               </tr>
+                                               </thead>
+                                               <tbody>
+                                               <tr>  <td></td> <td></td>  <td></td>
+                                                 <td></td><td></td> <td></td> <td></td> <td></td> <td></td><td></td>
+                                               </tr>
+
+                                               </tbody>
+                                             </table>
+                                           </div>
+
+                                         </div>
+                                       </div>
+
+                                     </div>
+
+                                   </div>
+                                   <div class="tab-pane fade" id="recePlan">
+                                     <div class="col-md-12" style="padding: 5px 0px 0px 0px;">
+
+                                       <div class="panel panel-default" style="margin-bottom: 5px;">
+                                         <div class="panel-body" style="padding: 5px;">
+                                           <div class="row">
+                                             <div class="btn-group" data-toggle="buttons"
+                                                  style="margin-left: 15px;" id="button1">
+                                             </div>
+                                             <form class="row form-inline col-md-12" style="margin-top:10px;">
+
+                                               <div class="form-group col-md-12 col-md-offset-1 " style="margin-left: 0px;">
+
+                                                 <label style="text-align: right; padding-top: 5px;padding-left: 15px;">收款计划版本：</label>
+                                                 <select id='s_conapPlan_version'
+                                                         name="s_conapPlan_version"
+                                                         class='form-control input-sm'
+                                                         placeholder='请选择'></select>
+                                                 <button type="button"
+                                                         class="btn btn-default btn-sm"
+                                                         id="bu_queryConapPlanVersion">
+                                                   <i class="glyphicon glyphicon-search" ></i>查询
+                                                 </button>
+                                                 <button type="button"
+                                                         class="btn btn-default btn-sm"
+                                                         id="bu_billcreate"
+                                                         style="background-color: #6091ff">
+                                                   <i class="glyphicon glyphicon-file" ></i>开票申请
+                                                 </button>
+                                               </div>
+                                             </form>
+
+                                             <div class="gyl-panel-line" style="margin-left: 10px; margin-right: 10px;"></div>
+
+                                             <form class="row form-inline col-md-12" style="margin-top:10px; margin-left:0px;padding-left: 38px;padding-right: 0px;">
+                                               <div class="form-group">
+                                                 <label style="text-align: center; padding-top: 5px;margin-left: 18px;">合同编号：</label>
+                                                 <input class="form-control input-sm" id="conId" name="conId"
+                                                        placeholder="合同编号" disabled  style="text-align: center; width:120px;padding-left: 0px;padding-right: 0px;"
+                                                        readonly="readonly"/>
+                                               </div>
+                                               <div class="form-group" style="padding-left: 5px;padding-right: 0px;">
+                                                 <label style="text-align: right; padding: 5px 0px 0px 0px;">合同金额：</label>
+                                                 <input class="form-control input-sm" id="contotal" name="contotal"
+                                                        placeholder="合同金额" disabled style=" text-align: center; width:120px;padding-left: 0px;padding-right: 0px;"
+                                                        readonly="readonly"/>
+                                               </div>
+                                               <div class="form-group" style="padding-left: 5px;padding-right: 0px;">
+                                                 <label style="text-align: right; padding: 5px 0px 0px 0px;">合同币种：</label>
+                                                 <input class="form-control input-sm" id="contotalCode" name="contotalCode"
+                                                        placeholder="合同币种" disabled style=" text-align: center; width:50px;padding-left: 0px;padding-right: 0px;"
+                                                        readonly="readonly"/>
+                                               </div>
+                                               <div class="form-group   " style="padding-left: 5px;padding-right: 0px;">
+                                                 <label style="text-align: right; padding: 5px 0px 0px 0px;">合同金额是否确认:</label>
+                                                 <input class="form-control input-sm" id="conflag" name="conflag"
+                                                        placeholder="是" disabled style="text-align: center; width:40px;padding-left: 0px;padding-right: 0px;"
+                                                        readonly="readonly"/>
+                                               </div>
+                                               <div class="form-group   " style="padding-left: 5px;padding-right: 0px;">
+                                                 <label style="text-align: right; padding: 5px 0px 0px 0px;">收款计划状态:</label>
+                                                 <input class="form-control input-sm" id="conStatus" name="conStatus"
+                                                        placeholder="收款状态" disabled style="text-align: center;width:100px;padding-left: 0px;padding-right: 0px;"
+                                                        readonly="readonly"/>
+                                               </div>
+                                               <div class="form-group   " style="padding-left: 5px;padding-right: 0px;">
+                                                 <label style="text-align: right; padding: 5px 0px 0px 0px;">累计收入确认金额:</label>
+                                                 <input class="form-control input-sm" id="congetamount" name="congetamount"
+                                                        placeholder="累计收入确认金额" disabled style="text-align: center;width:100px;padding-left: 0px;padding-right: 0px;"
+                                                        readonly="readonly"/>
+                                               </div>
+                                               <div class="form-group   " style="padding-left: 5px;padding-right: 0px;">
+                                                 <label style="text-align: right; padding: 5px 0px 0px 0px;">累计收入确认百分比:</label>
+                                                 <input class="form-control input-sm" id="congetpercent" name="congetpercent"
+                                                        placeholder="累计收入确认百分比" disabled style="text-align: center;width:100px;padding-left: 0px;padding-right: 0px;"
+                                                        readonly="readonly"/>
+                                               </div>
+                                             </form>
+                                             <div class="row btn-group col-md-12" role="group" aria-label="..." style="margin-top: 10px;">
+                                               <div class="btn-group" role="group"
+                                                    aria-label="..." style="padding: 5px 0px 0px 15px;">
+                                                 <button id="bu_apadj"
+                                                         type="button"
+                                                         class="btn btn-default btn-xs1"><i
+                                                         class="glyphicon glyphicon-pencil"></i>
+                                                   调整计划
+                                                 </button>
+                                                 <button id="bu_apdel_v"
+                                                         type="button"
+                                                         class="btn btn-default btn-xs1"><i
+                                                         class="glyphicon glyphicon-pencil"></i>
+                                                   删除版本
+                                                 </button>
+                                                 <button id="bu_apadd"
+                                                         type="button"
+                                                         class="btn btn-default btn-xs1"><i
+                                                         class="glyphicon glyphicon-plus"></i>新增
+                                                 </button>
+                                                 <button id="bu_apdel"
+                                                         type="button"
+                                                         class="btn btn-default btn-xs1"><i
+                                                         class="glyphicon glyphicon-minus"></i>删除
+                                                 </button>
+                                                 <button id="bu_apsave"
+                                                         type="button"
+                                                         class="btn btn-default btn-xs1"><i
+                                                         class="glyphicon glyphicon-inbox"></i>保存
+                                                 </button>
+                                                 <button id="bu_apmoveup"
+                                                         type="button"
+                                                         class="btn btn-default btn-xs1"><i
+                                                         class="glyphicon glyphicon-arrow-up"></i>上移
+                                                 </button>
+                                                 <button id="bu_apmovedown"
+                                                         type="button"
+                                                         class="btn btn-default btn-xs1"><i
+                                                         class="glyphicon glyphicon-arrow-down"></i>下移
+                                                 </button>
+                                                 <button id="bu_apsubmit"
+                                                         type="button"
+                                                         class="btn btn-default btn-xs1"><i
+                                                         class="glyphicon glyphicon-ok"></i>提交审批
+                                                 </button>
+
+                                               </div>
+                                             </div>
+                                           </div>
+
+                                           <div class="gyl-panel-line"></div>
+
+                                           <div class="dataTable_wrapper" id="dataTables-conLine">
+                                             <!--data tables构建区域-->
+
+                                           </div>
+
+                                           <div class="gyl-panel-line" style="margin-left: 10px; margin-right: 10px;"></div>
+
+                                           <div class="panel panel-info" style="margin-bottom: 5px;margin-top: 5px;">
+                                             <div class="panel-heading gyl_panel_header">
+                                               实际收款信息
+                                               <div class="pull-right">
+                                                 <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#all_sjskxx">
+                                                   <i class="glyphicon glyphicon-menu-down" ></i>
+                                                 </button>
+                                               </div>
+                                             </div>
+                                             <div id="all_sjskxx" class="panel-collapse collapse in">
+                                               <div class="panel-body" style="padding: 5px;">
+                                                 <div class="form-inline form-group">
+                                                   <label>累计收款金额（原币）：</label>
+                                                   <span id="apcashtotal" style="display:inline-block; width: 150px;"></span>
+                                                   <label>收款进度：</label>
+                                                   <span id="apcashpercent" style="display:inline-block; width: 200px;"></span>
+                                                   <label>累计收款金额（CNY）：</label>
+                                                   <span id="apcashtotalCNY" style="display:inline-block; width: 150px;"></span>
+                                                 </div>
+                                                 <div class="dataTable_wrapper" id="dataTables-apcash"  style="width: 100%;">
+
+                                                 </div>
+                                               </div>
+                                             </div>
+                                           </div>
+
+                                           <div class="panel panel-info" style="margin-bottom: 5px;">
+                                             <div class="panel-heading gyl_panel_header">
+                                               发票信息
+                                               <div class="pull-right">
+                                                 <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#all_fpxx">
+                                                   <i class="glyphicon glyphicon-menu-down" ></i>
+                                                 </button>
+                                               </div>
+                                             </div>
+                                             <div id="all_fpxx" class="panel-collapse collapse in">
+                                               <div class="panel-body" style="padding: 5px;">
+                                                 <div class="form-inline form-group">
+                                                   <label>累计开票金额（原币）：</label>
+                                                   <span id="aptrxtotal" style="display:inline-block; width: 150px;"></span>
+                                                   <label>开票进度：</label>
+                                                   <span id="aptrxpercent" style="display:inline-block; width: 200px;"></span>
+                                                   <label>累计开票金额（CNY）：</label>
+                                                   <span id="aptrxtotalCNY" style="display:inline-block; width: 150px;"></span>
+                                                 </div>
+                                                 <div class="dataTable_wrapper" id="dataTables-aptrx"  style="width: 100%;">
+
+                                                 </div>
+                                               </div>
+                                             </div>
+                                           </div>
+
+                                         </div>
+                                       </div>
+                                       <!--<div class="panel panel-info">-->
+                                         <!--<div class="panel-heading gyl_panel_header">-->
+                                           <!--人员概况-->
+                                         <!--</div>-->
+                                         <!--<div class="panel-body">-->
+                                           <!--<div class="dataTable_wrapper" id="dataTables-apcash">-->
+
+
+                                           <!--</div>-->
+                                         <!--</div>-->
+                                       <!--</div>-->
+                                     </div>
+                                   </div>
+                                   <div class="tab-pane fade" id="probudget">
+                                     <div class="col-md-12" style="padding: 5px 0px 0px 0px;">
+                                       <div class="panel panel-info" style="margin-bottom: 5px;">
+                                         <div class="panel-heading gyl_panel_header">
+                                           预算列表(点击行显示成本明细)
+                                           <div class="pull-right">
+                                             <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#all_budgetlist">
+                                               <i class="glyphicon glyphicon-menu-down" ></i>
+                                             </button>
+                                           </div>
+                                         </div>
+                                         <div id="all_budgetlist" class="panel-collapse collapse in">
+                                           <div class="panel-body" style="padding: 5px;">
+                                             <div class="dataTable_wrapper" id="dataTables-budgetlist">
+                                               <!--data tables构建区域-->
+
+                                             </div>
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div class="col-md-12" style="padding: 5px 0px 0px 0px;">
+                                       <div class="panel panel-info" style="margin-bottom: 5px;">
+                                         <div class="panel-heading gyl_panel_header">
+                                           成本明细
+                                           <div class="pull-right">
+                                             <button id="allcostlist" type="button" class="btn btn-default btn-xs" data-toggle="collapse" >
+                                               <i class="glyphicon glyphicon-th-list" >所有成本</i>
+                                             </button>
+                                             <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#all_costlist">
+                                               <i class="glyphicon glyphicon-menu-down" ></i>
+                                             </button>
+                                           </div>
+                                         </div>
+                                         <div id="all_costlist" class="panel-collapse collapse in">
+                                           <div class="panel-body" style="padding: 5px;">
+                                             <div class="dataTable_wrapper" id="dataTables-costlist">
+                                               <!--data tables构建区域-->
+
+                                             </div>
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+
+                                   </div>
+
+                                   <div class="tab-pane fade" id="proSurvey">
+                                     <div class="col-md-12" style="padding: 5px 0px 0px 0px;">
+                                       <div class="panel panel-info" style="margin-bottom: 5px;">
+                                         <div class="panel-heading gyl_panel_header">
+                                           项目概况
+                                           <div class="pull-right">
+                                             <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#all_xmgk">
+                                               <i class="glyphicon glyphicon-menu-down" ></i>
+                                             </button>
+                                           </div>
+                                         </div>
+                                         <div id="all_xmgk" class="panel-collapse collapse in">
+                                         <div class="panel-body" style="padding: 5px;">
+                                           <div class="form-inline form-group" style="padding-left: 46px;">
+                                             <label>项目编号：</label>
+                                             <span name="pinfoProjectNumber" id="pinfoProjectNumber" style="display:inline-block; width: 152px;"></span>
+                                             <label>项目简称：</label>
+                                             <span name="pinfoProjectName" id="pinfoProjectName" style="display:inline-block; width: 200px;"></span>
+                                             <label>项目全称：</label>
+                                             <span name="pinfoProjectLongName" id="pinfoProjectLongName"></span>
+                                           </div>
+
+                                           <div class="form-inline form-group" style="padding-left: 46px;">
+                                             <label>项目经理：</label>
+                                             <span name="pinfoProjectManager" id="pinfoProjectManager" style="display:inline-block; width: 152px;"></span>
+                                             <label>行业类型：</label>
+                                             <span name="pinfoProjectClass" id="pinfoProjectClass" style="display:inline-block; width: 200px;"></span>
+                                             <label>所属组织：</label>
+                                             <span name="pinfoOrgNmae" id="pinfoOrgNmae"></span>
+                                           </div>
+
+                                           <div class="form-inline form-group" style="padding-left: 20px;">
+                                               <label>目标开始日期：</label>
+                                               <span name="pinfoProjStartDate" id="pinfoProjStartDate" style="display:inline-block; width: 100px;"></span>
+                                               <label>事务处理开始日期：</label>
+                                               <span name="pinfoStratDate" id="pinfoStratDate" style="display:inline-block; width: 174px;"></span>
+                                               <label>项目执行部门：</label>
+                                               <span name="pinfoExeName" id="pinfoExeName"></span>
+                                           </div>
+
+                                           <div class="form-inline form-group" style="padding-left: 20px;">
+                                               <label>目标结束日期：</label>
+                                               <span name="pinfoProjEndDate" id="pinfoProjEndDate" style="display:inline-block; width: 100px;"></span>
+                                               <label>事务处理结束日期：</label>
+                                               <span name="pinfoCompletionDate" id="pinfoCompletionDate" style="display:inline-block; width: 225px;"></span>
+                                               <label>客户：</label>
+                                               <span name="pinfoCustomer" id="pinfoCustomer"></span>
+                                           </div>
+
+                                           <div class="form-inline form-group" style="padding-left: 46px;">
+                                               <label>项目状态：</label>
+                                               <span name="pinfoprojectStatus" id="pinfoprojectStatus" style="display:inline-block; width: 126px;"></span>
+                                               <label style="display: none;">是否财务超期：</label>
+                                               <span name="pinfoOverdue" id="pinfoOverdue" style="display:none; width: 200px;"></span>
+                                           </div>
+
+
+                                           <div class="form-inline form-group" style="padding-left: 33px;">
+                                             <label>是否可报销：</label>
+                                             <span id="pinfoprojectStatus_1" style="display:inline-block;width: 50px;">1</span>
+                                             <label>是否可填工时：</label>
+                                             <span id="pinfoprojectStatus_2" style="display:inline-block;width: 50px;">2</span>
+                                             <label style="margin-left: 26px;">是否可开票：</label>
+                                             <span id="pinfoprojectStatus_3" style="display:inline-block;width: 50px;">3</span>
+                                             <label>是否可更新WBS计划：</label>
+                                             <span id="pinfoprojectStatus_4" style="display:inline-block;width: 50px;">4</span>
+                                             <label>是否能创建协作文档：</label>
+                                             <span id="pinfoprojectStatus_5" style="display:inline-block;width: 50px;">5</span>
+                                           </div>
+                                           <div class="form-inline form-group" style="padding-left: 33px;">
+                                             <label>是否可付款：</label>
+                                             <span id="pinfoprojectStatus_6" style="display:inline-block;width: 50px;">6</span>
+                                             <label style="margin-left: 13px;">是否可采购：</label>
+                                             <span id="pinfoprojectStatus_7" style="display:inline-block;width: 50px;">7</span>
+                                             <label>是否可出图文印：</label>
+                                             <span id="pinfoprojectStatus_8" style="display:inline-block;width: 50px;">8</span>
+                                             <label style="margin-left: 5px;">是否可项目成本归集：</label>
+                                             <span id="pinfoprojectStatus_9" style="display:inline-block;width: 50px;">9</span>
+                                           </div>
+                                         </div>
+                                         </div>
+
+                                       </div>
+
+                                       <div class="panel panel-info" style="margin-bottom: 5px;">
+                                         <div class="panel-heading gyl_panel_header" id="dataTables-projperson_count">
+                                           人员概况
+                                           <div class="pull-right">
+                                             <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#all_rygk">
+                                               <i class="glyphicon glyphicon-menu-down" ></i>
+                                             </button>
+                                           </div>
+                                         </div>
+                                         <div id="all_rygk" class="panel-collapse collapse in">
+                                         <div class="panel-body" style="padding: 5px;">
+                                           <div id="div_projpersonSearch"></div>
+                                           <div class="dataTable_wrapper" id="dataTables-projperson" style="width: 730px;">
+
+
+                                           </div>
+
+                                         </div>
+                                         </div>
+                                       </div>
+
+                                       <div class="panel panel-info" style="margin-bottom: 5px;">
+                                         <div class="panel-heading gyl_panel_header">
+                                           工时填写汇总表
+                                           <div class="pull-right">
+                                             <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#all_glgsALL">
+                                               <i class="glyphicon glyphicon-menu-down" ></i>
+                                             </button>
+                                           </div>
+                                         </div>
+                                         <div id="all_glgsALL" class="panel-collapse collapse in">
+                                           <div class="panel-body" style="padding: 5px;">
+                                             <!--<label style="text-align: center;padding-top: 5px; margin-bottom: 10px;">项目管理部下达总工时：</label>-->
+                                             <!--<span class="control-label" name="pinfototal"  id="pinfototalAll"></span>-->
+                                             <div class="dataTable_wrapper" id="dataTables-projmhoursAll" style="width: 730px;">
+                                               <!--data tables构建区域-->
+
+                                             </div>
+                                           </div>
+                                         </div>
+                                       </div>
+
+                                       <div class="panel panel-info" style="margin-bottom: 5px; display: none;">
+                                         <div class="panel-heading gyl_panel_header">
+                                           管理工时
+                                           <div class="pull-right">
+                                             <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#all_glgs">
+                                               <i class="glyphicon glyphicon-menu-down" ></i>
+                                             </button>
+                                           </div>
+                                         </div>
+                                         <div id="all_glgs" class="panel-collapse collapse in">
+                                         <div class="panel-body" style="padding: 5px;">
+                                           <label style="text-align: center;padding-top: 5px; margin-bottom: 10px;">项目管理部下达总工时：</label>
+                                           <span class="control-label" name="pinfototal"  id="pinfototal"></span>
+                                           <div class="dataTable_wrapper" id="dataTables-projmhours" style="width: 730px;">
+                                             <!--data tables构建区域-->
+
+                                           </div>
+                                         </div>
+                                         </div>
+                                       </div>
+
+                                       <div class="panel panel-info" style="margin-bottom: 5px; display: none;">
+                                         <div class="panel-heading gyl_panel_header">
+                                           施工服务工时
+                                           <div class="pull-right">
+                                             <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#all_sgfw">
+                                               <i class="glyphicon glyphicon-menu-down" ></i>
+                                             </button>
+                                           </div>
+                                         </div>
+                                         <div id="all_sgfw" class="panel-collapse collapse in">
+                                         <div class="panel-body" style="padding: 5px;">
+                                           <div class="dataTable_wrapper" id="dataTables-projshours" style="width: 730px;">
+                                             <!--data tables构建区域-->
+
+                                           </div>
+                                         </div>
+                                         </div>
+                                       </div>
+
+                                     </div>
+                                   </div>
+                                   <div class="tab-pane fade" id="proTask">
+                                     <div class="col-md-12" style="padding: 5px 0px 0px 0px;">
+                                       <div class="panel panel-info" style="margin-bottom: 5px;">
+                                         <div class="panel-heading gyl_panel_header">
+                                           文本列表
+                                           <div class="pull-right">
+                                             <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#all_wb">
+                                               <i class="glyphicon glyphicon-menu-down" ></i>
+                                             </button>
+                                           </div>
+                                         </div>
+                                         <div id="all_wb" class="panel-collapse collapse in">
+                                         <div class="panel-body" style="padding: 5px;">
+                                           <div class="dataTable_wrapper" id="dataTables-projtext">
+                                             <!--data tables构建区域-->
+
+                                           </div>
+                                         </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div class="col-md-12" style="padding: 5px 0px 0px 0px;">
+                                       <div class="panel panel-info">
+                                         <div class="panel-heading gyl_panel_header">
+                                           &nbsp;
+                                           <div class="pull-left">
+                                           设计月报
+                                           </div>
+                                           <div class="pull-left" style="margin-top: -6px; margin-left: 20px;">
+                                             <button  style="height: 30px;" id="bu_add_yb" type="button" class="btn btn-default btn-xs">
+                                               <i class="fa fa-plus" style="color: #3CB371; font-size: 15px;">
+                                             </i>创建月报
+                                             </button>
+                                           </div>
+                                           <div class="pull-right">
+                                             <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#all_yb">
+                                               <i class="glyphicon glyphicon-menu-down" ></i>
+                                             </button>
+                                           </div>
+                                         </div>
+                                         <div id="all_yb" class="panel-collapse collapse in">
+                                           <div class="panel-body" style="padding: 5px;">
+                                             <div class="dataTable_wrapper" id="dataTables-ybAll">
+                                               <!--data tables构建区域-->
+
+                                             </div>
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                   </div>
+                                   <div class="tab-pane fade" id="buildingInstitutePro">
+                                     <div class="row" style="margin-bottom: 3px; margin-top: 6px;">
+                                       <div  style="padding-right: 0px; width: 80px; float: left; position: relative;">
+                                         <label style="width: 80px; text-align: right; padding-top: 2px;">状态：</label>
+                                       </div>
+                                       <div  style="padding-left: 0px; width:90%; float: left; position: relative;">
+                                         <div id="div_buildingInstitutePro_zt" style="margin: auto; line-height: 0px; float: left;">
+                                           <div class="btn-group" data-toggle="buttons">
+                                             <label class="btn btn-primary2 btn-xs" style="margin-bottom: 2px;">
+                                               <input type="checkbox" name="ch_buildingInstitutePro" value="审批中" />审批中
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" name="ch_buildingInstitutePro" value="已办结" />已办结
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" name="ch_buildingInstitutePro" value="拒绝办结" />拒绝办结
+                                             </label>
+                                           </div>
+                                         </div>
+                                         <div style="padding-left: 10px; width:auto; float: left; position: relative;">
+                                           <button type="button" class="btn btn-default btn-xs" onclick="getBuildingInstitutePro();"  style="font-size: 13px; font-family: 微软雅黑;">
+                                             <i class="glyphicon glyphicon-search"></i>查询
+                                           </button>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div class="gyl-panel-line"></div>
+                                      <div class="col-md-3" id="div_buildingInstitutePro_col3" style="padding: 0px;">
+                                        <div class="panel panel-info" style="margin-bottom: 5px;">
+                                          <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">流程类型</div>
+                                          <div class="panel-body" style="padding: 2px;">
+                                              <table id="t_OaOverAll" class="table table-hover table-bordered" style="margin-bottom: 0px; cursor: pointer;">
+                                                <tbody>
+                                                  <tr>
+                                                    <td><input type="hidden" value="4312" /><input type="hidden" value="162" />建筑院项目负责人、主管总建筑师、总工程师任命调整流程</td>
+                                                  </tr>
+                                                  <tr><td><input type="hidden" value="4309" /><input type="hidden" value="194" />建筑院项目专业需求及项目成员推荐流程</td></tr>
+                                                  <tr><td><input type="hidden" value="4310" /><input type="hidden" value="219" />建筑院项目成员变更申请流程</td></tr>
+                                                  <tr><td><input type="hidden" value="4303" /><input type="hidden" value="342" />建筑院图纸新晒</td></tr>
+                                                  <tr><td><input type="hidden" value="4329" /><input type="hidden" value="111" />建筑院线下项目图纸新晒流程</td></tr>
+                                                  <tr><td><input type="hidden" value="4304" /><input type="hidden" value="342" />建筑院图纸增晒（内部收费）</td></tr>
+                                                  <tr><td><input type="hidden" value="4313" /><input type="hidden" value="342" />建筑院线下项目图纸增晒流程（内部收费）</td></tr>
+                                                  <tr><td><input type="hidden" value="4305" /><input type="hidden" value="342" />建筑院图纸增晒流程（外部收费）</td></tr>
+                                                </tbody>
+                                              </table>
+                                          </div>
+                                        </div>
+                                      </div>
+                                     <div class="col-md-9" id="div_buildingInstitutePro_col9" style="padding-right: 0px; padding-left: 5px;">
+                                       <div class="panel panel-info" style="margin-bottom: 5px;">
+                                         <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">OA流程记录</div>
+                                         <div class="panel-body" style="padding: 2px;">
+                                           <div class="dataTable_wrapper" id="dataTables-buildingInstitutePro_all">
+
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                   </div>
+                                 </div>
+                               </div>
+                             </div>
+
+
+                             <div class="row" id="div_stage" style="margin-left: auto; display: none;">
+                               <!--<div class="panel panel-default">-->
+                                 <!--<div class="panel-body" style="padding: 0px; margin: 5px;">-->
+                                     <div class="panel panel-info" style="margin-bottom: 5px;" id="div_stage_kgbg">
+                                       <div class="panel-heading gyl_panel_header">
+                                         开工报告
+                                         <div class="pull-right">
+                                           <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#stage_kgbg">
+                                             <i class="glyphicon glyphicon-menu-down" ></i>
+                                           </button>
+                                         </div>
+                                       </div>
+                                       <div id="stage_kgbg" class="panel-collapse collapse in">
+                                       <div class="panel-body" style="padding: 5px;">
+                                         <div id="div_jd_kgbg"></div>
+                                       </div>
+                                         </div>
+                                     </div>
+
+                                   <div class="panel panel-info" style="margin-bottom: 5px;" id="div_stage_zykgbg">
+                                     <div class="panel-heading gyl_panel_header">
+                                       专业开工报告<font color="red">（阶段下的子项包含专业的并集）</font>
+                                       <div class="pull-right">
+                                         <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#stage_zykgbg">
+                                           <i class="glyphicon glyphicon-menu-down" ></i>
+                                         </button>
+                                       </div>
+                                     </div>
+                                     <div id="stage_zykgbg" class="panel-collapse collapse in">
+                                     <div class="panel-body" style="padding: 5px;">
+                                       <div id="div_jd_zykgbg"></div>
+                                     </div>
+                                       </div>
+                                   </div>
+
+                                   <!--<div class="panel panel-info" style="margin-bottom: 5px;" id="div_stage_gzb">-->
+                                     <!--<div class="panel-heading gyl_panel_header">-->
+                                        <!--工作包-->
+                                       <!--<div class="pull-right">-->
+                                         <!--<button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#stage_gzb">-->
+                                           <!--<i class="glyphicon glyphicon-menu-down" ></i>-->
+                                         <!--</button>-->
+                                       <!--</div>-->
+                                     <!--</div>-->
+                                     <!--<div id="stage_gzb" class="panel-collapse collapse in">-->
+                                     <!--<div class="panel-body" style="padding: 1px;">-->
+                                       <!--<div class="row" style="margin-bottom: 3px; margin-top: 3px;">-->
+                                         <!--<div  style="padding-right: 0px; width: 80px; float: left; position: relative; margin-left: 25px;">-->
+                                           <!--<label style="width: 80px; text-align: right; padding-top: 2px;">专业：</label>-->
+                                         <!--</div>-->
+                                         <!--<div  style="padding-left: 0px; width:86%; float: left; position: relative;">-->
+                                           <!--<div id="div_phase_gzbzxjd_zy" style="margin: auto; line-height: 0px;">-->
+
+                                           <!--</div>-->
+                                         <!--</div>-->
+                                       <!--</div>-->
+                                       <!--<div class="gyl-panel-line"></div>-->
+                                       <!--<div class="row" style="margin-bottom: 3px; margin-top: 3px;">-->
+                                         <!--<div  style="padding-right: 0px; width: 80px; float: left; position: relative; margin-left: 25px;">-->
+                                           <!--<label style="width: 80px; text-align: right; padding-top: 2px;">工作包大类：</label>-->
+                                         <!--</div>-->
+                                         <!--<div  style="padding-left: 0px; width:auto; float: left; position: relative;">-->
+                                           <!--<div id="div_phase_gzbzxjd_gzb" style="margin: auto; line-height: 0px;">-->
+
+                                           <!--</div>-->
+                                         <!--</div>-->
+                                         <!--<div  style="padding-left: 10px; width:auto; float: left; position: relative;">-->
+                                           <!--<button type="button" class="btn btn-default btn-xs" id="bu_queryGzbzxjd">-->
+                                             <!--<i class="glyphicon glyphicon-search" ></i>查询-->
+                                           <!--</button>-->
+                                         <!--</div>-->
+                                       <!--</div>-->
+
+                                       <!--<div class="col-md-3" id="stage_gzb_col3" style="padding: 0px;">-->
+                                         <!--<div class="panel panel-info" style="margin-bottom: 5px;">-->
+                                           <!--<div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">-->
+                                             <!--工作包筛选-->
+                                             <!--<button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#stage_gzbzy" style="display: none; font-size: 11px !important;">-->
+                                               <!--专业筛选-->
+                                             <!--</button>-->
+
+                                             <!--<div class="pull-right" style="margin-left: 10px;">-->
+                                               <!--<button onclick="javascript:setLeftButton();" title="关闭工作包筛选" type="button" class="btn btn-default btn-xs" style="font-size: 11px !important;">-->
+                                                 <!--<i class="glyphicon glyphicon-menu-left" ></i>-->
+                                               <!--</button>-->
+                                             <!--</div>-->
+                                           <!--</div>-->
+                                           <!--<div class="panel-body" style="padding: 2px;">-->
+                                             <!--<div id="stage_gzbzy" class="panel-collapse collapse in">-->
+
+                                             <!--</div>-->
+                                             <!--<div style="width: 100%;overflow-y: auto; max-height: 655px; min-height: 100%; margin: 0px;">-->
+                                                 <!--<table id="t_gzbzxjd_tree" class="table table-condensed table-hover table-bordered displayTitle" style="margin-bottom: 0px;">-->
+                                                   <!--<colgroup>-->
+                                                     <!--<col width="20"></col>-->
+                                                     <!--<col width="105"></col>-->
+                                                     <!--<col width="*"></col>-->
+                                                   <!--</colgroup>-->
+                                                   <!--<thead>-->
+                                                   <!--<tr>-->
+                                                     <!--<th> </th>-->
+                                                     <!--<th>节点号</th>-->
+                                                     <!--<th>节点名称（估算进度）</th>-->
+                                                   <!--</tr>-->
+                                                   <!--</thead>-->
+                                                   <!--<tbody>-->
+                                                   <!--<tr>-->
+                                                     <!--<td></td> <td></td> <td></td>-->
+                                                   <!--</tr>-->
+                                                   <!--</tbody>-->
+                                                 <!--</table>-->
+                                               <!--</div>-->
+
+                                           <!--</div>-->
+                                         <!--</div>-->
+                                       <!--</div>-->
+                                       <!--<div class="col-md-9" id="stage_gzb_col9" style="padding-right: 0px; padding-left: 5px;">-->
+                                         <!--<div class="panel panel-info" style="margin-bottom: 0px;">-->
+                                           <!--<div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">-->
+                                             <!--<button id="bu_close_stage_gzb_right" onclick="javascript:setRightButton();" title="显示工作包筛选" type="button" class="btn btn-default btn-xs" style="font-size: 11px !important; margin-left: -15px; display: none;">-->
+                                               <!--<i class="glyphicon glyphicon-menu-right" ></i>-->
+                                             <!--</button>-->
+                                             <!--工作包进度明细-->
+                                           <!--</div>-->
+                                           <!--<div class="panel-body" style="padding: 5px; min-height: 660px;">-->
+                                             <!--<div id="div_jd_gzbzxjd">-->
+
+                                             <!--</div>-->
+                                           <!--</div>-->
+                                         <!--</div>-->
+                                       <!--</div>-->
+                                     <!--</div>-->
+                                       <!--</div>-->
+                                   <!--</div>-->
+
+
+                                   <div class="panel panel-info" style="margin-bottom: 5px;" id="div_stage_jktjx">
+                                     <div class="panel-heading gyl_panel_header">
+                                       接口条件收件箱
+                                       <div class="pull-right">
+                                         <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#stage_jktjx">
+                                           <i class="glyphicon glyphicon-menu-down" ></i>
+                                         </button>
+                                       </div>
+                                     </div>
+                                     <div id="stage_jktjx" class="panel-collapse collapse in">
+                                     <div class="panel-body" style="padding: 5px;">
+                                       <div id="div_jd_sjx"></div>
+                                     </div>
+                                       </div>
+                                   </div>
+
+                                   <div class="panel panel-info" style="margin-bottom: 5px;" id="div_stage_wbzxjd">
+                                     <div class="panel-heading gyl_panel_header">
+                                       协作文本执行进度
+                                       <div class="pull-right">
+                                         <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#stage_wbzxjd">
+                                           <i class="glyphicon glyphicon-menu-down" ></i>
+                                         </button>
+                                       </div>
+                                     </div>
+                                     <div id="stage_wbzxjd" class="panel-collapse collapse in">
+                                     <div class="panel-body" style="padding: 5px;">
+                                       文本列表
+                                       <div id="div_jd_zxjd"></div>
+                                       <div class="gyl-panel-line"></div>
+                                       文本执行进度明细
+                                       <div id="div_jd_zxjd_detail"></div>
+                                       <!--<div class="row" style="margin: auto; overflow-x:auto; width: 100%;">-->
+
+                                         <!--<table id="t_zxjd_detail" style="width: 1000px;" class="table table-condensed table-hover table-bordered">-->
+                                           <!--<colgroup>-->
+                                             <!--<col width="30px"></col>-->
+                                             <!--<col width="100px"></col>-->
+                                             <!--<col width="100px"></col>-->
+                                             <!--<col width="100px"></col>-->
+                                             <!--<col width="80px"></col>-->
+                                             <!--<col width="80px"></col>-->
+                                             <!--<col width="80px"></col>-->
+                                             <!--<col width="80px"></col>-->
+                                             <!--<col width="80px"></col>-->
+                                             <!--<col width="80px"></col>-->
+                                             <!--<col width="80px"></col>-->
+                                             <!--<col width="80px"></col>-->
+                                           <!--</colgroup>-->
+                                           <!--<thead>-->
+                                           <!--<tr>-->
+                                             <!--<th> </th>-->
+                                             <!--<th>节点</th>-->
+                                             <!--<th>章节完成情况</th>-->
+                                             <!--<th>计划专业校审完成日期</th>-->
+                                             <!--<th>实际专业校审完成日期</th>-->
+                                             <!--<th>当前状态</th>-->
+                                             <!--<th>当前处理人</th>-->
+                                             <!--<th>节点责任人</th>-->
+                                             <!--<th>设计人</th>-->
+                                             <!--<th>审核人</th>-->
+                                             <!--<th>审定人</th>-->
+                                             <!--<th>授权人</th>-->
+                                           <!--</tr>-->
+                                           <!--</thead>-->
+                                           <!--<tbody>-->
+                                           <!--<tr>-->
+                                             <!--<td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>-->
+                                             <!--<td></td> <td></td>-->
+                                           <!--</tr>-->
+                                           <!--</tbody>-->
+                                         <!--</table>-->
+
+                                       <!--</div>-->
+                                     </div>
+                                       </div>
+                                   </div>
+
+                                 <!--</div>-->
+                               <!--</div>-->
+                               <div class="panel panel-info" style="margin-bottom: 5px; display: block;" id="div_stage_buildingInstitutePro_1">
+                                 <div class="panel-heading gyl_panel_header">
+                                   建筑院项目设计流程
+                                   <div class="pull-right">
+                                     <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#stage_buildingInstitutePro_1">
+                                       <i class="glyphicon glyphicon-menu-down" ></i>
+                                     </button>
+                                   </div>
+                                 </div>
+                                 <div id="stage_buildingInstitutePro_1" class="panel-collapse collapse in">
+                                   <div class="panel-body" style="padding: 1px;">
+                                     <div class="row" style="margin-bottom: 3px; margin-top: 3px;">
+                                       <div  style="padding-right: 0px; width: 80px; float: left; position: relative;">
+                                         <label style="width: 80px; text-align: right; padding-top: 2px;">专业：</label>
+                                       </div>
+                                       <div  style="padding-left: 0px; width:90%; float: left; position: relative;">
+                                         <div id="div_stage_buildingInstitutePro_zy" style="margin: auto; line-height: 0px; float: left;">
+                                           <div class="btn-group" data-toggle="buttons">
+                                             <label class="btn btn-primary2 btn-xs" style="margin-bottom: 2px;">
+                                               <input type="checkbox" value="" />给排水
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />建筑
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />结构
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />暖通
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />电力
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />电信
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />热工
+                                             </label>
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div class="gyl-panel-line"></div>
+                                     <div class="row" style="margin-bottom: 3px; margin-top: 6px;">
+                                       <div  style="padding-right: 0px; width: 80px; float: left; position: relative;">
+                                         <label style="width: 80px; text-align: right; padding-top: 2px;">状态：</label>
+                                       </div>
+                                       <div  style="padding-left: 0px; width:90%; float: left; position: relative;">
+                                         <div id="div_stage_buildingInstitutePro_zt" style="margin: auto; line-height: 0px; float: left;">
+                                           <div class="btn-group" data-toggle="buttons">
+                                             <label class="btn btn-primary2 btn-xs" style="margin-bottom: 2px;">
+                                               <input type="checkbox" name="ch_buildingInstitutePro1" value="审批中" />审批中
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" name="ch_buildingInstitutePro1" value="已办结" />已办结
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" name="ch_buildingInstitutePro1" value="拒绝办结" />拒绝办结
+                                             </label>
+                                           </div>
+                                         </div>
+                                         <div style="padding-left: 10px; width:auto; float: left; position: relative;">
+                                           <button type="button" class="btn btn-default btn-xs" onclick="getBuildingInstitutePro1();" style="font-size: 13px; font-family: 微软雅黑;">
+                                             <i class="glyphicon glyphicon-search"></i>查询
+                                           </button>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div class="gyl-panel-line"></div>
+                                     <div class="col-md-3" id="div_stage_buildingInstitutePro_col3" style="padding: 0px;">
+                                       <div class="panel panel-info" style="margin-bottom: 5px;">
+                                         <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">流程类型</div>
+                                         <div class="panel-body" style="padding: 2px;">
+                                           <table id="t_buildingInstitutePro" class="table table-hover table-bordered" style="margin-bottom: 0px; cursor: pointer;">
+                                             <tbody>
+                                             <tr><td><input type="hidden" value="4290" /><input type="hidden" value="332" />建筑院项目方案评审流程</td></tr>
+                                             <tr><td><input type="hidden" value="4292" /><input type="hidden" value="334" />建筑院专业统一技术规定审批流程</td></tr>
+                                             <tr><td><input type="hidden" value="4294" /><input type="hidden" value="335" />建筑院专业方案评审流程</td></tr>
+                                             <tr><td><input type="hidden" value="4291" /><input type="hidden" value="333" />建筑院项目开工报告审批流程</td></tr>
+                                             <tr><td><input type="hidden" value="4295" /><input type="hidden" value="336" />建筑院高阶段成果专业校审流程</td></tr>
+                                             <tr><td><input type="hidden" value="4296" /><input type="hidden" value="337" />建筑院高阶段成果评审流程</td></tr>
+                                             <tr><td><input type="hidden" value="4297" /><input type="hidden" value="338" />建筑院高阶段文本文印流程</td></tr>
+                                             <tr><td><input type="hidden" value="4302" /><input type="hidden" value="341" />建筑院图纸会签流程</td></tr>
+                                             <tr><td><input type="hidden" value="4298" /><input type="hidden" value="189" />建筑院设计输入评审流程</td></tr>
+                                             <tr><td><input type="hidden" value="4299" /><input type="hidden" value="339" />建筑院项目设计变更审批流程</td></tr>
+                                             </tbody>
+                                           </table>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div class="col-md-9" id="div_stage_buildingInstitutePro_col9" style="padding-right: 0px; padding-left: 5px;">
+                                       <div class="panel panel-info" style="margin-bottom: 0px;">
+                                         <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">OA流程记录</div>
+                                         <div class="panel-body" style="padding: 5px;">
+                                           <div class="dataTable_wrapper" id="dataTables-stage_buildingInstitutePro">
+
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                   </div>
+                                 </div>
+                               </div>
+
+                               <div class="panel panel-info" style="margin-bottom: 5px; display: block;" id="div_stage_buildingInstitutePro_2">
+                                 <div class="panel-heading gyl_panel_header">
+                                   建筑院项目子项任务
+                                   <div class="pull-right">
+                                     <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#stage_buildingInstitutePro_2">
+                                       <i class="glyphicon glyphicon-menu-down" ></i>
+                                     </button>
+                                   </div>
+                                 </div>
+                                 <div id="stage_buildingInstitutePro_2" class="panel-collapse collapse in">
+                                   <div class="panel-body" style="padding: 1px;">
+                                     <div class="row" style="margin-bottom: 3px; margin-top: 3px;">
+                                       <div  style="padding-right: 0px; width: 80px; float: left; position: relative;">
+                                         <label style="width: 80px; text-align: right; padding-top: 2px;">专业：</label>
+                                       </div>
+                                       <div  style="padding-left: 0px; width:90%; float: left; position: relative;">
+                                         <div id="div_stage_buildingInstitutePro2_zy" style="margin: auto; line-height: 0px; float: left;">
+                                           <div class="btn-group" data-toggle="buttons">
+                                             <label class="btn btn-primary2 btn-xs" style="margin-bottom: 2px;">
+                                               <input type="checkbox" value="" />给排水
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />建筑
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />结构
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />暖通
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />电力
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />电信
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />热工
+                                             </label>
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div class="gyl-panel-line"></div>
+                                     <div class="row" style="margin-bottom: 3px; margin-top: 3px;">
+                                       <div  style="padding-right: 0px; width: 80px; float: left; position: relative;">
+                                         <label style="width: 80px; text-align: right; padding-top: 2px;">类型：</label>
+                                       </div>
+                                       <div  style="padding-left: 0px; width:90%; float: left; position: relative;">
+                                         <div id="div_stage_buildingInstitutePro2_lx" style="margin: auto; line-height: 0px; float: left;">
+                                           <div class="btn-group" data-toggle="buttons">
+                                             <label class="btn btn-primary2 btn-xs" style="margin-bottom: 2px;">
+                                               <input type="checkbox" name="ch_buildingInstitutePro2_lx" value="01" />图纸
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" name="ch_buildingInstitutePro2_lx" value="03" />计算书
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" name="ch_buildingInstitutePro2_lx" value="05" />接口条件
+                                             </label>
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div class="gyl-panel-line"></div>
+                                     <div class="row" style="margin-bottom: 3px; margin-top: 6px;">
+                                       <div  style="padding-right: 0px; width: 80px; float: left; position: relative;">
+                                         <label style="width: 80px; text-align: right; padding-top: 2px;">状态：</label>
+                                       </div>
+                                       <div  style="padding-left: 0px; width:90%; float: left; position: relative;">
+                                         <div id="div_stage_buildingInstitutePro2_zt" style="margin: auto; line-height: 0px; float: left;">
+                                           <div class="btn-group" data-toggle="buttons">
+                                             <label class="btn btn-primary2 btn-xs" style="margin-bottom: 2px;">
+                                               <input type="checkbox" name="ch_buildingInstitutePro2" value="审批中" />审批中
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" name="ch_buildingInstitutePro2" value="已办结" />已办结
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" name="ch_buildingInstitutePro2" value="拒绝办结" />拒绝办结
+                                             </label>
+                                           </div>
+                                         </div>
+                                         <div style="padding-left: 10px; width:auto; float: left; position: relative;">
+                                           <button type="button" class="btn btn-default btn-xs" onclick="getBuildingInstitutePro2();" style="font-size: 13px; font-family: 微软雅黑;">
+                                             <i class="glyphicon glyphicon-search"></i>查询
+                                           </button>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div class="gyl-panel-line"></div>
+                                     <div class="col-md-3" id="div_stage_buildingInstitutePro2_col3" style="padding: 0px;">
+                                       <div class="panel panel-info" style="margin-bottom: 5px;">
+                                         <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">二级策划</div>
+                                         <div class="panel-body" style="padding: 2px;">
+                                           <div style="width: 100%;overflow-y: auto; max-height: 400px; min-height: 100%; margin: 0px;">
+                                           <table id="table_stage_buildingInstitutePro2" style="margin-bottom: 0px;" class="table table-condensed table-hover table-striped table-bordered table-responsive fancytree-fade-expander">
+                                             <colgroup>
+                                               <col width="20"></col>
+                                               <col width="105"></col>
+                                               <col width="*"></col>
+                                             </colgroup>
+                                             <thead>
+                                             <tr>
+                                               <th></th>
+                                               <th></th>
+                                               <th></th>
+                                             </tr>
+                                             </thead>
+                                             <tbody></tbody>
+                                           </table>
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div class="col-md-9" id="div_stage_buildingInstitutePro2_col9" style="padding-right: 0px; padding-left: 5px;">
+                                       <div class="panel panel-info" style="margin-bottom: 0px;">
+                                         <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">OA流程记录</div>
+                                         <div class="panel-body" style="padding: 5px;">
+                                           <div class="dataTable_wrapper" id="dataTables-stage_buildingInstitutePro2">
+
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                   </div>
+                                 </div>
+                               </div>
+                               <div class="panel panel-info" style="margin-bottom: 5px; display: block;" id="div_stage_buildingInstitutePro_3">
+                                 <div class="panel-heading gyl_panel_header">
+                                   建筑院项目接口条件收件箱
+                                   <div class="pull-right">
+                                     <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/naviList#stage_buildingInstitutePro_3">
+                                       <i class="glyphicon glyphicon-menu-down" ></i>
+                                     </button>
+                                   </div>
+                                 </div>
+                                 <div id="stage_buildingInstitutePro_3" class="panel-collapse collapse in">
+                                   <div class="panel-body" style="padding: 1px;">
+                                     <div class="row" style="margin-bottom: 3px; margin-top: 3px;">
+                                       <div  style="padding-right: 0px; width: 80px; float: left; position: relative;">
+                                         <label style="width: 80px; text-align: right; padding-top: 2px;">提出专业：</label>
+                                       </div>
+                                       <div  style="padding-left: 0px; width:90%; float: left; position: relative;">
+                                         <div id="div_stage_buildingInstitutePro3_zy" style="margin: auto; line-height: 0px; float: left;">
+                                           <div class="btn-group" data-toggle="buttons">
+                                             <label class="btn btn-primary2 btn-xs" style="margin-bottom: 2px;">
+                                               <input type="checkbox" value="" />给排水
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />建筑
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />结构
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />暖通
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />电力
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />电信
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" value="" />热工
+                                             </label>
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div class="gyl-panel-line"></div>
+                                     <div class="row" style="margin-bottom: 3px; margin-top: 6px;">
+                                       <div  style="padding-right: 0px; width: 80px; float: left; position: relative;">
+                                         <label style="width: 80px; text-align: right; padding-top: 2px;">状态：</label>
+                                       </div>
+                                       <div  style="padding-left: 0px; width:90%; float: left; position: relative;">
+                                         <div id="div_stage_buildingInstitutePro3_zt" style="margin: auto; line-height: 0px; float: left;">
+
+                                           <div class="btn-group" data-toggle="buttons">
+                                             <label class="btn btn-primary2 btn-xs" style="margin-bottom: 2px;">
+                                               <input type="checkbox" name="ch_buildingInstitutePro3" value="审批中" />审批中
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" name="ch_buildingInstitutePro3" value="已办结" />已办结
+                                             </label>
+                                             <label class="btn btn-primary2 btn-xs">
+                                               <input type="checkbox" name="ch_buildingInstitutePro3" value="拒绝办结" />拒绝办结
+                                             </label>
+                                           </div>
+                                         </div>
+                                         <div style="padding-left: 10px; width:auto; float: left; position: relative;">
+                                           <button type="button" class="btn btn-default btn-xs" onclick="getBuildingInstitutePro3();" style="font-size: 13px; font-family: 微软雅黑;">
+                                             <i class="glyphicon glyphicon-search"></i>查询
+                                           </button>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div class="gyl-panel-line"></div>
+                                     <div class="col-md-3" id="div_stage_buildingInstitutePro3_col3" style="padding: 0px;">
+                                       <div class="panel panel-info" style="margin-bottom: 5px;">
+                                         <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">二级策划</div>
+                                         <div class="panel-body" style="padding: 2px;">
+                                           <div style="width: 100%;overflow-y: auto; max-height: 400px; min-height: 100%; margin: 0px;">
+                                           <table id="table_stage_buildingInstitutePro3" style="margin-bottom: 0px;" class="table table-condensed table-hover table-striped table-bordered table-responsive fancytree-fade-expander">
+                                             <colgroup>
+                                               <col width="20"></col>
+                                               <col width="105"></col>
+                                               <col width="*"></col>
+                                             </colgroup>
+                                             <thead>
+                                             <tr>
+                                               <th></th>
+                                               <th></th>
+                                               <th></th>
+                                             </tr>
+                                             </thead>
+                                             <tbody></tbody>
+                                           </table>
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     <div class="col-md-9" id="div_stage_buildingInstitutePro3_col9" style="padding-right: 0px; padding-left: 5px;">
+                                       <div class="panel panel-info" style="margin-bottom: 0px;">
+                                         <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">OA流程记录</div>
+                                         <div class="panel-body" style="padding: 5px;">
+                                           <div class="dataTable_wrapper" id="dataTables-stage_buildingInstitutePro3">
+
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                   </div>
+                                 </div>
+                               </div>
+                               <!-- end -->
+
+
+                             </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- /.row -->
+
+<!-- /.row -->
+<!-- /#page-wrapper -->
+
+<!-- Modal -->
+<div class="modal fade" id="wb_tz_tjd_jss_Modal" tabindex="-1" role="dialog" aria-labelledby="wb_tz_tjd_jss_ModalLabel">
+  <div class="modal-dialog" style="min-width: 800px; width: 60%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="wb_tz_tjd_jss_ModalLabel"></h5>
+      </div>
+
+      <div class="modal-body" style="padding: 5px;">
+        <div id="dataTables-wbs"></div>
+        <div id="dataTables-tzs"></div>
+        <div id="dataTables-tjds"></div>
+        <div id="dataTables-jsss"></div>
+      </div>
+
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="oaModal" tabindex="-1" role="dialog" aria-labelledby="oaModalLabel">
+  <div class="modal-dialog" style="min-width: 800px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="oaModalLabel">OA流程</h5>
+      </div>
+
+      <div class="modal-body" style="padding: 5px;">
+        <div id="dataTables-oas"></div>
+      </div>
+
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ybModal" tabindex="-1" role="dialog" aria-labelledby="ybModalLabel">
+  <div class="modal-dialog" style="min-width: 800px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="ybModalLabel">项目月报</h5>
+      </div>
+      <div class="modal-body">
+        <form id="ybForm">
+          <div class="row">
+            <div class="col-md-12" style="margin-bottom: 20px;">
+              <div class="form-inline">
+                <div class="form-group">
+                  <label><font color="red">*</font>标题：</label>
+                  <input type="text" class="form-control input-sm" name="pBt" id="pBt" style="width: 500px;"/>
+                  <input type="hidden" class="form-control input-sm" name="pHeadId" id="pHeadId"/>
+                  <input type="hidden" class="form-control input-sm" name="projectId" id="projectId"/>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" style="margin-bottom: 20px;">
+              <div class="form-inline">
+                <div class="form-group">
+                  <label>(1)<font color="red">*</font>项目运行情况及存在的问题（必输项，最多300汉字）</label>
+                  <br>
+                  <textarea class="form-control" name="pYxqk" id="pYxqk" rows="4"  style="width: 768px;"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" style="margin-bottom: 20px;">
+              <label>(2)<font color="red">*</font>累计到本月实际完成进度</label>
+
+              <br>
+              <div class="dataTable_wrapper" id="dataTables-yb_lineAll">
+
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-inline">
+                <div class="form-group">
+                  <label>(3)应收账款情况说明（非必输项，最多300汉字）</label>
+                  <label id="yb_doc"></label>
+                  <br>
+                  <textarea class="form-control" name="pSfqk" id="pSfqk" rows="6" style="width: 768px;"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="save_yb">提交并发布</button>
+        <button type="button" class="btn btn-default confirmButton" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 基础JS脚本 -->
+<script src="/bower_components/jquery/dist/jquery.js" ></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js" ></script>
+<script src="/bower_components/moment/min/moment.min.js" ></script>
+<script src="/bower_components/moment/locale/zh-cn.js" ></script>
+<script src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js" ></script>
+<script src="/bower_components/bootstrapvalidator/dist/js/bootstrapValidator.js"></script>
+<!-- 如果需要做拖拽等操作,需要引入 -->
+<script src="/bower_components/jquery-ui/jquery-ui.js" ></script>
+<!-- 如果需要使用cookie -->
+<script src="/bower_components/jquery.cookie/jquery.cookie.js" ></script>
+
+<!--如果需要使用数据列表,引入以下JS-->
+<script src="/bower_components/datatables/media/js/jquery.dataTables.js" ></script>
+<script src="/bower_components/datatables-responsive/js/dataTables.responsive.js" ></script>
+<script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.edit.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.glyph.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.table.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.wide.js" type="text/javascript"></script>
+<script src="/bower_components/datatables/FixedColumns/js/dataTables.fixedColumns.js"></script>
+
+<!--在提交form表单的时候,需要将form数据转换成json格式字符串时使用-->
+<script src="/bower_components/jquery.serializeJSON/jquery.serializejson.js"></script>
+
+<!--  右上角提示消息脚本,一般情况外部框架已经引用,就不需要再引用了 -->
+<script src="/bower_components/bootstrap-notify-master/js/bootstrap-notify.js" ></script>
+
+  <!--引入 config js信息-->
+  <script src="/scripts/common/config.js" ></script>
+  <script src="/scripts/navi/proNaviTemplate.js" ></script>
+<script src="/scripts/navi/navi.js" nerinend></script>
+  <!--<script src="/scripts/navi/milepost.js" nerinend></script>-->
+  <script src="/scripts/navi/tab_milepost.js" nerinend></script>
+<!--<script src="/scripts/navi/contractAp.js" nerinend></script>-->
+<script src="/scripts/navi/tab_contractAp.js" nerinend></script>
+<!--<script src="/scripts/navi/pinfo.js" nerinend></script>-->
+<script src="/scripts/navi/tab_pinfo.js" nerinend></script>
+<!--<script src="/scripts/navi/ptext.js" nerinend></script>-->
+<script src="/scripts/navi/tab_ptext.js" nerinend></script>
+<script src="/scripts/navi/tab_budget.js" nerinend></script>
+<script src="/scripts/navi/tab_buildingInstitute.js" nerinend></script>
+<script src="/scripts/common/bootstrap-addtabs.js" nerinend></script>
+
+</body>
+</html>

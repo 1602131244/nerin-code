@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-script-type" content="text/javascript">
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>抵消分录</title>
+
+    <!--基础CSS样式 -->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link href="/bower_components/bootstrapvalidator/dist/css/bootstrapValidator.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
+    <link href="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+    <link href="/bower_components/jquery.fancytree/dist/skin-bootstrap/ui.fancytree.css" rel="stylesheet" type="text/css" class="skinswitcher">
+    <link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <!--strat bootstrap 所用到的css 直接引用即可-->
+    <link rel="stylesheet" href="/styles/common/sb-admin-2.css" />
+
+    <!-- 右上角提示消息样式,一般情况外部框架已经引用,就不需要再引用了 CSS -->
+    <link rel="stylesheet" href="/bower_components/bootstrap-notify-master/css/bootstrap-notify.css" />
+
+    <!--这里引入你自己的CSS文件-->
+
+    <!--如果你想获取浏览器相关的信息,引入此JS-->
+    <!-- build:js scripts/vendor/modernizr.js -->
+    <script src="/bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--如果要让IE9以下的浏览器支持HTML5的一些响应式布局特性,需要引入如下js-->
+    <!--[if lt IE 9]>
+    <script src="/scripts/common/html5shiv.js"></script>
+    <script src="/scripts/common/respond.min.js"></script>
+
+    <![endif]-->
+    <style>
+        .fancytree-active {
+            background-color: #f5f5f5;
+        }
+        .dt-select {
+            background-color: #C6E2FF !important;
+        }
+        .dt_center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body style="min-height: 800px">
+<div class="page-header gyl-page-header">
+    <h5>抵消分录序时簿</h5>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+
+            <div class="panel-heading gyl_panel_header">
+                <i class="glyphicon glyphicon-search"></i>
+                合并范围选择
+                <!--<div class="pull-right">-->
+                    <!--<button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/templateList#queryBars">-->
+                        <!--<i class="glyphicon glyphicon-menu-down" ></i>-->
+                    <!--</button>-->
+                <!--</div>-->
+            </div>
+
+            <div id="queryBars" class="panel-collapse collapse in">
+                <div class="panel-body" style="padding-top: 10px; padding-bottom: 5px;">
+                    <form id="selectFrom" onsubmit="return false">
+
+                        <div class="row">
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="width: 90px; text-align: right; padding-top: 5px;">抵消日期：</label>
+                            </div>
+                            <div class="col-md-2"  >
+                                <div class='input-group date' id='datetimepicker1'>
+                                    <input type='text' class="form-control input-sm" id="rangeDate" onblur="searchDateChange()" name="enableStartDate" placeholder="抵消日期" />
+                                    <span class="input-group-addon" style="padding: 3px 8px; font-size: 13px;">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="width: 90px; text-align: right; padding-top: 5px;">合并范围：</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <select id='searchRangeId' name="searchRangeId" class='form-control input-sm' onchange="searchRangeIdChange(this.value)" placeholder='请选择' disabled="disabled"></select>
+                            </div>
+
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="width: 90px; text-align: right; padding-top: 5px;">合并单元：</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <select id='searchUnitId' name="searchUnitId" class='form-control input-sm'  onchange="searchUnitIdChange(this.value)"  placeholder='请选择' disabled="disabled"></select>
+                            </div>
+
+                            <!--<div class="col-md-1" style="padding-right: 0px;">-->
+                                <!--<label style="width: 90px; text-align: right; padding-top: 5px;"></label>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-2" style="padding-left: 0px;">-->
+                                <!--<button type="reset" style="height: 27px; width: 80px" class="btn btn-default btn-sm pull-left" id="bu_resetQuery">-->
+                                    <!--<i class="glyphicon glyphicon-remove"  style="color: #FF4500; font-size: 13px;" ></i>重置-->
+                                <!--</button>-->
+                            <!--</div>-->
+
+                        </div>
+
+                        <div class="gyl-panel-line"></div>
+
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!--查询结果部分-->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+            <div class="panel-heading gyl_panel_header">
+                &nbsp;
+                <div class="pull-left">
+                    <i class="fa fa-table"></i>
+                    录入抵消分录列表
+                </div>
+
+                <div class="pull-right" style="margin-top: -6px; margin-left: 0px; width:85%">
+
+                    <button style="height: 29px; width: 90px"  id="bu_query" type="button" class="btn btn-default btn-sm" disabled ="disabled">
+                        <i class="glyphicon glyphicon-search" style="color: #1d79b3; font-size: 13px;"></i>查询
+                    </button>
+                    <button style="height: 29px; width: 90px;" id="bu_add" type="button" class="btn btn-default btn-xs" disabled ="disabled">
+                        <i class="fa fa-plus" style="color: #3CB371; font-size: 13px;"></i>新建
+                    </button>
+                    <div class="btn-group" id="bu_zdscdx">
+                        <button type="button" id="bu_scdx" class="btn btn-primary2 dropdown-toggle btn-sm" style="padding: 3px 10px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled ="disabled">
+                            <i class="fa fa-plus" style="color: #3CB371; font-size: 13px;"></i>生成抵消<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li class="disabled"><a href="#1" id="bu_fzlssj">复制历史数据</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="disabled"><a href="#1" id="bu_wldx">自动生成往来类抵消</a></li>
+                            <li class="disabled"><a class="disabled" href="#1" id="bu_jydx">自动生成交易类抵消</a></li>
+                            <li class="disabled"><a class="disabled" href="#1" id="bu_qydx">自动生成权益类抵消</a></li>
+                            <li role="separator" class="divider"></li>
+
+                        </ul>
+                    </div>
+                    <button  style="height: 29px; width: 90px"id="bu_edit" type="button" class="btn btn-default btn-xs" disabled ="disabled" >
+                        <i class="fa fa-edit" style="color: #FF4500;font-size: 13px;"></i>编辑
+                    </button>
+                    <button style="height: 29px; width: 90px" id="bu_del" type="button" class="btn btn-default btn-xs" disabled ="disabled" >
+                        <i class="fa fa-trash-o" style="color: #4682B4; font-size: 13px;"></i>删除
+                    </button>
+                    <button style="height: 29px; width: 90px;" id="bu_approved" type="button" class="btn btn-default btn-xs" disabled ="disabled"  >
+                        <i class="fa fa-check" style="color: #3cb371; font-size: 13px;"></i>审批
+                    </button>
+                    <button style="height: 29px; width: 90px;" id="bu_approved_un" type="button" class="btn btn-default btn-xs" disabled ="disabled"  >
+                        <i class="fa fa-undo" style="color: #ffc095; font-size: 13px;"></i>反审批
+                    </button>
+                </div>
+
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper" id="dataTables-listUserAssienment">
+
+                </div>
+                <!-- /.table-responsive -->
+
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<!-- 新增合并范围维护Modal -->
+<div class="modal fade" id="entry_modal" tabindex="-1" role="dialog" aria-labelledby="addLabel">
+    <div class="modal-dialog" style="min-width: 400px; width: 98%;" role="document">
+        <div class="modal-content">
+            <!--显示标题-->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="addRangeLabel">抵消分录维护</h5>
+            </div>
+
+            <!--显示查询-->
+            <div class="modal-body" style="padding-top: 0px;">
+                <form id="form_rangeHeader" class="form-horizontal" role="form">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row" style="margin-right: 5px;">
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading gyl_panel_header">
+                                            抵消分录维护
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label class="col-sm-1 control-label" for="rangeId" style="padding-right: 0px; padding-left: 0px;"><font color="red">*</font>合并范围：</label>
+                                                <div class="col-sm-2" >
+                                                    <!--<div class='input-group'>-->
+                                                        <input class="form-control input-sm"  type="text" name="rangeName" id="rangeName" disabled ="disabled"  placeholder="" />
+                                                        <input type="hidden" name="rangeId" id="rangeId" />
+                                                        <input type="hidden" name="rangeVerson" id="rangeVerson" />
+                                                        <input type="hidden" name="headerId" id="headerId" />
+                                                    <!--</div>-->
+                                                </div>
+
+                                                <label class="col-sm-1 control-label" for="unitId" style="padding-right: 0px; padding-left: 0px;">合并单元：</label>
+                                                <div class="col-sm-2">
+                                                    <input class="form-control input-sm"  type="text" name="unitId" id="unitId" disabled ="disabled"  placeholder="" />
+                                                </div>
+
+                                                <label class="col-sm-1 control-label" for="glDate" style="padding-right: 0px; padding-left: 0px;">抵消日期：</label>
+                                                <div class="col-sm-2">
+                                                    <input class="form-control input-sm"  type="text" name="glDate" id="glDate" disabled ="disabled"  placeholder="" />
+                                                </div>
+
+                                                <label class="col-sm-1 control-label" for="code" style="padding-right: 0px; padding-left: 0px;">编号：</label>
+                                                <div class="col-sm-2">
+                                                    <input class="form-control input-sm"  type="text" name="code" id="code" disabled ="disabled"  placeholder="" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-1 control-label" for="curr" style="padding-right: 0px; padding-left: 0px;">币别：</label>
+                                                <div class="col-sm-2">
+                                                    <select id='curr' name="curr" class='form-control input-sm' disabled ="disabled"  placeholder=''></select>
+                                                </div>
+
+                                                <label class="col-sm-1 control-label" for="type" style="padding-right: 0px; padding-left: 0px;">类型：</label>
+                                                <div class="col-sm-2">
+                                                    <select id='type' name="type" class='form-control input-sm' disabled ="disabled"  placeholder=''></select>
+                                                </div>
+
+                                                <label class="col-sm-1 control-label" for="source" style="padding-right: 0px; padding-left: 0px;">来源：</label>
+                                                <div class="col-sm-2">
+                                                    <select id='source' name="source" class='form-control input-sm' disabled ="disabled"  placeholder=''></select>
+                                                </div>
+
+                                                <label class="col-sm-1 control-label" for="quoteFlag" style="padding-right: 0px; padding-left: 0px;">是否能被引用：</label>
+                                                <div class="col-sm-2">
+                                                    <select id='quoteFlag' name="quoteFlag" class='form-control input-sm' disabled ="disabled"  placeholder=''></select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-1 control-label" for="status" style="padding-right: 0px; padding-left: 0px;">状态：</label>
+                                                <div class="col-sm-2">
+                                                    <input class="form-control input-sm"  type="text" name="createDate" id="status" disabled ="status"  placeholder="" />
+                                                    <!--<select id='status' name="status" class='form-control input-sm' disabled ="disabled"  placeholder=''></select>-->
+                                                </div>
+
+                                                <label class="col-sm-1 control-label" for="name" style="padding-right: 0px; padding-left: 0px;">备注：</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control input-sm"  type="text" name="name" id="name" disabled ="status"  placeholder="" />
+                                                </div>
+                                            </div>
+
+                                            <div class="panel panel-info">
+                                                <div class="dataTable_wrapper" id="dataTables-counterRecordList">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label class="col-sm-1 control-label" for="createByName" style="padding-right: 0px; padding-left: 0px;">创建人：</label>
+                                                <div class="col-sm-2">
+                                                    <input class="form-control input-sm"  type="text" name="createByName" id="createByName" disabled ="status"  placeholder="" />
+                                                </div>
+
+                                                <label class="col-sm-1 control-label" for="createDate" style="padding-right: 0px; padding-left: 0px;">创建日期：</label>
+                                                <div class="col-sm-2">
+                                                    <input class="form-control input-sm"  type="text" name="createDate" id="createDate" disabled ="disabled"  placeholder="" />
+                                                </div>
+
+                                                <label class="col-sm-1 control-label" for="approvedByName" style="padding-right: 0px; padding-left: 0px;">审批人：</label>
+                                                <div class="col-sm-2">
+                                                    <input class="form-control input-sm"  type="text" name="approvedByName" id="approvedByName" disabled ="status"  placeholder="" />
+                                                </div>
+
+                                                <label class="col-sm-1 control-label" for="status" style="padding-right: 0px; padding-left: 0px;">审批日期：</label>
+                                                <div class="col-sm-2">
+                                                    <input class="form-control input-sm"  type="text" name="approvedDate" id="approvedDate" disabled ="status"  placeholder="" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!--显示按钮-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="saveUserAssignment"  >保存</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 基础JS脚本 -->
+<script src="/bower_components/jquery/dist/jquery.js" ></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js" ></script>
+<script src="/bower_components/moment/min/moment.min.js" ></script>
+<script src="/bower_components/moment/locale/zh-cn.js" ></script>
+<script src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js" ></script>
+<script src="/bower_components/bootstrapvalidator/dist/js/bootstrapValidator.js"></script>
+<!-- 如果需要做拖拽等操作,需要引入 -->
+<script src="/bower_components/jquery-ui/jquery-ui.js" ></script>
+<script src="/bower_components/assets/js/jquery.ui-contextmenu.min.js" type="application/javascript"></script>
+<!-- 如果需要使用cookie -->
+<script src="/bower_components/jquery.cookie/jquery.cookie.js" ></script>
+
+<!--如果需要使用数据列表,引入以下JS-->
+<script src="/bower_components/datatables/media/js/jquery.dataTables.js" ></script>
+<script src="/bower_components/datatables-responsive/js/dataTables.responsive.js" ></script>
+<script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.edit.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.glyph.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.table.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.wide.js" type="text/javascript"></script>
+<script src="/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+
+<!--datatables固定列需要引用JS-->
+<!--<script src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>-->
+<script src="/bower_components/datatables/FixedColumns/js/dataTables.fixedColumns.js" ></script>
+
+<!--在提交form表单的时候,需要将form数据转换成json格式字符串时使用-->
+<script src="/bower_components/jquery.serializeJSON/jquery.serializejson.js"></script>
+<script src="/bower_components/bootstrap/js/tooltip.js"></script>
+
+<!--  右上角提示消息脚本,一般情况外部框架已经引用,就不需要再引用了 -->
+<script src="/bower_components/bootstrap-notify-master/js/bootstrap-notify.js" ></script>
+
+<!--引入 config js信息-->
+<script src="/scripts/common/config.js" ></script>
+<script src="/scripts/common/jquery.params.js" nerinend></script>
+<script src="/scripts/glcs/counterRecord.js" nerinend></script>
+
+</body>
+</html>

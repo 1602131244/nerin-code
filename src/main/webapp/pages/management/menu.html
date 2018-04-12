@@ -1,0 +1,197 @@
+<!doctype html>
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>后台管理</title>
+
+    <!-- build:css styles/vendor.css -->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" nerinend/>
+    <!--<link rel="stylesheet" href="/bower_components/datatables/media/css/jquery.dataTables.css" nerinend/>-->
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" nerinend/>
+    <link rel="stylesheet" href="/bower_components/bootstrap-social/bootstrap-social.css" nerinend/>
+    <link rel="stylesheet" href="/bower_components/metisMenu/dist/metisMenu.css" nerinend/>
+    <link href="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+    <!-- endbuild -->
+    <!-- Notify CSS -->
+    <link rel="stylesheet" href="/bower_components/bootstrap-notify-master/css/bootstrap-notify.css" nerinend/>
+    <!-- build:css styles/back-main.css -->
+    <link rel="stylesheet" href="/styles/common/back-main.css" nerinend/>
+    <link rel="stylesheet" href="/styles/management/menu.css" nerinend/>
+    <link rel="stylesheet" href="/styles/common/sb-admin-2.css" nerinend/>
+    <!-- endbuild -->
+
+    <!-- build:js scripts/vendor/modernizr.js -->
+    <script src="/bower_components/modernizr/modernizr.js" nerinend></script>
+    <!-- endbuild -->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="/scripts/common/html5shiv.js"></script>
+    <script src="/scripts/common/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .selected {
+            background-color: #C6E2FF !important;
+        }
+    </style>
+</head>
+<body style="min-height: 800px">
+<div class="page-header gyl-page-header">
+    <h5>菜单管理</h5>
+</div>
+
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-navicon fa-fw"></i>
+                菜单列表
+                <div class="btn-group pull-right">
+
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default btn-xs" id="addMenuButton" data-toggle="modal"
+                                data-target="#addMenu"><i class="fa fa-plus-circle"></i>新增
+                        </button>
+                        <button id="deleteSelection" type="button" class="btn btn-default btn-xs"><i class="fa fa-times-circle"></i>删除
+                        </button>
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-chevron-down"></i>其它
+                        </button>
+
+                        <ul class="dropdown-menu slidedown">
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-refresh fa-fw"></i>操作一
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-check-circle fa-fw"></i>操作二
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-times fa-fw"></i>操作三
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper" id="menu-table-list">
+
+                </div>
+                <!-- /.table-responsive -->
+
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+
+<!-- /.row -->
+</div>
+<!-- /#page-wrapper -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="addMenu" tabindex="-1" role="dialog" aria-labelledby="addMenuLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="addMenuLabel">新增菜单</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="addMenuForm">
+                    <input type="hidden"  name="id" id="id">
+                    <div class="form-group">
+                        <label for="name">名称</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="名称">
+                    </div>
+                    <div class="form-group">
+                        <label for="selectParentMenu">父菜单</label>
+                        <!--<input type="text" class="form-control" id="parentId" name="parentId" placeholder="父级">-->
+                        <select class="selectpicker form-control"  data-live-search="true" name="parentId" id="selectParentMenu" data-size="5">
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">说明</label>
+                        <!--<input type="text" class="form-control" id="description" placeholder="说明">-->
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">类型</label>
+                        <select class="form-control" id="type" name="type">
+                            <option>front</option>
+                            <option>back</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="url">链接</label>
+                        <input type="text" class="form-control" id="url" name="url" placeholder="链接">
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="outsideUrl" id="outsideUrl" value="1"/>外部链接？
+                    </div>
+                    <div class="form-group">
+                        <label for="icon">图标</label>
+                        <input type="text" class="form-control" id="icon" name="icon" placeholder="图标">
+                    </div>
+                    <div class="form-group">
+                        <label for="icon">排序号</label>
+                        <input type="text" class="form-control" id="orderNo" name="orderNo" placeholder="图标">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="saveMenu">保存</button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- build:js scripts/vendor.js -->
+<script src="/bower_components/jquery/dist/jquery.js" nerinend></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js" nerinend></script>
+<script src="/bower_components/jquery-ui/jquery-ui.js" nerinend></script>
+<script src="/bower_components/metisMenu/dist/metisMenu.js" nerinend></script>
+
+<script src="/bower_components/datatables/media/js/jquery.dataTables.js" nerinend></script>
+<script src="/bower_components/datatables-responsive/js/dataTables.responsive.js" nerinend></script>
+<script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script src="/bower_components/jquery.serializeJSON/jquery.serializejson.js"></script>
+<script src="/bower_components/form/formFieldValues.js"></script>
+<script src="/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+<!-- endbuild -->
+
+<!-- build:js scripts/back-main.js -->
+
+<script src="/scripts/common/config.js"></script>
+<script src="/bower_components/bootstrap-notify-master/js/bootstrap-notify.js" nerinend></script>
+<script src="/scripts/management/menu.js" nerinend></script>
+<!-- endbuild -->
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+
+</body>
+</html>

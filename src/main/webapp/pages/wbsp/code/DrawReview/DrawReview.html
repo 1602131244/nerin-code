@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>建筑院图纸校审</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <style>
+        .textbox {
+            height: 16px;
+            margin: 0;
+            padding: 0 2px;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body class="easyui-layout" id="rootlayout">
+<div id="north" data-options="region:'north',title:'项目阶段选择',split:true,collapsed:false,hideCollapsedContent:false,collapsedContent: function(title){
+         return title;}" style="height:245px">
+    <div id="Div1" class="easyui-layout" data-options="fit:true">
+        <div id="Div2" data-options="region:'north',border:false">
+            <table style="border-spacing:0">
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="easyui-menubutton"
+                                                         id="btnprjphase">本项目阶段切换</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div id="menuphase" style="width:120px;"></div>
+                    </td>
+                    <td>
+                        <input id="prjsearch" class="easyui-searchbox" style="width:250px"
+                               data-options="prompt:'其他项目简称、全称、编号、项目经理模糊查找' ">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div data-options="region:'center',border:false">
+            <div id="prjgrid">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="spewest" data-options="region:'west',title:'专业选择',split:true,collapsed:false,hideCollapsedContent:false,collapsedContent: function(title){
+		 return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+	}" style="width:220px">
+	<div id="majortb" style="text-align:right">
+		<div style="float:left;padding-top:4px">&nbsp;<input id="modecheck" type="checkbox">标准模式&nbsp;&nbsp;</div>
+		<a id="filtermajorbtn">继续</a>&nbsp;&nbsp;
+	</div>
+	<div id="gridPrjmajors"></div>
+</div>
+<div id="dgLayout" data-options="region:'center'">
+	<div id="wbs_layout" class="easyui-layout" data-options="fit:true,border:false">
+		<div id="wbswest" data-options="region:'west',title:'子项专业树',split:true,collapsed:true,hideCollapsedContent:false,collapsedContent: function(title){
+				 return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+			}" style="width:280px">
+			<ul id="divtree"></ul>
+		</div>
+		<div id="wbscenter" data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+			<div id="draw_layout" class="easyui-layout" data-options="fit:true,border:false">
+				<div id="drawwest" data-options="region:'east',title:'相关图纸列表',split:true,collapsed:true,hideCollapsedContent:false,collapsedContent: function(title){
+						 return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+					}" style="width:500px">
+					<div id="drawtb" style="text-align:left">&nbsp;
+						<!-- <input id="drawNumSearch" class="easyui-searchbox" style="width:250px" data-options="prompt:'图纸名称、图号模糊查找' "> -->
+						<a id="confirmbtn">提交</a>
+						<div style="float:right;padding-top:4px"><input id="drawshowall" type="checkbox">显示更多列&nbsp;&nbsp;</div>
+					</div>
+					<table id="gridDraw"></table>
+				</div>
+				<div id="drawcenter" data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+					<div id="adddstb" style="text-align:left">&nbsp;
+						<a id="searchdrawbtn">加载</a>
+						<a id="newDSbtn">发起</a>
+						<!-- <a id="drawbtn">图纸</a> -->
+						<div style="float:right;padding-top:4px">
+							<input id="viewprjall" type="checkbox">不限于当前项目查看&nbsp;&nbsp;
+						</div>
+					</div>
+					<table id="gridDrawDS"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="loaddiv" class="easyui-window" style="width: 380px; height: 70px;" data-options="title:'登录 NIMS 2.0，请稍候...',minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+</div>
+<div id="formuser" class="easyui-window" style="width: 610px;" data-options="title:'选择审批人员',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+	<form id="form1" method="post" style="padding:5px">
+		<div style="float:left">
+			<div style="padding:6px">项目负责人</div>
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false,required:true" name="txtpm" id="txtpm" style="width: 70px" />
+		</div>
+		<div style="float:left;padding-left:10px;">
+			<div style="padding:6px">设计人</div>
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false,required:true" name="txtdesign" id="txtdesign" style="width: 55px" />
+		</div>
+		<div style="float:left;padding-left:10px;">
+			<div style="padding:6px">校核人</div>
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false,required:true" name="txtcheck" id="txtcheck" style="width:55px" />
+		</div>
+		<div style="float:left;padding-left:10px;">
+			<div style="padding:6px">审核人</div>
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false,required:true" name="txtreview" id="txtreview" style="width:55px" />
+		</div>
+		<div style="float:left;padding-left:10px;">
+			<div style="padding:6px">审定人</div>
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false" name="txtapprove" id="txtapprove" style="width:55px" />
+		</div>
+		<div style="float:left;padding-left:10px;">
+			<div style="padding:6px">专业负责人</div>
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'perNum',textField:'perName',editable:false,hasDownArrow:false,required:true" name="chgrlist" id="chgrlist" style="width:70px" />
+		</div>
+		<div style="float:left;padding-left:10px;">
+			<div style="padding:6px">注册工程师</div>
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false" name="txtcertified" id="txtcertified" style="width:70px" />
+		</div>
+		<div style="float:left;padding-left:10px;">
+			<div style="padding:6px">方案设计人</div>
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false" name="txtscheme" id="txtscheme" style="width:70px" />
+		</div>
+		<div style="clear:both;height: 5px;"></div>
+		<div align="center"><br /><a id="btnuserapply">提交</a></div>
+	</form>
+</div>
+<script type="text/javascript" src="../../jquery.min.js"></script>
+<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/drawReview.js?v=1"></script>
+<script type="text/javascript" src="js/datagrid-dnd.js"></script>
+</body>
+</html>

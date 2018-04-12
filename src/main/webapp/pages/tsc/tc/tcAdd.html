@@ -1,0 +1,98 @@
+<div class="row" style="margin: auto;">
+  <div id="div_add">
+    <button id="bu_save" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="glyphicon glyphicon-floppy-saved"></i>保存</button>
+    <button id="bu_submit" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="fa fa-sign-in"></i>提交</button>
+  </div>
+  <div id="div_audit" style="display: none;">
+    <button id="bu_approved" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="glyphicon glyphicon-ok" style="color: green;"></i>批准</button>
+    <button id="bu_rejected" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="glyphicon glyphicon-remove" style="color: red;"></i>拒绝</button>
+  </div>
+</div>
+<div style="margin: 5px 0px 5px 0px; border-bottom: 1px solid #eee;"></div>
+<div class="panel panel-info" style="margin-bottom: 5px;">
+  <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">
+    基本信息<font color="red">（客户属性：正式客户为需要录入线索、机会、合同的客户；临时客户为申请投标保证金等用途的客户）</font>
+  </div>
+  <div class="panel-body" style="padding-top: 5px; padding-bottom: 5px;">
+    <div class="row form-inline form-group">
+      <label style="width: 100px; text-align: right; padding-top: 3px;"><font color="red">*客户名称：</font></label>
+      <input type="hidden" id="s_customerId" name="s_customerId" />
+      <input class="form-control input-sm" style="width: 300px;" type="text" name="s_partyName" id="s_partyName" placeholder="" onkeyup="javascript: loadPopoverVendorName(this);">
+      <div id="popoverVendorName" onmouseleave="javasrcipt: $('#popoverVendorName').hide();" style="z-index: 9999; max-height: 200px; overflow-y: auto; display: none; width:300px;margin-left: 104px; border:1px solid #ccc; position: absolute; background-color: white; padding: 5px 20px;">
+        <div class="row">供应商1</div>
+        <div class="row">供应商2</div>
+      </div>
+      <button id="bu_cc" type="button" class="btn btn-default" style="padding: 3px 10px; display: none;">查重</button>
+      <label style="width: 100px; text-align: right; padding-top: 3px;"><font color="red">*客户简称：</font></label>
+      <input class="form-control input-sm" style="width: 300px;" type="text" name="s_organizationName" id="s_organizationName"   placeholder="">
+      <label style="width: 100px; text-align: right; padding-top: 3px;"><font color="red">*客户来源：</font></label>
+      <!--<input type="hidden" id="s_customerSource" name="s_customerSource" />-->
+      <select class="form-control input-sm" style="width: 130px;" type="text" name="s_customerSource" id="s_customerSource"  placeholder="" data-live-search='true' data-size='13'></select>
+    </div>
+    <div class="row form-inline form-group">
+      <label style="width: 100px; text-align: right; padding-top: 3px;"><font color="red">*客户属性：</font></label>
+      <select class="form-control input-sm" style="width: 300px;" type="text" name="s_customerCategory" id="s_customerCategory" placeholder="" onchange="javascript:setLabelName(this);">
+        <option value="">请选择</option>
+        <option value="PROSPECT">临时</option>
+        <option value="CUSTOMER">正式</option>
+      </select>
+      <label style="width: 100px; text-align: right; padding-top: 3px;" id="l_khdj"><font color="red">*客户等级：</font></label>
+      <select class="form-control input-sm" style="width: 300px;" type="text" name="s_customerLevel"  id="s_customerLevel"  placeholder=""></select>
+      <label style="width: 100px; text-align: right; padding-top: 3px;" id="l_khhy"><font color="red">*客户涉及行业：</font></label>
+      <select class="form-control input-sm" style="width: 130px;" type="text" name="s_customerIndustry" id="s_customerIndustry"  placeholder=""></select>
+    </div>
+    <div class="row form-inline form-group">
+      <label style="width: 100px; text-align: right; padding-top: 3px;"><font color="red">*客户所在城市：</font></label>
+      <select class="form-control input-sm" id="s_country" name="s_country" style="width: 98px;" data-live-search='true' data-size='13'></select>
+      <select class="form-control input-sm" id="s_province" name="s_province" style="width: 98px;" data-live-search='true' data-size='13'></select>
+      <select class="form-control input-sm" id="s_city" name="s_city" style="width: 98px;" data-live-search='true' data-size='13'></select>
+      <label style="width: 100px; text-align: right; padding-top: 3px;"><font color="red">*客户地址：</font></label>
+      <input class="form-control input-sm" style="width: 300px;" type="text" name="s_address" id="s_address" placeholder="">
+      <label style="width: 100px; text-align: right; padding-top: 3px;">申请状态：</label>
+      <input class="form-control input-sm" style="width: 100px;" type="text" name="s_statusCode" id="s_statusCode" placeholder="" readonly="readonly"/>
+      <input type="hidden" id="s_status" name="s_status" />
+    </div>
+    <div class="row form-inline form-group">
+      <label style="width: 100px; text-align: right; padding-top: 3px;">纳税登记编号：</label>
+      <input class="form-control input-sm" style="width: 300px;" type="text" name="s_vatRegistrationNum" id="s_vatRegistrationNum"  placeholder="">
+      <label style="width: 100px; text-align: right; padding-top: 3px;">曾用名：</label>
+      <input class="form-control input-sm" style="width: 300px;" type="text" name="s_knownAs" id="s_knownAs" placeholder="">
+      <label style="width: 100px; text-align: right; padding-top: 3px;">网址：</label>
+      <input class="form-control input-sm" style="width: 260px;" type="text" name="s_customerUrl" id="s_customerUrl"  placeholder="">
+    </div>
+    <div class="row form-inline form-group">
+      <label style="width: 100px; text-align: right; padding-top: 3px;">客户简介：</label>
+      <textarea class="form-control input-sm" name="s_commets" id="s_commets"  placeholder="" style="width: 708px; height: 100px;"/>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel panel-info" style="margin-bottom: 5px;">
+  <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">
+    客户联系人信息（至少一个联系人）
+  </div>
+  <div class="panel-body" style="padding: 5px;">
+    <div class="row" style="margin: auto;" id="div_lxr">
+      <button id="bu_addLxr" type="button" class="btn btn-default btn-xs" style="padding-top: 0px; padding-bottom: 0px;"><i class="fa fa-plus"></i>增加</button>
+      <button id="bu_delLxr" type="button" class="btn btn-default btn-xs" style="padding-top: 0px; padding-bottom: 0px;"><i class="fa fa-trash-o"></i>删除</button>
+    </div>
+    <div class="dataTable_wrapper" id="dataTables-lxrAll">
+
+    </div>
+  </div>
+</div>
+<div class="panel panel-info" style="margin-bottom: 5px;">
+  <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">
+    相关证明材料或资质证明附件信息（至少一个附件）
+  </div>
+  <div class="panel-body" style="padding: 5px;">
+    <div class="row" style="margin: auto;" id="div_zz">
+      <button id="bu_delZz" type="button" class="btn btn-default btn-xs" style="padding-top: 0px; padding-bottom: 0px;"><i class="fa fa-trash-o"></i>删除</button>
+      <button id="bu_addZz" type="button" class="btn btn-default btn-xs" style="padding-top: 0px; padding-bottom: 0px;"><i class="fa fa-upload"></i>批量上传</button>
+    </div>
+    <div class="dataTable_wrapper" id="dataTables-zzAll">
+
+    </div>
+  </div>
+</div>

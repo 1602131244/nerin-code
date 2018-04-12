@@ -1,0 +1,124 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+            <div class="panel-heading gyl_panel_header">
+                <i class="fa fa-table"></i>
+                文本文印/每份
+            </div>
+            <div class="panel-body" style="padding-top: 3px;padding-bottom: 3px">
+                <form id="OptionsCalForm_D">
+                    <div class="row">
+                        <div class="col-md-2" style="padding-right: 0px;">
+                            <label style="float: right;padding-top: 5px;color:red;">*文印幅面：</label>
+                        </div>
+                        <div class="col-md-3" style="padding-left: 0px;">
+                            <select class="form-control input-sm" id="print_size" name="print_size">
+                                <option value="">请选择</option>
+                                <option value="A3">A3</option>
+                                <option value="A4">A4</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2" style="padding-right: 0px;">
+                            <label style="float: right;padding-top: 5px;color:red;" >*需要排版：</label>
+                        </div>
+                        <div class="col-md-3" style="padding-left: 0px;">
+                            <select class="form-control input-sm" id="his_typeset" name="his_typeset">
+                                <option value="">请选择</option>
+                                <option value="Y">是</option>
+                                <option value="N">否</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-1->
+                    <div class="row">
+                        <div class="col-md-2" style="padding-right: 0px;">
+                            <label style="float: right;padding-top: 5px;color:red;">*装订要求：</label>
+                        </div>
+                        <div class="col-md-3" style="padding-left: 0px;">
+                            <select class="form-control input-sm" id="bindiing_type" name="bindiing_type">
+                                <option value="">请选择</option>
+                                <option value="精装">精装</option>
+                                <option value="相纸胶装">相纸胶装</option>
+                                <option value="普通胶装">普通胶装</option>
+                                <option value="简装">简装</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2" style="padding-right: 0px;">
+                            <label style="float: right;padding-top: 5px; color:red;">*是否分册：</label>
+                        </div>
+                        <div class="col-md-3" style="padding-left: 0px;">
+                            <select class="form-control input-sm" id="is_inparts" name="is_inparts">
+                                <option value="">请选择</option>
+                                <option value="YES">是</option>
+                                <option value="NO">否</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2" style="padding-right: 0px;">
+                            <label style="float: right;padding-top: 5px;">*其他文印要求：</label>
+                        </div>
+                        <div class="col-md-8" style="padding-right: 0px;padding-left: 0px;">
+                            <textarea class="form-control" name="plt_comment" id="plt_comment" rows="6"></textarea>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 20px; padding: 5px;">
+                        <div class="panel panel-info">
+                            <div class="panel-heading gyl_panel_header">
+                                <i class="fa fa-table"></i>
+                                <button id="bu_addSf" type="button" class="btn btn-default btn-xs"><i class="fa fa-user"></i>添加收费项</button>
+                            </div>
+                            <div class="panel-body" style="padding: 5px;">
+                                <table id="t_sf" class="table table-bordered" style="margin-bottom: 0px;">
+                                    <thead>
+                                    <tr>
+                                        <th style="text-align: center;">收费项</th>
+                                        <th width="130" style="text-align: center;">规格</th>
+                                        <th width="80" style="text-align: center;">数量</th>
+                                        <th width="80" style="text-align: center;">单位</th>
+                                        <th width="100" style="text-align: center;">单价（元）</th>
+                                        <th width="130" style="text-align: center;">合计（元）</th>
+                                        <th width="60" style="text-align: center;">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2" style="padding-right: 0px;">
+                            <label style="float: right;padding-top: 5px;">文（晒）印总价：</label>
+                        </div>
+                        <div class="col-md-5" style="padding-left: 0px;">
+                            <div class="form-group" style="width: 100px;float: left">
+                                <input type="text" class="form-control input-sm" name="TypesetTotalPrice"
+                                       id="TypesetTotalPrice"
+                                       placeholder="" readonly="readonly">
+                            </div>
+                            <div class="form-group" style="float: left;">元</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2" style="padding-right: 0px;">
+                            <label style="float: right;padding-top: 5px;">核定价：</label>
+                        </div>
+                        <div class="col-md-5" style="padding-left: 0px;">
+                            <div class="form-group" style="width: 100px;float: left">
+                                <input type="text" class="form-control input-sm" name="PltTotalPrice"
+                                       id="PltTotalPrice"
+                                       placeholder="" readonly="readonly">
+                            </div>
+                            <div class="form-group" style="float: left;">元</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

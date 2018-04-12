@@ -1,0 +1,194 @@
+<!doctype html>
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="content-script-type" content="text/javascript">
+  <meta charset="utf-8"/>
+  <meta name="description" content=""/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>后台管理</title>
+
+
+  <!--基础CSS样式 -->
+  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link href="/bower_components/bootstrapvalidator/dist/css/bootstrapValidator.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
+  <link href="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+  <!--strat bootstrap 所用到的css 直接引用即可-->
+  <link rel="stylesheet" href="/styles/common/sb-admin-2.css" />
+
+  <!-- 右上角提示消息样式,一般情况外部框架已经引用,就不需要再引用了 CSS -->
+  <link rel="stylesheet" href="/bower_components/bootstrap-notify-master/css/bootstrap-notify.css" />
+
+  <!--这里引入你自己的CSS文件-->
+  <link rel="stylesheet" href="/styles/demo/demomenu.css" />
+
+  <!--如果你想获取浏览器相关的信息,引入此JS-->
+  <!-- build:js scripts/vendor/modernizr.js -->
+  <script src="/bower_components/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--如果要让IE9以下的浏览器支持HTML5的一些响应式布局特性,需要引入如下js-->
+  <!--[if lt IE 9]>
+  <script src="/scripts/common/html5shiv.js"></script>
+  <script src="/scripts/common/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body style="min-height: 800px">
+<div class="page-header gyl-page-header">
+  <h5>用户管理</h5>
+</div>
+
+<!-- /.row -->
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-user fa-fw"></i>
+        用户管理
+        <div class="btn-group pull-right">
+
+          <div class="btn-group" role="group" aria-label="...">
+            <button id="addUserButton" type="button" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i>新增
+            </button>
+            <button id="deleteSelection" type="button" class="btn btn-default btn-xs"><i class="fa fa-times-circle"></i>删除
+            </button>
+            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-chevron-down"></i>其它
+            </button>
+
+            <ul class="dropdown-menu slidedown">
+              <li>
+                <a href="#">
+                  <i class="fa fa-refresh fa-fw"></i>操作一
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-check-circle fa-fw"></i>操作二
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-times fa-fw"></i>操作三
+                </a>
+              </li>
+            </ul>
+          </div>
+
+
+        </div>
+      </div>
+      <!-- /.panel-heading -->
+      <div class="panel-body">
+        <div class="dataTable_wrapper" id="dataTables-userListAll">
+
+        </div>
+        <!-- /.table-responsive -->
+
+      </div>
+      <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+
+<!-- /.row -->
+</div>
+<!-- /#page-wrapper -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="addUserLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="addUserLabel">新增用户</h4>
+      </div>
+
+      <div class="modal-body">
+        <form id="addUserForm">
+          <input id="id" name="id" type="hidden" />
+          <div class="form-group">
+            <label for="login">登录名</label>
+            <input type="text" class="form-control" name="login" id="login" placeholder="登录名">
+          </div>
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name">
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name">
+          </div>
+          <div class="form-group">
+            <label for="email">email</label>
+            <input type="text" class="form-control" name="email" id="email" placeholder="email">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" id="saveUser">保存</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="userRole" tabindex="-1" role="dialog" aria-labelledby="userRoleLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="userRoleLabel">用户角色</h4>
+      </div>
+
+      <div class="modal-body">
+        <form id="userRoleForm">
+          <input id="rid" name="rid" type="hidden" />
+          <div id="roleList">
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" id="saveUserRole">保存</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 基础JS脚本 -->
+<script src="/bower_components/jquery/dist/jquery.js" ></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js" ></script>
+<script src="/bower_components/bootstrapvalidator/dist/js/bootstrapValidator.js"></script>
+<!-- 如果需要做拖拽等操作,需要引入 -->
+<script src="/bower_components/jquery-ui/jquery-ui.js" ></script>
+<!-- 如果需要使用cookie -->
+<script src="/bower_components/jquery.cookie/jquery.cookie.js" ></script>
+
+<!--如果需要使用数据列表,引入以下JS-->
+<script src="/bower_components/datatables/media/js/jquery.dataTables.js" ></script>
+<script src="/bower_components/datatables-responsive/js/dataTables.responsive.js" ></script>
+<script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+
+<!--在提交form表单的时候,需要将form数据转换成json格式字符串时使用-->
+<script src="/bower_components/jquery.serializeJSON/jquery.serializejson.js"></script>
+
+<!--  右上角提示消息脚本,一般情况外部框架已经引用,就不需要再引用了 -->
+<script src="/bower_components/bootstrap-notify-master/js/bootstrap-notify.js" ></script>
+
+  <!--引入 config js信息-->
+  <script src="/scripts/common/config.js" ></script>
+  <script src="/scripts/management/user.js" nerinend></script>
+</body>
+</html>

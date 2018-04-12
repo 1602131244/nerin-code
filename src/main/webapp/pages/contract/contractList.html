@@ -1,0 +1,635 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <!--<meta http-equiv="content-script-type" content="text/javascript">-->
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>合同管理</title>
+
+  <!--基础CSS样式 -->
+  <link rel="stylesheet" href="/bower_components/jquery-ui/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="/bower_components/bootstrapvalidator/dist/css/bootstrapValidator.css">
+  <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css">
+  <link rel="stylesheet" href="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css">
+  <link rel="stylesheet" href="/bower_components/bootstrap-select/dist/css/bootstrap-select.css">
+  <link rel="stylesheet" href="/bower_components/datatables/FixedColumns/css/fixedColumns.bootstrap.css">
+  <link rel="stylesheet" href="/bower_components/select2/dist/css/select2.min.css">
+  <!--strat bootstrap 所用到的css 直接引用即可-->
+  <link rel="stylesheet" href="/styles/common/sb-admin-2.css">
+
+  <!-- 右上角提示消息样式,一般情况外部框架已经引用,就不需要再引用了 CSS -->
+  <link rel="stylesheet" href="/bower_components/bootstrap-notify-master/css/bootstrap-notify.css">
+
+  <!--这里引入你自己的CSS文件-->
+
+  <!--如果你想获取浏览器相关的信息,引入此JS-->
+  <!-- build:js scripts/vendor/modernizr.js -->
+  <script src="/bower_components/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--如果要让IE9以下的浏览器支持HTML5的一些响应式布局特性,需要引入如下js-->
+  <!--[if lt IE 9]>
+  <script src="/scripts/common/html5shiv.js"></script>
+  <script src="/scripts/common/respond.min.js"></script>
+
+  <![endif]-->
+  <style>
+    .style_column {
+      text-align: center;
+    }
+    .dt-select {
+      background-color: #f5f5f5;
+    }
+    span.fancytree-title {
+      margin-left: 0px;
+    }
+    .highlight {
+      padding: 9px 14px;
+      margin-bottom: 14px;
+      background-color: #f7f7f9;
+      border: 1px solid #e1e1e8;
+      border-radius: 4px;
+    }
+    .table-condensed > tbody > tr > td,
+    .table-condensed > tfoot > tr > td {
+      padding: 3px;
+    }
+    .file {
+      position: relative;
+      display: inline-block;
+      background: #D0EEFF;
+      border: 1px solid #99D3F5;
+      border-radius: 4px;
+      padding: 4px 12px;
+      overflow: hidden;
+      color: #1E88C7;
+      text-decoration: none;
+      text-indent: 0;
+      line-height: 20px;
+    }
+    .file input {
+      position: absolute;
+      font-size: 100px;
+      right: 0;
+      top: 0;
+      opacity: 0;
+    }
+    .file:hover {
+      background: #AADFFD;
+      border-color: #78C3F3;
+      color: #004974;
+      text-decoration: none;
+    }
+    .ui-autocomplete-category {
+      font-weight: bold;
+      padding: .2em .4em;
+      margin: .8em 0 .2em;
+      line-height: 1.5;
+    }
+    .ui-autocomplete {
+      max-height: 200px;
+      overflow-y: auto;
+      /* prevent horizontal scrollbar */
+      overflow-x: hidden;
+    }
+    .ui-widget {
+      z-index: 1051;
+    }
+    .form-item-label {
+      /*width: 100px;*/
+      text-align: right;
+      padding: 3px 3px;
+    }
+    .form-item-required {color:red;}
+    .btn-modal-panel {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    form#selectFrom > div.row > div {padding-left: 3px;padding-right: 3px;}
+    form#selectFrom > div.row > div > label {width: 90px; text-align: right; padding-top: 3px;}
+    form#selectFrom > div.row {padding-top: 3px;}
+    div.modal-body div.panel {margin-bottom: 5px;}
+    div.modal-body div.panel-heading {padding: 0 0 0 15px;}
+    div.modal-body div.panel-body {padding-top: 5px; padding-bottom: 5px;}
+    div.modal-body div.panel-body div.form-group div {padding: 3px 3px 3px 3px;}
+    div.modal-body div.panel-body div.form-group div.label-wrapper {text-align: right;}
+    div.modal-body div.panel-body div.col-md-1 label {text-align: right;}
+    div.modal-body div.panel-body div.row div.form-group {padding:0 0 0 0;}
+    div.modal-body div.panel-body div.form-group button.addButton {height: 25px; width: 25px;display:inline;padding:0 0 0 0;}
+    div.modal-body div.panel-body div.form-group span.select2-container {width: 100%;}
+  </style>
+</head>
+<body style="min-height: 700px">
+<div class="page-header gyl-page-header">
+  <h4>合同登记及变更一览表
+    <!--<small>-->
+      <!--当前登录人：-->
+      <!--<span id="userName" style="font-weight: bold">未登录</span>-->
+      <!--当前权限：-->
+      <!--<span class="label label-danger" >登记</span>-->
+      <!--<span class="label label-success">查询</span>-->
+      <!--<span class="label label-success">查看</span>-->
+      <!--<span class="label label-danger">变更</span>-->
+      <!--<span class="label label-danger">导出</span>-->
+    <!--</small>-->
+  </h4>
+
+</div>
+<!-- /div .page-header -->
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-info">
+
+      <div class="panel-heading gyl_panel_header">
+        <i class="glyphicon glyphicon-search"></i>
+        查询条件
+        <div class="pull-right">
+          <button type="button" class="btn btn-default btn-xs" data-toggle="collapse" href="/templateList#queryBars">
+            <i class="glyphicon glyphicon-menu-down"></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="queryBars" class="panel-collapse collapse in">
+        <div class="panel-body" style="padding-top: 10px; padding-bottom: 5px;">
+          <form id="selectFrom" onsubmit="return false" onreset="$('#currencyView').html('币种');$('#currency').val('')">
+            <div class="row">
+              <div class="col-md-1">
+                <label>合同编号：</label>
+              </div>
+              <div class="col-md-3">
+                <input class="form-control input-sm" type="text" name="contractId" id="contractId" placeholder="contractId">
+              </div>
+              <div class="col-md-1">
+                <label>合同名称：</label>
+              </div>
+              <div class="col-md-3">
+                <input class="form-control input-sm" type="text" name="contractName" id="contractName" placeholder="contractName">
+              </div>
+              <div class="col-md-1">
+                <label>合同金额：</label>
+              </div>
+              <div class="col-md-3">
+                <div class="input-group">
+                  <div class="input-group-btn">
+                    <input class="form-control input-sm" type="hidden" name="currency" id="currency" value="">
+                    <button type="button" class="btn btn-default" style="height:25px;">≥</button>
+                    <button type="button" class="btn btn-default dropdown-toggle" style="height:25px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span id="currencyView">币种</span>
+                      <span class="caret"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a href="#" onclick="$('#currency').val('CNY');$('#currencyView').html('人民币')">人民币</a></li>
+                      <li><a href="#" onclick="$('#currency').val('USD');$('#currencyView').html('美元')">美元</a></li>
+                      <li><a href="#" onclick="$('#currency').val('EUR');$('#currencyView').html('欧元')">欧元</a></li>
+                      <li><a href="#" onclick="$('#currency').val('GBP');$('#currencyView').html('英镑')">英镑</a></li>
+                      <li><a href="#" onclick="$('#currency').val('RUB');$('#currencyView').html('卢布')">卢布</a></li>
+                    </ul>
+                  </div>
+                  <input class="form-control input-sm" type="text" name="money" id="money" placeholder="money">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-1">
+                <label>境内/境外：</label>
+              </div>
+              <div class="col-md-1">
+                <select class="form-control input-sm" name="isAbroad" title="">
+                  <option value="">请选择</option>
+                  <option value="native">境内</option>
+                  <option value="abroad">境外</option>
+                </select>
+              </div>
+              <div class="col-md-1">
+                <label>合同状态：</label>
+              </div>
+              <div class="col-md-1">
+                <select class="form-control input-sm" name="status" title="">
+                  <option value="">请选择</option>
+                  <option value="execute">执行</option>
+                  <option value="Suspension">中止</option>
+                  <option value="Stop">终止</option>
+                  <option value="Done">完成</option>
+                </select>
+              </div>
+              <div class="col-md-1">
+                <label>主行业：</label>
+              </div>
+              <div class="col-md-1">
+                <select class="form-control input-sm" name="industry" id="industry" title="请选择主行业"></select>
+              </div>
+              <div class="col-md-1">
+                <label>从行业：</label>
+              </div>
+              <div class="col-md-1">
+                <select class="form-control input-sm" name="industry2" id="industry2" title="请选择主行业"></select>
+              </div>
+              <div class="col-md-1">
+                <label>高新项目：</label>
+              </div>
+              <div class="col-md-1">
+                <select class="form-control input-sm" name="isGX" id="isGX" title="">
+                  <option value="">请选择</option>
+                  <option value="T">是</option>
+                  <option value="F">否</option>
+                </select>
+              </div>
+              <div class="col-md-1">
+                <label>提交人：</label>
+              </div>
+              <div class="col-md-1">
+                <div name="tjr" id="tjr" style="padding-top: 3px;"></div>
+              </div>
+            </div>
+            <div class="row">
+
+              <div class="col-md-1">
+                <label>合同时间：</label>
+              </div>
+              <div class="col-md-3">
+                <input class="form-control input-sm" type="text" name="contractDate" id="contractDate" placeholder="contractDate">
+              </div>
+            </div>
+
+            <div class="gyl-panel-line"></div>
+
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-default btn-sm" id="btnSelectFormQuery">
+                  <i class="glyphicon glyphicon-search"></i>查询
+                </button>
+                <button type="reset" class="btn btn-default btn-sm" id="btnSelectFormReset">
+                  <i class="glyphicon glyphicon-remove"></i>重置
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- /.row -->
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-info">
+      <div class="panel-heading gyl_panel_header">
+        &nbsp;
+        <div class="pull-left">
+          <i class="fa fa-table"></i>
+          查询结果
+        </div>
+
+        <div class="pull-left" style="margin-top: -6px; margin-left: 80px;padding-top:3px;">
+          <button id="bu_add" type="button" class="btn btn-default btn-xs">
+            <i class="fa fa-plus" style="color: #3CB371; font-size: 15px;"></i>登记新合同
+          </button>
+
+        </div>
+
+      </div>
+      <!-- /.panel-heading -->
+      <div class="panel-body" style="padding: 5px;">
+        <div class="dataTable_wrapper" id="dataTables-listAll">
+          <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-hover" id="dataTables-data"></table>
+        </div>
+        <!-- /.table-responsive -->
+      </div>
+      <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<!-- /#page-wrapper -->
+<div class="modal fade" id="addModal" tabindex="1050" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog" style="width: 90%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="addModalLabel">新增</h5>
+      </div>
+
+      <form id="addForm">
+      <div class="modal-body">
+        <div class="panel panel-info">
+          <div class="panel-heading gyl_panel_header">基本信息</div>
+          <div class="panel-body">
+            <div class="row form-group">
+            </div>
+            <div class="row form-group">
+            </div>
+            <div class="row form-group">
+              <div class="col-md-1 label-wrapper">
+                <label class="">合同编号：</label>
+              </div>
+              <div class="col-md-3">
+                <input class="form-control input-sm" type="text" name="s_contractId" id="s_contractId" placeholder="ABCD1234ABCD1234">
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-1 label-wrapper">
+                <label class="">合同名称：</label>
+              </div>
+              <div class="col-md-11">
+                <input class="form-control input-sm col-md-11" type="text" name="s_contractName" id="s_contractName" placeholder="一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 form-group">
+                <div class="col-md-3 label-wrapper">
+                  <label class="">归属部门：</label>
+                </div>
+                <div class="col-md-9">
+                  <select class="form-control input-sm" name="belongDep" id="belongDep" title="ABCD1234ABCD1234"></select>
+                </div>
+              </div>
+              <div class="col-md-4 form-group">
+                <div class="col-md-3 label-wrapper">
+                  <label class="">执行部门：</label>
+                </div>
+                <div class="col-md-9">
+                  <select class="form-control input-sm" name="ExecutiveDep" id="ExecutiveDep" title="ABCD1234ABCD1234"></select>
+                </div>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-1 label-wrapper">
+                <label class="">甲方：</label>
+              </div>
+              <div class="col-md-11">
+                <select class="form-control input-sm" name="PartyA" id="PartyA" title="ABCD1234ABCD1234">
+                </select>
+              </div>
+              <!--<div class="col-md-1">-->
+                <!--<button type="button" class="btn btn-default addButton btn-sm"><i class="fa fa-plus"></i></button>-->
+              <!--</div>-->
+            </div>
+            <div class="row form-group">
+              <div class="col-md-1 label-wrapper">
+                <label class="">建设地国：</label>
+              </div>
+              <div class="col-md-3">
+                <select class="form-control input-sm" name="country" id="country" title="ABCD1234ABCD1234">
+                </select>
+              </div>
+              <div class="col-md-1 label-wrapper">
+                <label class="">建设地省：</label>
+              </div>
+              <div class="col-md-3">
+                <select class="form-control input-sm" name="province" id="province" title="ABCD1234ABCD1234">
+                </select>
+              </div>
+              <div class="col-md-1 label-wrapper">
+                <label class="">建设地市：</label>
+              </div>
+              <div class="col-md-3">
+                <select class="form-control input-sm" name="city" id="city" title="ABCD1234ABCD1234">
+                </select>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-1 label-wrapper">
+                <label class="">详细地址：</label>
+              </div>
+              <div class="col-md-11">
+                <input class="form-control input-sm col-md-11" type="text" name="address" id="address" placeholder="请填写建设地详细地址">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 form-group">
+                <div class="col-md-3 label-wrapper">
+                  <label class="">主行业：</label>
+                </div>
+                <div class="col-md-9">
+                  <select class="form-control input-sm" name="addFormIndustry1" id="addFormIndustry1" title="ABCD1234ABCD1234"></select>
+                </div>
+              </div>
+              <div class="col-md-4 form-group">
+                <div class="col-md-3 label-wrapper">
+                  <label class="">副行业：</label>
+                </div>
+                <div class="col-md-9">
+                  <select class="form-control input-sm" name="addFormIndustry2" id="addFormIndustry2" title="ABCD1234ABCD1234"></select>
+                </div>
+              </div>
+              <div class="col-md-4 form-group">
+                <div class="col-md-3 label-wrapper">
+                  <label class="">合同类型：</label>
+                </div>
+                <div class="col-md-9">
+                  <select class="form-control input-sm" name="type" id="type" title="ABCD1234ABCD1234"></select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 form-group">
+                <div class="col-md-3 label-wrapper">
+                  <label class="">签订时间：</label>
+                </div>
+                <div class="col-md-9">
+                  <input class="form-control input-sm" type="date" name="addFormDate" id="addFormDate" title="ABCD1234ABCD1234">
+                </div>
+              </div>
+              <div class="col-md-4 form-group">
+                <div class="col-md-3 label-wrapper">
+                  <label class="">总金额：</label>
+                </div>
+                <div class="col-md-9">
+                  <input class="form-control input-sm" name="totalMoney" id="totalMoney" placeholder="321654.21"></input>
+                </div>
+              </div>
+              <div class="col-md-4 form-group">
+                <div class="col-md-3 label-wrapper">
+                  <label class="">币种：</label>
+                </div>
+                <div class="col-md-9">
+                  <select class="form-control input-sm" name="addFormCurrency" id="addFormCurrency" title="ABCD1234ABCD1234"></select>
+                </div>
+              </div>
+            </div>
+            <div class="row form-inline form-group">
+              <label>项目建设内容：</label>
+              <textarea class="form-control input-sm" name="s_remarks" id="s_remarks"  placeholder="" style="width: 708px; height: 100px;"></textarea>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="panel panel-info" style="margin-bottom: 5px;">
+          <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">
+            收款项目
+          </div>
+          <div class="panel-body" style="padding: 5px;">
+            <div class="row" style="margin: auto;" id="div_lxr">
+              <button id="bu_addReceipt" type="button" class="btn btn-default btn-xs btn-modal-panel"><i class="fa fa-plus"></i>增加</button>
+              <button id="bu_delReceipt" type="button" class="btn btn-default btn-xs btn-modal-panel"><i class="fa fa-trash-o"></i>删除</button>
+            </div>
+            <div class="dataTable_wrapper" id="dataTables-receipt-wrapper">
+
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-info" style="margin-bottom: 5px;">
+          <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">
+            合同扫描件及其他附件
+          </div>
+          <div class="panel-body" style="padding: 5px;">
+            <div class="row" style="margin: auto;" id="div_zz">
+              <button id="bu_addZz" type="button" class="btn btn-default btn-xs btn-modal-panel"><i class="fa fa-upload"></i>批量上传</button>
+              <button id="bu_delZz" type="button" class="btn btn-default btn-xs btn-modal-panel"><i class="fa fa-trash-o"></i>删除</button>
+            </div>
+            <div class="dataTable_wrapper" id="dataTables-zzAll">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      </form>
+      <div class="modal-footer" style="text-align: left;">
+        <div class="row" style="margin: auto;">
+          <div id="div_add">
+            <button id="bu_save" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="glyphicon glyphicon-floppy-saved"></i>保存</button>
+            <button id="bu_submit" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="fa fa-sign-in"></i>提交</button>
+          </div>
+          <div id="div_audit" style="display: none;">
+            <button id="bu_approved" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="glyphicon glyphicon-ok" style="color: green;"></i>批准</button>
+            <button id="bu_rejected" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="glyphicon glyphicon-remove" style="color: red;"></i>拒绝</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="lxrModal" tabindex="-1" role="dialog" aria-labelledby="lxrModalLabel">
+  <div class="modal-dialog" style="width: 1000px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="lxrModalLabel">联系人库</h5>
+      </div>
+
+      <div class="modal-body" style="padding: 5px;">
+
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="khModal" tabindex="-1" role="dialog" aria-labelledby="khModalLabel">
+  <div class="modal-dialog" style="width: 1000px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="khModalLabel">客户库</h5>
+      </div>
+
+      <div class="modal-body" style="padding: 5px;">
+
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+     aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog" style="width: 500px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="uploadModalLabel">附件上传</h5>
+      </div>
+
+      <div class="modal-body">
+        <div class="row form-inline">
+          <form id="templateUploadForm" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="customerId" name="customerId"/>
+            <div style="float: left; margin-left: 15px;" class="form-inline">
+              <a href="javascript:;" class="file">选择文件
+                <input type="file" name="zzFile" id="zzFile" style="margin-right: 0;"/>
+              </a>
+            </div>
+            <div style="float: left; margin-left: 30px;">
+              <button type="button" id="do_uploadFile" class="btn btn-primary btn-sm">
+                <i class="fa fa-upload"></i>上传
+              </button>
+            </div>
+          </form>
+        </div>
+        <div style="width: 300px;">
+          <span id="span_fileName"></span>
+        </div>
+        <div class="progress" style="margin-bottom: 0; margin-top: 10px;">
+          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+               aria-valuemin="0" aria-valuemax="100" style="width: 0">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 基础JS脚本 -->
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/bower_components/bootstrapvalidator/dist/js/bootstrapValidator.js"></script>
+<!-- 如果需要做拖拽等操作,需要引入 -->
+<script src="/bower_components/jquery-ui/jquery-ui.js"></script>
+<script src="/bower_components/jquery-ui/ui/i18n/datepicker-zh-CN.js"></script>
+<!-- 如果需要使用cookie -->
+<script src="/bower_components/jquery.cookie/jquery.cookie.js"></script>
+
+<!--如果需要使用数据列表,引入以下JS-->
+<script type="text/javascript" src="/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
+<script type="text/javascript" src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.js"></script>
+<script type="text/javascript" src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.dnd.js"></script>
+<script type="text/javascript" src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.edit.js"></script>
+<script type="text/javascript" src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.glyph.js"></script>
+<script type="text/javascript" src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.table.js"></script>
+<script type="text/javascript" src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.wide.js"></script>
+<script type="text/javascript" src="/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+<script type="text/javascript" src="/bower_components/datatables/FixedColumns/js/dataTables.fixedColumns.js"></script>
+
+<!--在提交form表单的时候,需要将form数据转换成json格式字符串时使用-->
+<script type="text/javascript" src="/bower_components/jquery.serializeJSON/jquery.serializejson.js"></script>
+
+<!--  右上角提示消息脚本,一般情况外部框架已经引用,就不需要再引用了 -->
+<!--<script type="text/javascript" src="/bower_components/bootstrap-notify-master/js/bootstrap-notify.js"></script>-->
+<!--<script type="text/javascript" src="/bower_components/bootstrap/js/popover.js"></script>-->
+
+<!-- select2 -->
+<script type="text/javascript" src="/bower_components/select2/dist/js/select2.js"></script>
+<script type="text/javascript" src="/bower_components/select2/dist/js/i18n/zh-CN.js"></script>
+<!--引入 config js信息-->
+<script type="text/javascript" src="/scripts/common/config.js"></script>
+<script type="text/javascript" src="/scripts/common/jquery.params.js" nerinend></script>
+<script type="text/javascript" src="/scripts/contract/contractList.js"></script>
+</body>
+</html>

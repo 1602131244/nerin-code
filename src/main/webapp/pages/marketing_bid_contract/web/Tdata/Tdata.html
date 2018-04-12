@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="generator"
+    content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
+    <title>合同及投标文件模板库</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css" />
+    <style>
+                .textbox{
+                        height:20px;
+                        margin:0;
+                        padding:0 2px;
+                        box-sizing:content-box;
+                }
+        
+</style>
+  </head>
+  <body class="easyui-layout" data-options="border:false">
+    <div id="center_west" data-options="region:'west',split:true" style="width:700px">
+		<div class="easyui-layout" data-options="fit:true">
+			<div id="treenorth" data-options="region:'north'" style="padding:3px;height:32px">
+				<div id="tbmenu" class="easyui-menu" style="width:130px;" data-options="noline:true"></div>
+				<a id="selectbtn" style="float:right"></a>
+				<a id="treetips" style="float:right;padding-top:6px"></a>
+				<a id="updatebtn" style="float:left;padding:4px;font-weight:bold;font-size:16px">合同及投标文件模板库</a>
+				<div style="float:left;padding:1px">&nbsp;&nbsp;
+					<input id="docSearch" class="easyui-searchbox" style="width:210px;padding:4px" data-options="prompt:'文件名模糊查找' ">
+				</div>
+			</div>
+			<div data-options="region:'center'">
+				<div id="tabtoolbar">
+					<a style="float:right">&nbsp;&nbsp;</a>
+					<a id="expandbtn" style="float:right">展开</a>
+					<a style="float:right">&nbsp;&nbsp;</a>
+					<a id="collapsebtn" style="float:right">折叠</a>
+					<a style="float:right">&nbsp;&nbsp;</a>
+				</div>
+				<div id="tabs">
+					<div id="public" title="共享文件（不需要审批）">
+						<ul id="pTree"></ul>
+					</div>
+					<div id="controlled" title="受控文件（需要审批）">
+						<ul id="Ttree"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'center'">
+		<div class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'north'" style="padding:3px;height:32px">
+				<a id="unselectbtn"></a>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<a id="applybtn">提交审批</a>
+				<b>&nbsp;&nbsp;提示：勾选功能仅用于批量移除，未勾选行也将被提交审批。</b>
+			</div>
+			<div data-options="region:'center'">
+				<div id="Tgrid"></div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="../../jquery.min.js"></script> 
+    <script type="text/javascript" src="../../jquery.easyui.min.js"></script> 
+    <script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script> 
+    <script type="text/javascript" src="js/Tdata.js"></script>
+  </body>
+</html>

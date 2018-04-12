@@ -1,0 +1,37 @@
+[{
+	"workflow":[
+		{"id":1149,"name":"SDEPC.01.03.09-05-专业方案评审流程","isOA":true},
+		{"id":4149,"name":"SDEPC.01.03.09-11-矿山事业部专业方案评审流程","isOA":true}
+	],
+	"url":"/api/naviWbpsRest/zyfapsOa",
+	"noMajor":false,
+	"nophase":false,
+	"data":[
+		{"requestId":200330,"requestName":"SDEPC.01.03.09-05-专业方案评审流程-袁剑平-2017-06-15","major":"冶金","createBy":"袁剑平","createDate":"2017-06-15 14:03:52","status":"通过办结","currentPerson":"内审员001,内审员002,内审员003"},
+		{"requestId":200329,"requestName":"SDEPC.01.03.09-05-专业方案评审流程-袁剑平-2017-06-15","major":"加工","createBy":"袁剑平","createDate":"2017-06-15 10:38:10","status":"主任工程师审核","currentPerson":"赵欣"},
+		{"requestId":200328,"requestName":"SDEPC.01.03.09-05-专业方案评审流程-袁剑平-2017-06-15","major":"收尘","createBy":"袁剑平","createDate":"2017-06-15 10:34:27","status":"主任工程师审核","currentPerson":"赵欣"},
+		{"requestId":173618,"requestName":"SDEPC.01.03.09-05-专业方案评审流程-章小兵-2015-12-14","major":"冶金机械","createBy":"章小兵","createDate":"2015-12-14 14:38:08","status":"通过办结","currentPerson":"内审员001,内审员002,内审员003"},
+		{"requestId":144893,"requestName":"SDEPC.01.03.09-05-专业方案评审流程-魏欣欣-2015-08-24","major":"冶金","createBy":"魏欣欣","createDate":"2015-08-24 15:02:27","status":"相关人员审核","currentPerson":"王玮"}
+	]
+},{
+	"workflow":[
+		{"id":3850,"name":"SDEPC.01.03.09-11-公司级方案评审流程","isOA":true}
+	],
+	"url":"/api/naviWbpsRest/gsjfapsOa",
+	"noMajor":true,
+	"nophase":true,
+	"data":[
+		{"requestId":193370,"requestName":"SDEPC.01.03.09-11-公司级方案评审流程-马海玉-2016-03-08","createBy":"马海玉","createDate":"2016-03-08 09:03:18","status":"办结","currentPerson":"内审员001,内审员002,内审员003"},
+		{"requestId":155514,"requestName":"SDEPC.01.03.09-11-项目方案评审流程-金铜标-2015-10-12","createBy":"金铜标","createDate":"2015-10-12 09:02:59","status":"相关人员评审","currentPerson":"孔晓青"},
+		{"requestId":151635,"requestName":"SDEPC.01.03.09-11-项目方案评审流程-尹湘华-2015-09-18","createBy":"尹湘华","createDate":"2015-09-18 16:43:02","status":"相关人员评审","currentPerson":"林巧,章拔群,崔学雷,魏欣欣,刘帅,王玮,胡炯华"}
+	]
+},{
+	"workflow":[
+		{"id":4411,"name":"SDEPC.01.03.09-01-设计输入审批流程","isOA":false}
+	],
+	"url":"/api/naviWbpsRest/sjsrpsOa",
+	"noMajor":true,
+	"nophase":false,
+	"data":[{"requestId":196327,"requestName":"(2A15D680401-前期咨询)SDEPC.01.03.09-01-设计输入审批流程","createBy":"门建兵","createDate":"2016-03-21 17:18:50","status":"相关人员评审","currentPerson":"易平"}
+	]
+}]

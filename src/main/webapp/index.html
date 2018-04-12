@@ -1,0 +1,162 @@
+<!doctype html>
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="description" content=""/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>NIMS 2.0</title>
+
+  <!-- build:css styles/back-main.css -->
+  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+  <!--如果需要使用fa-xxx打头的小图标,需要引用此CSS-->
+  <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
+  <!--前台框架主CSS文件,只在index.html中使用-->
+  <link rel="stylesheet" href="/styles/common/front-main.css" />
+  <!--start bootstrap template所需css-->
+  <link rel="stylesheet" href="/styles/common/sb-admin-2.css" />
+  <!-- 如果需要使用消息弹出框功能,需要引入此 CSS -->
+  <link rel="stylesheet" href="/bower_components/bootstrap-notify-master/css/bootstrap-notify.css" />
+  <link rel="stylesheet" href="/bower_components/jquery-confirm2/dist/jquery-confirm.min.css" nerinend/>
+  <!-- endbuild -->
+  <!-- build:js 如果想了解浏览器对HTML5,CSS3等的支持情况需要引入 -->
+  <script src="/bower_components/modernizr/modernizr.js" ></script>
+  <!-- endbuild -->
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script  src="/scripts/common/html5shiv.js"></script>
+  <script  src="/scripts/common/respond.min.js"></script>
+  <![endif]-->
+  <style>
+    .confirm2_info {
+      color: black;
+    }
+    .confirm2_warring {
+      color: #ffe61b;
+    }
+    .confirm2_error {
+      color: red;
+    }
+  </style>
+</head>
+<body><!-- Navigation -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation </span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"><img src="/images/logo.png"/></a>
+
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      <ul class="nav navbar-nav" id="frontNav">
+
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right loginnav">
+        <li>
+          <a href="#" id="loginPopup">登录</a>
+        </li>
+
+        <li class="dropdown" id="userProfile">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="currentUser"></span><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">详细信息</a></li>
+            <li><a th:href="/admin">系统管理</a></li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <form id="logoutform" action="/api/logout" method="post">
+                <input type="hidden" name="loginType" value="form"/>
+              </form>
+              <a id="logout">登出</a></li>
+          </ul>
+        </li>
+      </ul>
+
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav>
+<!-- Page Content -->
+<div class="container">
+<!-- inline, after the iframe -->
+  <iframe src="/pages/demo/demo.html" class="auto-height" scrolling="no" width="100%" frameborder="0"></iframe>
+
+    <!-- Footer -->
+    <footer style="text-align: center;">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright &copy; 中国瑞林工程技术有限公司 2016</p>
+        </div>
+      </div>
+    </footer>
+</div>
+
+<!--Login popup 登录弹出窗口-->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalModalLabel">
+  <div class="modal-dialog" style="max-width: 300px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">登录</h4>
+      </div>
+      <!--<form th:action="@{/api/authentication}" method="post">-->
+      <div class="modal-body">
+        <input type="hidden" class="form-control" id="loginType" name="loginType" value="form"/>
+          <div class="form-group">
+            <label for="j_username">用户</label>
+            <input type="text" class="form-control" id="j_username" name="j_username" placeholder="管理员账号"/>
+          </div>
+          <div class="form-group">
+            <label for="j_password">密码</label>
+            <input type="password" class="form-control" name="j_password" id="j_password" placeholder="管理员密码"/>
+          </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-primary" id="loginbutton">登录</button>
+      </div>
+      <!--</form>-->
+    </div>
+  </div>
+</div>
+<!--右上角消息提示!-->
+<div class='notifications top-right'></div>
+
+<!-- build:js scripts/back-main.js -->
+<script src="/bower_components/jquery/dist/jquery.js" ></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js" ></script>
+<script src="/bower_components/jquery-ui/jquery-ui.js" ></script>
+<!--方便快速访问cookie-->
+<script src="/bower_components/jquery.cookie/jquery.cookie.js" ></script>
+<!--bootstrap风格的提示消息-->
+<script src="/bower_components/bootstrap-notify-master/js/bootstrap-notify.js" ></script>
+<!--让iframe自适应高度插件-->
+<script src="/bower_components/jquery-iframe-auto-height/dist/jquery-iframe-auto-height.js"></script>
+<script src="/bower_components/jquery-iframe-auto-height/vendor/jquery.browser.js"></script>
+<script src="/bower_components/jquery-confirm2/dist/jquery-confirm.min.js"></script>
+<script src="/scripts/common/jquery.params.js" nerinend></script>
+<!--项目配制信息JS-->
+<script src="/scripts/common/config.js" ></script>
+<!--前端框架页面JS文件,主要包含导航初始化功能-->
+<script src="/scripts/common/front-main.js" ></script>
+<!--如果需要使用右上角消息提示功能,则需要引入,如果在框架内,则不需要引用-->
+<script src="/bower_components/fakeLoader/fakeLoader.min.js"></script>
+
+<script src="/scripts/common/message.js" ></script>
+<!--登录操作JS文件-->
+<script src="/scripts/common/login.js" ></script>
+
+<!-- endbuild -->
+</body>
+</html>

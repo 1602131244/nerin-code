@@ -1,0 +1,426 @@
+﻿<!DOCTYPE html>
+<html>
+<base target="_self">
+<head>
+    <title>三级策划</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <style>
+        .textbox {
+            height: 20px;
+            margin: 0;
+            padding: 0 2px;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body class="easyui-layout" id="rootlayout">
+    <div id="north" data-options="region:'north',title:'项目阶段选择',split:true,collapsed:false,hideCollapsedContent:false,collapsedContent: function(title){
+         return title;}" style="height:245px">
+    <div id="Div1" class="easyui-layout" data-options="fit:true">
+        <div id="Div2" data-options="region:'north',border:false">
+            <table style="border-spacing:0">
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="easyui-menubutton" id="btnprjphase">本项目阶段切换</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div id="menuphase" style="width:120px;"></div>
+                    </td>
+                    <td>
+                        <input id="prjsearch" class="easyui-searchbox" style="width:250px" data-options="prompt:'其他项目简称、全称、编号、项目经理模糊查找' ">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div data-options="region:'center',border:false">
+            <div id="prjgrid">
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="west" data-options="region:'west',title:'查找及引用',split:true,hideCollapsedContent:false,collapsed:true,collapsedContent: function(title){
+         return '<div style=font-weight:bold;text-align:center>' +title.split('').join('<br />')+'</div>';
+    }" style="width:700px">
+    <div id="reftabs" class="easyui-tabs" data-options="fit:true,border:false">
+        <div id="tabsys" title="非条件工作包" data-options="closable:false" >
+            <div id="Sys_layout" class="easyui-layout" data-options="fit:true">
+				<div id="prjSysbuttons" data-options="region:'north',border:false" style="display:none">
+					<table style="border-spacing:0">
+						<tr>
+							<td>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="easyui-menubutton" id="btnprjindustrysys">全部类型</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<div id="menuindustrysys" style="width:100px;"></div>
+							</td>
+							<td>
+								<input id="prjsyssearch" class="easyui-searchbox" style="width:250px" data-options="prompt:'工作包名称模糊查询' ">
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div data-options="region:'center',border:false">
+					<div id="gridPrjSys"></div>
+				</div>
+            </div>
+        </div><div id="tabmajor" title="条件工作包" data-options="closable:false" style="heigit:100%">
+            <div id="major_layout" class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'north',border:false">
+					<table style="border-spacing:0;width:100%;height:28px;">
+						<tr>
+							<td align="right" style="margin-right:10px;"></td>
+							<td>
+								<input id="prjmajorsearch" class="easyui-searchbox" style="width:250px" data-options="prompt:'专业名称,代字模糊查找' ">
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div data-options="region:'center',border:false">
+					<div id="gridPrjmajors"></div>
+				</div>
+			</div>
+        </div>
+        <div title="历史项目" data-options="closable:false" style="">
+            <div id="pub_layout1" class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'north',split:true,collapsible:true,hideCollapsedContent:false,title:'搜索项目并展开其WBS/PBS，双击名称查看详细内容'" style="height:262px;">
+                    <div id="Div3" class="easyui-layout" data-options="fit:true">
+                        <div id="Div4" data-options="region:'north',border:false">
+                            <table style="border-spacing:0">
+                                <tr>
+                                    <td>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="easyui-menubutton" id="btnprjindustry">全部行业</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <div id="menuindustry" style="width:100px;"></div>
+                                    </td>
+                                    <td>
+                                        <input id="prjhissearch" class="easyui-searchbox" style="width:250px" data-options="prompt:'项目简称、全称、编号、项目经理模糊查询' ">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="Div6" data-options="region:'center',border:false,split:true">
+                            <div id="prjhisgrid" style="height:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div data-options="region:'center',border:false">
+                    <div id="his_layout_center" class="easyui-layout" data-options="fit:true">
+                        <div data-options="region:'west',title:'导航 - 系统子项树',collapsed:true,hideCollapsedContent:false,collapsedContent: function(){return '<div style=font-weight:bold;text-align:center>系<br/>统<br/>子<br/>项<br/>树</div>';},split:true" style="width:260px"><ul id="histree"></ul></div>
+						<div id="hispage" data-options="region:'center',title:'历史项目PBS/WBS详细内容'">
+                            <div id="hisgrid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+        <div id="wbs_layout" class="easyui-layout" data-options="fit:true">
+			<div id="wbs_layout_north" data-options="region:'north',border:false,collapsed:true,hideCollapsedContent:false,title:'发布版'" style="height:85px">
+				<div id="subitem_toolbar_majors" style="padding:3px 0px 3px 8px;">
+					<span>
+						&nbsp;<b>专业:</b>&nbsp;
+						<a class="easyui-linkbutton" data-options="plain:true" id="majorALL">不限</a>
+					</span>
+					<span id="majorsdiv">
+					</span>
+				</div>
+			</div>
+            <div data-options="region:'center',border:false,hideCollapsedContent:false">
+				<div id="wbs_layout_center" class="easyui-layout" data-options="fit:true">
+					<div data-options="region:'north',border:false" style="padding:3px;height:32px">
+						<div id="subitem_toolbar">
+							<div id="subitem_toolbar_centerbtn">
+								<a id="subitem_toolbar_checkout">策划</a>
+								<!-- <a id="subitem_toolbar_excute">执行</a> -->
+								<a id="subitem_toolbar_ref">引用</a>
+								<a id="subitem_toolbar_del">删除</a>
+								<a id="subitem_toolbar_edit" class="easyui-menubutton" data-options="iconCls: 'icon-edit',plain: false,hasDownArrow: false,menu:'#chooseedits'">修改</a>
+								<div id="chooseedits" style="width:70px;">
+									<div data-options="iconCls:'icon-input'" id="edittext">详情</div>
+									<div data-options="iconCls:'icon-date'" id="editdate">日期</div>
+									<div data-options="iconCls:'icon-user'" id="edituser">人员</div>
+									<div data-options="iconCls:'icon-stateon'" id="editstatuson">设置生效</div>
+									<div data-options="iconCls:'icon-stateoff'" id="editstatusoff">设置失效</div>
+								</div>
+								<a id="subitem_toolbar_me" class="easyui-menubutton" data-options="iconCls: 'icon-more',plain: false,hasDownArrow: false,menu:'#chooseme'">物料</a>
+								<div id="chooseme" style="width:70px;">
+									<div data-options="iconCls:'icon-add'" id="meadd">创建</div>
+									<div data-options="iconCls:'icon-search'" id="mesearch">查询</div>
+								</div>
+								<a id="subitem_toolbar_cancel">放弃</a>
+								<a id="subitem_toolbar_accept">继续</a>
+								<a id="subitem_toolbar_save">保存</a>                        &nbsp;&nbsp;&nbsp;&nbsp;
+								<a id="subitem_toolbar_reset">重置</a>
+								<a id="subitem_toolbar_checkin">释放</a>
+							</div>
+						</div>
+					</div>
+					<div id="wbs_layout_west" data-options="region:'west',title:'导航 - 系统子项树',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+							 return '<div style=font-weight:bold;text-align:center>系<br/>统<br/>子<br/>项<br/>树</div>';
+						}" style="width:380px">
+						<ul id="divtree"></ul>
+					</div>
+					<div id="spepage" data-options="region:'center',title:'专业详情 - 工作包列表'">
+						<div id="subitem_grid"></div>
+						<div id="subitem_grid_ContextMenu"></div>
+					</div>
+				</div>
+			</div>
+            <div data-options="region:'south',border:true" data-options="fit:true" style="height:23px;width:100%">
+                <div style="float:left">
+                    <input id="driftshowall" type="checkbox">显示更多列&nbsp;&nbsp;
+                </div>
+				<div id="myworkdiv" style="float:left">
+					<input id="mywork" type="checkbox">我的设计工作包&nbsp;&nbsp;
+                </div>
+				<div id="mycheckdiv" style="float:left">
+					<input id="mycheck" type="checkbox">我的校审工作包&nbsp;&nbsp;
+                </div>
+				<div style="float:left;padding:1.3px">
+                    <a href="javascript:void(0)" id="changelist">图纸状态变更记录</a>&nbsp;
+					<a href="javascript:void(0)" id="setHidden">过滤工作包</a>&nbsp;
+					<a href="javascript:void(0)" id="rejHidden">解除过滤</a>&nbsp;
+					<a>| 当前共加载工作包</a>
+					<a id="totalwork">&nbsp;</a>
+					<a>个，显示</a>
+					<a id="displaywork">&nbsp;</a>
+					<a>个，过滤</a>
+					<a id="hiddenwork">&nbsp;</a>
+					<a>个。</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="speformdiv" class="easyui-window" style="width: 380px; height: 228px;" data-options="title:'选择一个专业',minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+        <form method="post" style="padding:15px">
+			<div id="majorsdiv_w"></div>
+		</form>
+    </div>
+	<div id="loaddiv" class="easyui-window" style="width: 380px; height: 70px;" data-options="title:'正在处理，请稍候...',minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+		温馨提示：<br>为避免长时间等待，单次批量处理表格行数不宜超过10行。
+	</div>
+	<div id="Drawdiv" class="easyui-window" style="width: 850px; height: 215px;" data-options="title:'图纸任务流程记录',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+        <div style="float:left" id="Drawdg"></div>
+		<div id="DrawTool"><a id="btnDraw">校审</a>&nbsp;&nbsp;<a id="btnAppr">会签</a>&nbsp;&nbsp;<a id="btnecm">查档</a></div>
+    </div>
+	<div id="NBCCformdiv" class="easyui-window" style="width: 850px; height: 211px;" data-options="title:'协作文本任务',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+        <div style="float:left" id="NBCCdg"></div>
+    </div>
+	<div id="NBCCcheckdiv" class="easyui-window" style="width: 800px; height: 211px;" data-options="title:'专业校审流程记录',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+        <div style="float:left" id="NBCCcheckdg"></div>
+    </div>
+	<div id="NBCCreviewdiv" class="easyui-window" style="width: 800px; height: 215px;" data-options="title:'公司级评审流程记录',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+        <div style="float:left" id="NBCCreviewdg"></div>
+    </div>
+	<div id="Conditiondiv" class="easyui-window" style="width: 850px; height: 215px;" data-options="title:'接口条件任务',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+        <div style="float:left" id="Conditiondg"></div>
+		<div id="ConditionTool"><a id="btnCondition">编制</a><a id="btnConditionup">升版</a>&nbsp;&nbsp;<a id="ConditionDescr"></a></div>
+    </div>
+	<div id="Calculationdiv" class="easyui-window" style="width: 850px; height: 215px;" data-options="title:'计算书任务流程记录',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+        <div style="float:left" id="Calculationdg"></div>
+		<div id="CalculationTool"><a id="btnCalculation">编制</a><a id="btnCalculationup">升版</a></div>
+    </div>
+    <div id="dateformdiv" class="easyui-window" style="width: 350px; height: 140px;" data-options="title:'批量修改计划起止日期',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+        <form id="form0" method="post" style="padding:15px">
+            <div style="float:left">
+                <input id="ckbdatestart" type="checkbox" onchange="_enableCombo('#ckbdatestart', '#dateplanstart')">计划开始日期<br />
+                <input class="easyui-datebox" type="text" name="sdate" id="dateplanstart" style="width: 100px" />
+            </div>
+            <div style="float:left;padding-left:10px;">
+                <input id="ckbdateend" type="checkbox" onchange="_enableCombo('#ckbdateend', '#dateplanend')">计划结束日期<br />
+                <input class="easyui-datebox" type="text" name="edate" id="dateplanend" style="width: 100px" />
+            </div>
+            <div style="float:right"><br /><a id="btndateapply" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">应用</a></div>
+			<div style="clear:both;padding:5px">可选区间：<a id="oldstartdate"></a> 至 <a id="oldenddate"></a></div>
+		</form>
+    </div>
+
+    <div id="formuser" class="easyui-window" style="width: 460px;" data-options="title:'批量修改设校审人员',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+        <form id="form1" method="post" style="padding:5px">
+            <div style="float:left">
+                <input id="ckbdesign" type="checkbox" onchange="_enableCombo('#ckbdesign', '#txtdesign')">设计人<br />
+                <input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false" name="txtdesign" id="txtdesign" style="width: 55px" />
+            </div>
+            <div style="float:left;padding-left:10px;">
+                <input id="ckbcheck" type="checkbox" onchange="_enableCombo('#ckbcheck', '#txtcheck')">校核人<br />
+                <input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false" name="txtcheck" id="txtcheck" style="width:55px" />
+            </div>
+            <div style="float:left;padding-left:10px;">
+                <input id="ckbreview" type="checkbox" onchange="_enableCombo('#ckbreview', '#txtreview')">审核人<br />
+                <input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false" name="txtreview" id="txtreview" style="width:55px" />
+            </div>
+            <div style="float:left;padding-left:10px;">
+                <input id="ckbapprove" type="checkbox" onchange="_enableCombo('#ckbapprove', '#txtapprove')">审定人<br />
+                <input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false" name="txtapprove" id="txtapprove" style="width:55px" />
+            </div>
+            <div style="float:left;padding-left:10px;">
+                <input id="ckbcertified" type="checkbox" onchange="_enableCombo('#ckbcertified', '#txtcertified')">注册工程师<br />
+                <input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false" name="txtcertified" id="txtcertified" style="width:70px" />
+            </div>
+            <div style="float:left;padding-left:10px;">
+                <input id="ckbscheme" type="checkbox" onchange="_enableCombo('#ckbscheme', '#txtscheme')">方案设计人<br />
+                <input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false" name="txtscheme" id="txtscheme" style="width:70px" />
+            </div>
+            <div style="clear:both;height: 5px;"></div>
+			<div align="center"><br /><a id="btnuserapply" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">应用</a></div>
+        </form>
+    </div>
+	<div id="sethiddenwindow" class="easyui-window" style="width: 390px;height:245px" data-options="title:'过滤工作包：增加以下过滤条件',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+        <div style="padding:5px"><a id="btnhiddenapply">应用</a></div>
+		<form id="form2" method="post" style="padding:5px">
+			<div><a style="font-weight:bold">被隐藏类型：&nbsp;</a><a id="btnfiltertypeall">全部</a> <a id="btnfiltertypenone">清除</a></div>
+			<div id="form2div1" style="float:left"></div>
+			<div style="clear:both"><a style="font-weight:bold">被隐藏状态：&nbsp;</a><a id="btnfilterstatall">全部</a> <a id="btnfilterstatnone">清除</a></div>
+			<div id="form2div2" style="float:left"></div>
+			<div style="clear:both"><a style="font-weight:bold">被隐藏条件接收专业：&nbsp;</a><a id="btnfilterrecall">全部</a> <a id="btnfilterrecnone">清除</a></div>
+			<div id="form2div3" style="float:left"></div>
+			<div style="clear:both"><a style="font-weight:bold">被隐藏设计人：&nbsp;</a><a id="btnfilterdesignall">全部</a> <a id="btnfilterdesignnone">清除</a></div>
+			<div id="form2div4" style="float:left"></div>
+        </form>
+    </div>
+    <div id="divpubwindow" class="easyui-window" style="width:900px;height:400px;" data-options="title:'保存：图纸状态变更预览',minimizable:false,maximizable:true,collapsible:false,closed:true,modal:false">
+        <div id="divpubwindow_layout" class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'north',border:false">
+                <table style="border-spacing:0;width:100%">
+                    <tr>
+                        <td>
+                            <a id="pubwindowupdate" data-options="iconCls:'icon-mini-refresh'" class="easyui-linkbutton">更新</a>&nbsp;&nbsp;
+                            <a id="pubwindowexecute" data-options="iconCls:'icon-ok'" class="easyui-linkbutton">执行</a>&nbsp;&nbsp;
+                        </td>
+                        <td style="width:20px;"></td>
+                        <td><label id="pubwindowmsgs" style="color:red;">提示：请勾选要发布的记录,必须完成更新且图纸状态变更全部确认后方可执行发布。</label></td>
+                    </tr>
+                </table>
+            </div>
+            <div data-options="region:'center',border:false">
+                <table id="grid_publists" style="width: 100%; height: 100%" class="easyui-datagrid"
+                       data-options="rownumbers:true,singleSelect:false,fit:true,pagination:false,method:'get'">
+                    <thead data-options="frozen:true">
+                        <tr>
+                            <th data-options="field:'divisionNum',width:60">子项号</th>
+                            <th data-options="field:'divisionName',width:120">子项名称</th>
+                            <th data-options="field:'specialty',width:50">专业</th>
+                            <th data-options="field:'workName',width:140">工作包名称</th>
+                            <th data-options="field:'status',width:120">状态</th>
+                            <th data-options="field:'ck', checkbox: true,width:60">确认变更</th>
+                            <th data-options="field:'design',width:70">设计人</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th data-options="field:'check',width:70">校核人</th>
+                            <th data-options="field:'review',width:70">审核人</th>
+                            <th data-options="field:'approve',width:70">审定人</th>
+                            <th data-options="field:'certified',width:70">注册工程师</th>
+                            <th data-options="field:'scheme',width:70">方案设计人</th>
+                            <th data-options="field:'workID',width:70">工作包号</th>
+                            <th data-options="field:'grandNum',width:70">专业孙项号</th>
+                            <th data-options="field:'grandName',width:80">专业孙项名称</th>
+                            <th data-options="field:'dual',width:60">双语名称</th>
+                            <th data-options="field:'matcode',width:80">关联物料编码</th>
+                            <th data-options="field:'matName',width:80">关联物料名称</th>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="divchangviewwindow" class="easyui-window" style="width:900px;height:400px;" data-options="title:'图纸状态变更记录',minimizable:false,maximizable:true,collapsible:false,closed:true,modal:true">
+        <div id="divchangeviewwindow_layout" class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'center',border:false">
+                <table id="grid_changelists" style="width: 100%; height: 100%" class="easyui-datagrid"
+                       data-options="rownumbers:true,singleSelect:false,fit:true,pagination:true,method:'get'">
+                    <thead data-options="frozen:true">
+                        <tr>
+                            <th data-options="field:'time',width:60">变更时间</th>
+                            <th data-options="field:'pubwbsVer',width:60">发布版次</th>
+                            <th data-options="field:'divisionNum',width:60">子项号</th>
+                            <th data-options="field:'divisionName',width:120">子项名称</th>
+                            <th data-options="field:'specialty',width:50">专业</th>
+                            <th data-options="field:'workName',width:140">工作包名称</th>
+                            <th data-options="field:'status',width:120">状态</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th data-options="field:'design',width:70">设计人</th>
+                            <th data-options="field:'check',width:70">校核人</th>
+                            <th data-options="field:'review',width:70">审核人</th>
+                            <th data-options="field:'approve',width:70">审定人</th>
+                            <th data-options="field:'certified',width:70">注册工程师</th>
+                            <th data-options="field:'scheme',width:70">方案设计人</th>
+                            <th data-options="field:'workID',width:70">工作包号</th>
+                            <th data-options="field:'grandNum',width:70">专业孙项号</th>
+                            <th data-options="field:'grandName',width:80">专业孙项名称</th>
+                            <th data-options="field:'dual',width:60">双语名称</th>
+                            <th data-options="field:'matcode',width:80">关联物料编码</th>
+                            <th data-options="field:'matName',width:80">关联物料名称</th>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <div id="divothers" class="easyui-window" style="width:600px;height:260px" data-options="title:'其它参与人分配',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+        <div id="divothers_layout" class="easyui-layout" data-options="fit:true">
+		<div data-options="region:'center',border:false,fit:true">
+                <div id="divothers_layout" class="easyui-layout" data-options="fit:true">
+                    <div data-options="region:'west',border:true" style="width:250px">
+						<div id="tb1" style="height:29px;padding:2px;">
+							占当前工作包工作量比例(%)：<input id="otherallpercent" type="text" style="width:50px;" class="easyui-numberbox" data-options="min:0,max:100,precision:2" />
+							<a id="usersel" class="easyui-linkbutton" style="float:right">>></a>
+						</div>
+                        <table id="grid_userall" style="width: 100%; height:100%"
+                               data-options="toolbar:'#tb1',fitColumns:true,rownumbers:true,singleSelect:false,pagination:false,method:'get'">
+                            <thead>
+                                <tr>
+                                    <th data-options="field:'ck', checkbox: true "></th>
+                                    <th data-options="field:'name'">可选人员</th>
+                                    <th data-options="field:'duty',width:80">已担任角色</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div data-options="region:'center',border:true" style="width:300px">
+						<div id="tb2" style="height:29px;padding:2px;">
+							<a id="userunsel" class="easyui-linkbutton"><<</a>&nbsp;&nbsp;
+							<a id="majorratesave" data-options="iconCls:'icon-save'" class="easyui-linkbutton">应用</a>&nbsp;&nbsp;
+							<a id="majorratesplit" data-options="iconCls:'icon-avg'" class="easyui-linkbutton">等分</a>&nbsp;&nbsp;
+							<a id="majorratesum" data-options="iconCls:'icon-sum'" class="easyui-linkbutton">求和</a>
+						</div>
+						<table id="grid_usersel" style="width: 100%; height: 100%"
+							   data-options="toolbar:'#tb2',fitColumns:true,rownumbers:true,singleSelect:false,pagination:false,method:'get'">
+							<thead>
+								<tr>
+									<th data-options="field:'ck', checkbox: true "></th>
+									<th data-options="field:'otherName',width:60">参与人</th>
+									<th data-options="field:'duty',width:100">已担任角色</th>
+									<th data-options="field:'otherRatio',align:'center',editor:{type:'numberbox',options:{precision:2}}">详细比例%</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="conditionuser" class="easyui-window" style="width: 240px;" data-options="title:'选择审批执行人员',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+		<form id="form1" method="post" style="padding:5px">
+			<div style="float:left">
+				接收专业负责人：
+				<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'perNum',textField:'perName',editable:false,hasDownArrow:false,required:true" name="zychgr" id="zychgr" style="width: 65px" />
+			</div>
+			<div style="clear:both;height: 5px;"></div>
+			<div align="center"><br /><a id="btnconuserapply">应用</a></div>
+		</form>
+	</div>
+    <script type="text/javascript" src="../../jquery.min.js"></script>
+    <script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="js/WBSLV3.js?v=1"></script>
+</body>
+</html>

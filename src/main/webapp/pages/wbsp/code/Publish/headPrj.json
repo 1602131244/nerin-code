@@ -1,0 +1,57 @@
+[{
+	"workflow":[
+		{"id":399,"name":"图纸新晒","isOA":true}
+	],
+	"url":"/api/naviWbpsRest/printAllOa?formId=399",
+	"noMajor":false,
+	"nophase":false
+},{
+	"workflow":[
+		{"id":402,"name":"对内收费图纸增晒","isOA":true}
+	],
+	"url":"/api/naviWbpsRest/printAllOa?formId=402",
+	"noMajor":false,
+	"nophase":true
+},{
+	"workflow":[
+		{"id":1067,"name":"对外收费图纸增晒","isOA":false}
+	],
+	"url":"/api/naviWbpsRest/printAllOa?formId=1067",
+	"noMajor":true,
+	"nophase":false
+},{
+	"workflow":[
+		{"id":400,"name":"文本文印","isOA":false}
+	],
+	"url":"/api/naviWbpsRest/printAllOa?formId=400",
+	"noMajor":true,
+	"nophase":false
+},{
+	"workflow":[
+		{"id":401,"name":"文本加印","isOA":false}
+	],
+	"url":"/api/naviWbpsRest/printAllOa?formId=401",
+	"noMajor":true,
+	"nophase":false
+},{
+	"workflow":[
+		{"id":583,"name":"文本重印","isOA":false}
+	],
+	"url":"/api/naviWbpsRest/printAllOa?formId=583",
+	"noMajor":true,
+	"nophase":false
+},{
+	"workflow":[
+		{"id":908,"name":"线下图纸文印","isOA":false}
+	],
+	"url":"/api/naviWbpsRest/printAllOa?formId=908",
+	"noMajor":true,
+	"nophase":false
+},{
+	"workflow":[
+		{"id":907,"name":"线下文本文印","isOA":false}
+	],
+	"url":"/api/naviWbpsRest/printAllOa?formId=907",
+	"noMajor":true,
+	"nophase":false
+}]

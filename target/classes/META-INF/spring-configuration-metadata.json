@@ -1,0 +1,232 @@
+{
+  "groups": [
+    {
+      "name": "nerin",
+      "type": "com.nerin.nims.opt.app.config.NerinProperties",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties"
+    },
+    {
+      "name": "nerin.async",
+      "type": "com.nerin.nims.opt.app.config.NerinProperties$Async",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties",
+      "sourceMethod": "getAsync()"
+    },
+    {
+      "name": "nerin.cache",
+      "type": "com.nerin.nims.opt.app.config.NerinProperties$Cache",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties",
+      "sourceMethod": "getCache()"
+    },
+    {
+      "name": "nerin.cache.ehcache",
+      "type": "com.nerin.nims.opt.app.config.NerinProperties$Cache$Ehcache",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Cache",
+      "sourceMethod": "getEhcache()"
+    },
+    {
+      "name": "nerin.http",
+      "type": "com.nerin.nims.opt.app.config.NerinProperties$Http",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties",
+      "sourceMethod": "getHttp()"
+    },
+    {
+      "name": "nerin.http.cache",
+      "type": "com.nerin.nims.opt.app.config.NerinProperties$Http$Cache",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Http",
+      "sourceMethod": "getCache()"
+    },
+    {
+      "name": "nerin.mail",
+      "type": "com.nerin.nims.opt.app.config.NerinProperties$Mail",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties",
+      "sourceMethod": "getMail()"
+    },
+    {
+      "name": "nerin.nbcc",
+      "type": "com.nerin.nims.opt.app.config.NerinProperties$Nbcc",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties",
+      "sourceMethod": "getNbcc()"
+    },
+    {
+      "name": "nerin.security",
+      "type": "com.nerin.nims.opt.app.config.NerinProperties$Security",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties",
+      "sourceMethod": "getSecurity()"
+    },
+    {
+      "name": "nerin.security.remember-me",
+      "type": "com.nerin.nims.opt.app.config.NerinProperties$Security$RememberMe",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Security",
+      "sourceMethod": "getRememberMe()"
+    },
+    {
+      "name": "nerin.swagger",
+      "type": "com.nerin.nims.opt.app.config.NerinProperties$Swagger",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties",
+      "sourceMethod": "getSwagger()"
+    },
+    {
+      "name": "spring.datasource.primary",
+      "type": "javax.sql.DataSource",
+      "sourceType": "com.nerin.nims.opt.base.Dynamic.DataSourceConfig",
+      "sourceMethod": "primaryDataSource()"
+    },
+    {
+      "name": "spring.datasource.secondary",
+      "type": "javax.sql.DataSource",
+      "sourceType": "com.nerin.nims.opt.base.Dynamic.DataSourceConfig",
+      "sourceMethod": "secondaryDataSource()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "nerin.async.core-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Async",
+      "defaultValue": 2
+    },
+    {
+      "name": "nerin.async.max-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Async",
+      "defaultValue": 50
+    },
+    {
+      "name": "nerin.async.queue-capacity",
+      "type": "java.lang.Integer",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Async",
+      "defaultValue": 10000
+    },
+    {
+      "name": "nerin.cache.ehcache.max-bytes-local-heap",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Cache$Ehcache",
+      "defaultValue": "16M"
+    },
+    {
+      "name": "nerin.cache.time-to-live-seconds",
+      "type": "java.lang.Integer",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Cache",
+      "defaultValue": 3600
+    },
+    {
+      "name": "nerin.http.cache.time-to-live-in-days",
+      "type": "java.lang.Integer",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Http$Cache",
+      "defaultValue": 1461
+    },
+    {
+      "name": "nerin.mail.from",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Mail",
+      "defaultValue": "hellojhs@localhost"
+    },
+    {
+      "name": "nerin.nbcc.cadi-doc-file-url",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Nbcc",
+      "defaultValue": ""
+    },
+    {
+      "name": "nerin.nbcc.ebs-server",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Nbcc",
+      "defaultValue": ""
+    },
+    {
+      "name": "nerin.nbcc.tc-file-url",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Nbcc",
+      "defaultValue": ""
+    },
+    {
+      "name": "nerin.nbcc.template-file-url",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Nbcc",
+      "defaultValue": ""
+    },
+    {
+      "name": "nerin.nbcc.template-word-file-url",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Nbcc",
+      "defaultValue": ""
+    },
+    {
+      "name": "nerin.nbcc.ts-file-url",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Nbcc",
+      "defaultValue": ""
+    },
+    {
+      "name": "nerin.nbcc.video-server",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Nbcc",
+      "defaultValue": ""
+    },
+    {
+      "name": "nerin.nbcc.word-file-url",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Nbcc",
+      "defaultValue": ""
+    },
+    {
+      "name": "nerin.security.remember-me.key",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Security$RememberMe"
+    },
+    {
+      "name": "nerin.swagger.contact-email",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Swagger"
+    },
+    {
+      "name": "nerin.swagger.contact-name",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Swagger"
+    },
+    {
+      "name": "nerin.swagger.contact-url",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Swagger"
+    },
+    {
+      "name": "nerin.swagger.description",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Swagger",
+      "defaultValue": "Nerin API documentation"
+    },
+    {
+      "name": "nerin.swagger.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Swagger"
+    },
+    {
+      "name": "nerin.swagger.license",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Swagger"
+    },
+    {
+      "name": "nerin.swagger.license-url",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Swagger"
+    },
+    {
+      "name": "nerin.swagger.terms-of-service-url",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Swagger"
+    },
+    {
+      "name": "nerin.swagger.title",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Swagger",
+      "defaultValue": "Nerin API"
+    },
+    {
+      "name": "nerin.swagger.version",
+      "type": "java.lang.String",
+      "sourceType": "com.nerin.nims.opt.app.config.NerinProperties$Swagger",
+      "defaultValue": "0.0.1"
+    }
+  ],
+  "hints": []
+}

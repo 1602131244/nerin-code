@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>NIMS培训助手</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<script type="text/javascript" src="../../jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="js/trainingVideo.js"></script>
+	<script type="text/javascript" src="js/CollapseTitle.js"></script>
+	<script type="text/javascript" src="ckplayer/ckplayer.js"></script>
+	<script type="text/javascript" src="js/datagrid-dnd.js"></script>
+	<style>
+		.textbox{
+			height:20px;
+			margin:0;
+			padding:0 2px;
+			box-sizing:content-box;
+		}
+	</style>
+</head>
+<body class="easyui-layout">
+	<div id="dgLayout" data-options="region:'west',title:'操作导航区',split:true" style="width:350px">
+		<div id="navLayout" class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'north',border:false">
+				<div style="padding:3px;text-align:center">
+					<input id="numLogin" class="easyui-searchbox" style="width:280px" data-options="prompt:'请以自己的员工号登录' ">
+				</div>
+			</div>
+			<div data-options="region:'center',border:false">
+				<div id="dg"></div>
+				<div id="dgtoolbar" style="font-weight:bold"></div>
+			</div>
+			<div id="macroslist" data-options="region:'south',border:false" style="height:300px">
+				<table id="macros"></table>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'east',title:'教学视频列表',split:true,collapsed:true" style="width:260px">
+		<ul id="nav"></ul>
+	</div>
+	<div data-options="region:'center',title:'NIMS三期上线培训（2016~2017）'" style="overflow:hidden;background-color:#f3f3fa">
+		<div id="tabs"></div>
+	</div>
+</body>
+</html>

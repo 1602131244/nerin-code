@@ -1,0 +1,43 @@
+2018-03-14 14:45:28,011 INFO  [main] NimsOptApplication: Starting NimsOptApplication on N104515 with PID 11204 (started by 104515 in E:\nerin code test)
+2018-03-14 14:45:28,011 DEBUG [main] NimsOptApplication: Running with Spring Boot v1.3.4.RELEASE, Spring v4.2.6.RELEASE
+2018-03-14 14:45:28,011 INFO  [main] NimsOptApplication: The following profiles are active: dev
+2018-03-14 14:45:28,330 DEBUG [background-preinit] logging: Logging Provider: org.jboss.logging.Slf4jLoggerProvider found via system property
+2018-03-14 14:45:30,130 DEBUG [main] AsyncConfiguration: Creating Async Task Executor
+2018-03-14 14:45:31,318 INFO  [localhost-startStop-1] WebConfigurer: Web application configuration, using profiles: [dev]
+2018-03-14 14:45:31,319 INFO  [localhost-startStop-1] WebConfigurer: Web application startup in development mode
+2018-03-14 14:45:31,320 INFO  [localhost-startStop-1] WebConfigurer: Web application fully configured
+2018-03-14 14:45:35,618 DEBUG [main] SwaggerConfiguration: Starting Swagger
+2018-03-14 14:45:35,625 DEBUG [main] SwaggerConfiguration: Started Swagger in 6 ms
+2018-03-14 14:45:35,631 DEBUG [main] CacheConfiguration: Starting Ehcache
+2018-03-14 14:45:35,632 DEBUG [main] CacheConfiguration: Registering Ehcache Metrics gauges
+2018-03-14 14:45:35,633 DEBUG [main] CacheConfiguration: entity name:EbsDuty
+2018-03-14 14:45:35,634 DEBUG [main] CacheConfiguration: entity name:EbsDutyCode
+2018-03-14 14:45:35,634 DEBUG [main] CacheConfiguration: entity name:UserMenu
+2018-03-14 14:45:35,634 DEBUG [main] CacheConfiguration: entity name:Menu
+2018-03-14 14:45:35,644 DEBUG [main] CacheConfiguration: entity name:Authority
+2018-03-14 14:45:35,644 DEBUG [main] CacheConfiguration: entity name:User
+2018-03-14 14:45:35,956 WARN  [main] ThymeleafAutoConfiguration: Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2018-03-14 14:45:39,386 INFO  [main] NimsOptApplication: Started NimsOptApplication in 11.912 seconds (JVM running for 15.609)
+2018-03-14 14:48:28,510 DEBUG [http-nio-8080-exec-5] AccountResource: REST request to check if the current user is authenticated:null
+2018-03-14 14:48:42,736 DEBUG [http-nio-8080-exec-7] UserDetailsService: Authenticating 100232
+2018-03-14 14:48:45,345 DEBUG [http-nio-8080-exec-5] AccountResource: REST request to check if the current user is authenticated:100232
+2018-03-14 16:26:08,903 INFO  [main] NimsOptApplication: Starting NimsOptApplication on N104515 with PID 10000 (started by 104515 in E:\nerin code test)
+2018-03-14 16:26:08,903 DEBUG [main] NimsOptApplication: Running with Spring Boot v1.3.4.RELEASE, Spring v4.2.6.RELEASE
+2018-03-14 16:26:08,903 INFO  [main] NimsOptApplication: The following profiles are active: dev
+2018-03-14 16:26:09,511 DEBUG [background-preinit] logging: Logging Provider: org.jboss.logging.Slf4jLoggerProvider found via system property
+2018-03-14 16:26:12,509 DEBUG [main] AsyncConfiguration: Creating Async Task Executor
+2018-03-14 16:26:13,548 INFO  [localhost-startStop-1] WebConfigurer: Web application configuration, using profiles: [dev]
+2018-03-14 16:26:13,548 INFO  [localhost-startStop-1] WebConfigurer: Web application startup in development mode
+2018-03-14 16:26:13,548 INFO  [localhost-startStop-1] WebConfigurer: Web application fully configured
+2018-03-14 16:26:17,859 DEBUG [main] SwaggerConfiguration: Starting Swagger
+2018-03-14 16:26:17,867 DEBUG [main] SwaggerConfiguration: Started Swagger in 6 ms
+2018-03-14 16:26:17,873 DEBUG [main] CacheConfiguration: Starting Ehcache
+2018-03-14 16:26:17,875 DEBUG [main] CacheConfiguration: Registering Ehcache Metrics gauges
+2018-03-14 16:26:17,877 DEBUG [main] CacheConfiguration: entity name:Authority
+2018-03-14 16:26:17,877 DEBUG [main] CacheConfiguration: entity name:EbsDutyCode
+2018-03-14 16:26:17,877 DEBUG [main] CacheConfiguration: entity name:EbsDuty
+2018-03-14 16:26:17,877 DEBUG [main] CacheConfiguration: entity name:UserMenu
+2018-03-14 16:26:17,878 DEBUG [main] CacheConfiguration: entity name:Menu
+2018-03-14 16:26:17,878 DEBUG [main] CacheConfiguration: entity name:User
+2018-03-14 16:26:18,190 WARN  [main] ThymeleafAutoConfiguration: Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2018-03-14 16:26:21,343 INFO  [main] NimsOptApplication: Started NimsOptApplication in 13.226 seconds (JVM running for 14.578)

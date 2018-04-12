@@ -1,0 +1,380 @@
+<!doctype html>
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="content-script-type" content="text/javascript">
+  <meta charset="utf-8"/>
+  <meta name="description" content=""/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>后台管理</title>
+
+
+  <!--基础CSS样式 -->
+  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link href="/bower_components/bootstrapvalidator/dist/css/bootstrapValidator.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
+  <link href="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+  <link href="/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+  <link href="/bower_components/jquery.fancytree/dist/skin-bootstrap/ui.fancytree.css" rel="stylesheet" type="text/css" class="skinswitcher">
+  <link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" type="text/css" rel="stylesheet" />
+  <!--strat bootstrap 所用到的css 直接引用即可-->
+  <link rel="stylesheet" href="/styles/common/sb-admin-2.css" />
+
+  <!-- 右上角提示消息样式,一般情况外部框架已经引用,就不需要再引用了 CSS -->
+  <link rel="stylesheet" href="/bower_components/bootstrap-notify-master/css/bootstrap-notify.css" />
+
+  <!--这里引入你自己的CSS文件-->
+
+  <!--如果你想获取浏览器相关的信息,引入此JS-->
+  <!-- build:js scripts/vendor/modernizr.js -->
+  <script src="/bower_components/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--如果要让IE9以下的浏览器支持HTML5的一些响应式布局特性,需要引入如下js-->
+  <!--[if lt IE 9]>
+  <script src="/scripts/common/html5shiv.js"></script>
+  <script src="/scripts/common/respond.min.js"></script>
+
+  <![endif]-->
+  <style>
+    .fancytree-active {
+      background-color: #f5f5f5;
+    }
+    .dt-select {
+      background-color: #C6E2FF !important;
+    }
+    span.fancytree-title {
+      margin-left: 0px;
+    }
+    .table-condensed > tbody > tr > td,
+    .table-condensed > tfoot > tr > td {
+       padding: 3px;
+    }
+    .file {
+      position: relative;
+      display: inline-block;
+      background: #D0EEFF;
+      border: 1px solid #99D3F5;
+      border-radius: 4px;
+      padding: 4px 12px;
+      overflow: hidden;
+      color: #1E88C7;
+      text-decoration: none;
+      text-indent: 0;
+      line-height: 20px;
+    }
+    .file input {
+      position: absolute;
+      font-size: 100px;
+      right: 0;
+      top: 0;
+      opacity: 0;
+    }
+    .file:hover {
+      background: #AADFFD;
+      border-color: #78C3F3;
+      color: #004974;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body style="min-height: 800px">
+<div class="page-header gyl-page-header">
+  <!--<h5>模板管理</h5>-->&nbsp;
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-info">
+
+      <div class="panel-heading gyl_panel_header">
+        <i class="glyphicon glyphicon-search"></i>
+        查询条件
+        <div class="pull-right">
+          <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/templateList#queryBars">
+            <i class="glyphicon glyphicon-menu-down" ></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="queryBars" class="panel-collapse collapse in">
+      <div class="panel-body" style="padding-top: 10px; padding-bottom: 5px;">
+          <form id="selectFrom" onsubmit="return false">
+            <div class="row">
+              <div class="col-md-1" style="padding-right: 0px;">
+                <label style="float: right;">文本类型：</label>
+              </div>
+              <div class="col-md-11" style="padding-left: 0px;">
+                <div id="div_taskType" style="margin: auto;">
+              </div>
+             </div>
+            </div>
+
+        <div style="margin: 5px 0px 5px 0px; border-bottom: 1px solid #eee;"></div>
+
+            <div class="row">
+              <div class="col-md-1" style="padding-right: 0px;">
+                <label style="float: right;">状态：</label>
+              </div>
+              <div class="col-md-11" style="padding-left: 0px;">
+                <div id="div_templateStatus" style="margin: auto;">
+
+                </div>
+              </div>
+            </div>
+
+        <div style="margin: 5px 0px 5px 0px; border-bottom: 1px solid #eee;"></div>
+
+        <div class="row" style="margin: auto;">
+          <div class="col-lg-6">
+            <div id="div_template" class="input-group">
+              <span class="input-group-addon" id="sizing-addon2" style="padding: 3px 8px; font-size: 13px;">内容搜索</span>
+              <input type="text" id="templateNameOrDesc" name="templateNameOrDesc" class="form-control input-sm" placeholder="支持按模板名称或模板说明模糊查询"/>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <button type="button" class="btn btn-default btn-sm" id="bu_queryData">
+              <i class="glyphicon glyphicon-search"></i>查询
+            </button>
+            <button type="reset" class="btn btn-default btn-sm" id="bu_resetQuery">
+              <i class="glyphicon glyphicon-remove"></i>重置
+            </button>
+          </div>
+        </div>
+          </form>
+      </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-info">
+      <div class="panel-heading gyl_panel_header">
+        <i class="fa fa-table"></i>
+        查询结果
+        <div class="btn-group pull-right">
+          <div class="btn-toolbar" role="toolbar" aria-label="...">
+          <div id="div_continueOrcancel" class="btn-group" role="group" aria-label="...">
+            <button id="bu_continue" type="button" class="btn btn-default btn-xs"><i class="fa fa-play"></i>继续
+            </button>
+            <button id="bu_continue_cancel" type="button" class="btn btn-default btn-xs"><i class="fa fa-power-off"></i>取消
+            </button>
+          </div>
+          <div class="btn-group" role="group" aria-label="..." style="margin-left: 5px;">
+            <button id="bu_add" type="button" class="btn btn-default btn-xs"><i class="fa fa-plus"></i>新增
+            </button>
+            <button id="bu_edit" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i>修改
+            </button>
+            <button id="bu_del" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i>删除
+            </button>
+            <button id="bu_saveas" type="button" class="btn btn-default btn-xs"><i class="fa fa-folder-o"></i>另存
+            </button>
+            <button id="bu_effective" type="button" class="btn btn-default btn-xs"><i class="fa fa-circle-o"></i>启用
+            </button>
+            <button id="bu_invalid" type="button" class="btn btn-default btn-xs"><i class="fa fa-minus-circle"></i>失效
+            </button>
+            <button id="bu_uploadFile" type="button" class="btn btn-default btn-xs"><i class="fa fa-upload"></i>上传附件
+            </button>
+          </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- /.panel-heading -->
+      <div class="panel-body" style="padding: 5px;">
+        <div class="dataTable_wrapper" id="dataTables-listAll">
+
+        </div>
+        <!-- /.table-responsive -->
+
+      </div>
+      <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<!-- /.row -->
+<!-- /#page-wrapper -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="addLabel"  aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog" style="min-width: 900px; width: 100%; margin-bottom: 0px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="addUserLabel">模板章节定义</h5>
+      </div>
+
+      <div class="modal-body" style="padding: 5px 8px 0px 8px;">
+        <div class="row" style="margin: auto;">
+          <button id="bu_addback" type="button" class="btn btn-default" style="padding: 3px 10px;" data-dismiss="modal"><i class="fa fa-reply"></i>返回</button>
+
+          <div class="btn-group" id="bu_group">
+            <button type="button" class="btn btn-default dropdown-toggle" style="padding: 3px 10px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="请选择一行后再进行新增">
+              <i class="fa fa-plus"></i>新增章节<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#1" id="bu_addChapter">新增章节</a></li>
+              <li><a href="#1" id="bu_addChapterChildren">新增子章节</a></li>
+              <!--<li><a href="#1" id="bu_resetTitleNo">章节编号自动排序</a></li>-->
+              <li><a href="#1" id="bu_fancyTreeExpanded">展开章节</a></li>
+              <li><a href="#1" id="bu_fancyTreeeCollapse">收起章节</a></li>
+            </ul>
+          </div>
+          <button id="bu_delChapter" type="button" class="btn btn-default" style="padding: 3px 10px;" data-toggle="tooltip" data-placement="top" title="请勾选后再进行删除"><i class="fa fa-trash-o"></i>删除章节</button>
+          <button id="bu_content" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="fa fa-file-word-o"></i>文本内容</button>
+          <button id="bu_save" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="glyphicon glyphicon-floppy-saved"></i>保存</button>
+          <button id="bu_release" type="button" class="btn btn-default" style="padding: 3px 10px;"><i class="fa fa-sign-in"></i>发布</button>
+        </div>
+        <div style="margin: 5px 0px 5px 0px; border-bottom: 1px solid #eee;"></div>
+
+        <div class="panel panel-info" style="margin-bottom: 5px;">
+          <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">
+            封面信息
+          </div>
+          <div class="panel-body" style="padding: 5px;">
+            <table id="templateCover" class="table table-bordered" style="width: 570px; margin-bottom: 0px;">
+              <thead>
+              <tr>
+                <th width="140">项目角色</th>
+                <th width="140">专业</th>
+                <th width="280">XML模板</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel panel-info">
+          <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">
+            章节明细信息
+          </div>
+          <div class="panel-body" style="padding: 5px;">
+            <div class="row" style="margin: auto;  overflow-y: auto; height: 600px;">
+
+              <table id="treetable" class="table table-condensed table-hover table-bordered">
+                <colgroup>
+                  <col width="30px"></col>
+                  <col width="120px"></col>
+                  <col width="*"></col>
+                  <col width="140"></col>
+                  <col width="140"></col>
+                  <col width="*"></col>
+                  <col width="120px"></col>
+                  <col width="50px"></col>
+                  <col width="60px"></col>
+                </colgroup>
+                <thead>
+                <tr> <th style="padding: 3px;" width="30"> <span class="fancytree-checkbox glyphicon glyphicon-unchecked" id="chAll_treetableChapter"></span> </th>
+                  <th width="80">章节编号</th>  <th><font color="red">*</font>章节名称</th> <th><font color="red">*</font>项目角色</th> <th><font color="red">*</font>分配专业</th> <th>XML模板</th> <th>系统界面链接</th> <th>公开</th> <th>可删除</th> <th width="65">进入文本</th></tr>
+                </thead>
+                <tbody>
+                <tr> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel">
+  <div class="modal-dialog" style="width: 500px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="uploadModalLabel">附件上传</h5>
+      </div>
+
+      <div class="modal-body">
+        <div class="row form-inline">
+          <form id="templateUploadForm" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="uploadFile_templateId" name="templateHeaderId"/>
+            <div style="float: left; margin-left: 15px;" class="form-inline">
+              <a href="javascript:;" class="file">选择文件
+              <input type="file" name="templateFile" id="templateFile" style="margin-right: 0px;" />
+              </a>
+            </div>
+            <div style="float: left; margin-left: 30px;">
+              <button type="button" id="do_uploadFile" class="btn btn-primary btn-sm">
+                <i class="fa fa-upload"></i>上传
+              </button>
+            </div>
+          </form>
+        </div>
+        <div style="width: 300px;">
+          <span id="span_fileName"></span>
+        </div>
+        <div class="progress" style="margin-bottom: 0px; margin-top: 10px;">
+          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 基础JS脚本 -->
+<script src="/bower_components/jquery/dist/jquery.js" ></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js" ></script>
+<script src="/bower_components/bootstrapvalidator/dist/js/bootstrapValidator.js"></script>
+<!-- 如果需要做拖拽等操作,需要引入 -->
+<script src="/bower_components/jquery-ui/jquery-ui.js" ></script>
+<script src="/bower_components/assets/js/jquery.ui-contextmenu.min.js" type="application/javascript"></script>
+<!-- 如果需要使用cookie -->
+<script src="/bower_components/jquery.cookie/jquery.cookie.js" ></script>
+
+<!--如果需要使用数据列表,引入以下JS-->
+<script src="/bower_components/datatables/media/js/jquery.dataTables.js" ></script>
+<script src="/bower_components/datatables-responsive/js/dataTables.responsive.js" ></script>
+<script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.edit.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.glyph.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.table.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.wide.js" type="text/javascript"></script>
+<script src="/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+
+<!--在提交form表单的时候,需要将form数据转换成json格式字符串时使用-->
+<script src="/bower_components/jquery.serializeJSON/jquery.serializejson.js"></script>
+<script src="/bower_components/bootstrap/js/tooltip.js"></script>
+
+<!--  右上角提示消息脚本,一般情况外部框架已经引用,就不需要再引用了 -->
+<script src="/bower_components/bootstrap-notify-master/js/bootstrap-notify.js" ></script>
+
+  <!--引入 config js信息-->
+  <script src="/scripts/common/config.js" ></script>
+  <script src="/scripts/common/ztable-min.js" ></script>
+  <script src="/scripts/nbcc/template/template.js" nerinend></script>
+  <script src="/scripts/nbcc/template/templateChapter.js" nerinend></script>
+
+</body>
+</html>

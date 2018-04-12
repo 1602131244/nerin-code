@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>图纸明细</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <style>
+        .textbox {
+            height: 16px;
+            margin: 0;
+            padding: 0 2px;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body class="easyui-layout" id="rootlayout">
+<div id="wbswest" data-options="region:'west',title:'图纸工作包树',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+		 return '<div style=font-weight:bold;text-align:center>图<br />纸<br />工<br />作<br />包<br />树</div>';
+	}" style="width:280px">
+	<ul id="divtree"></ul>
+</div>
+<div id="wbscenter" data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+	<div id="draw_layout" class="easyui-layout" data-options="fit:true,border:false">
+		<div id="drawwest" data-options="region:'west',title:'备选图纸列表',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+				 return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+			}" style="width:630px">
+			<div id="drawtb" style="text-align:left">&nbsp;
+				<a id="autocheck">智能勾选</a>
+				<input id="drawNumSearch" class="easyui-searchbox" style="width:250px" data-options="prompt:'图纸名称、图号模糊查找' ">
+				<div style="float:right;padding-top:4px"><input id="drawshowall" type="checkbox">显示更多列&nbsp;&nbsp;</div>
+			</div>
+			<table id="gridDraw"></table>
+		</div>
+		<div id="drawcenter" data-options="region:'center',title:'本次校审的图纸'" style="overflow:hidden;background-color:#f3f3fa">
+			<div id="adddstb" style="text-align:left;height:26px">
+				<div id="drawbtndiv" style='float:left;display:none'>
+					&nbsp;<a id="adddrawbtn"></a>&nbsp;
+					<a id="deldrawbtn"></a>&nbsp;&nbsp;
+				</div>
+				<div id='withdrawdiv' style='display:none;padding-top:2px;float:left'>
+					<b>是否校审附图：</b><input id='withdrawpub' style='width:110px'>&nbsp;&nbsp;
+				</div>
+				<div id="workbtndiv" style='float:left;display:none'>
+					<a id="workbtn">关联工作包</a>
+				</div>
+				<div id="newbtndiv" style='float:left;display:none'>
+					<a id="newDSbtn">提交</a>
+				</div>
+				<div style="float:right;padding-top:4px">
+					<input id="adddsshowall" type="checkbox">显示更多列&nbsp;&nbsp;
+				</div>
+			</div>
+			<table id="gridDrawDS"></table>
+		</div>
+	</div>
+</div>
+<div id="loaddiv" class="easyui-window" style="width: 380px; height: 70px;" data-options="title:'登录 NIMS 2.0，请稍候...',minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+</div>
+<script type="text/javascript" src="../../jquery.min.js"></script>
+<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/checkreview.js?v=1"></script>
+<script type="text/javascript" src="js/datagrid-dnd.js"></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-script-type" content="text/javascript">
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>消费系统查询</title>
+
+    <!--基础CSS样式 -->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+    <link href="/bower_components/bootstrapvalidator/dist/css/bootstrapValidator.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
+    <link href="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/bower_components/datatables/FixedColumns/css/fixedColumns.bootstrap.scss" rel="stylesheet">
+    <link href="/bower_components/jquery.fancytree/dist/skin-bootstrap/ui.fancytree.css" rel="stylesheet" type="text/css" class="skinswitcher">
+    <!--strat bootstrap 所用到的css 直接引用即可-->
+    <link rel="stylesheet" href="/styles/common/sb-admin-2.css"/>
+
+    <!-- 右上角提示消息样式,一般情况外部框架已经引用,就不需要再引用了 CSS -->
+    <link rel="stylesheet" href="/bower_components/bootstrap-notify-master/css/bootstrap-notify.css"/>
+
+    <!--这里引入你自己的CSS文件-->
+
+    <!--如果你想获取浏览器相关的信息,引入此JS-->
+    <!-- build:js scripts/vendor/modernizr.js -->
+    <script src="/bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--如果要让IE9以下的浏览器支持HTML5的一些响应式布局特性,需要引入如下js-->
+    <!--[if lt IE 9]>
+    <script src="/scripts/common/html5shiv.js"></script>
+    <script src="/scripts/common/respond.min.js"></script>
+
+    <![endif]-->
+    <style>
+        .fancytree-active {
+            background-color: #f5f5f5;
+        }
+
+        .dt-select {
+            background-color: #f5f5f5;
+        }
+
+        span.fancytree-title {
+            display: none;
+        }
+    </style>
+</head>
+<body style="min-height: 800px">
+<div class="page-header gyl-page-header">
+    <h5>消费系统记录查询</h5>
+</div>
+<!--查询条件-->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+            <div class="panel-heading gyl_panel_header">
+                &nbsp;
+                <div class="pull-left">
+                    <i class="fa fa-table"></i>
+                    查询条件
+                </div>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-default btn-xs" data-toggle="collapse" href="/card#query">
+                        <i class="glyphicon glyphicon-menu-down"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div id="query" class="panel-collapse collapse in">
+                <div class="panel-body" style="padding: 5px;">
+                    <div class="form-inline form-group" style="padding-left: 46px;">
+                        <label>部门：</label>
+                        <select id='department'
+                                name="department"
+                                class='form-control input-sm'
+                                onchange="javascript:queryPerson(this);"
+                                style="width:200px;"
+                                placeholder='请选择'></select>
+                        <label>人员：</label>
+                        <select id='person'
+                                name="person"
+                                class='form-control input-sm'
+                                style="width:100px;"
+                                placeholder='请选择'></select>
+                        <label>开始时间：</label>
+                        <div class="input-group date" name='startDate'>
+                            <input type="text" name="StartDate" style='width: 100%;' class="form-control input-sm" id="startDate"/>
+                            <span class="input-group-addon" style="padding: 3px 8px; font-size: 13px;">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        <label>截止时间：</label>
+                        <div class="input-group date" name='endDate'>
+                            <input type="text" name="endDate" style='width: 100%;' class="form-control input-sm" id="endDate"/>
+                            <span class="input-group-addon" style="padding: 3px 8px; font-size: 13px;">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+
+                        <button type="button"
+                                class="btn btn-default btn-sm"
+                                id="bu_query">
+                            <i class="glyphicon glyphicon-search"></i>查询
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+            <div class="panel-heading gyl_panel_header">
+                &nbsp;
+                <div class="pull-left">
+                    <i class="fa fa-table"></i>
+                    查询结果
+                </div>
+
+                <div class="pull-right" style="margin-top: -6px; margin-left: 80px;">
+                    <button style="height: 29px;" id="bu_qu" type="button" class="export-excel btn btn-default btn-xs"
+                            data-table="#dataTables_listAll">
+                        <i class="fa fa-edit" style="color: #4682B4; font-size: 13px;"></i>下载
+                    </button>
+                </div>
+
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper" id="dataTables-listAll">
+
+                </div>
+                <!-- /.table-responsive -->
+                <div class="dataTable_wrapper" id="dataTables-listAll2">
+
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+
+<!-- 基础JS脚本 -->
+<script src="/bower_components/jquery/dist/jquery.js" ></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js" ></script>
+<script src="/bower_components/moment/min/moment.min.js" ></script>
+<script src="/bower_components/moment/locale/zh-cn.js" ></script>
+<script src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js" ></script>
+<script src="/bower_components/bootstrapvalidator/dist/js/bootstrapValidator.js"></script>
+<!-- 如果需要做拖拽等操作,需要引入 -->
+<script src="/bower_components/jquery-ui/jquery-ui.js"></script>
+<script src="/bower_components/assets/js/jquery.ui-contextmenu.min.js" type="application/javascript"></script>
+<!-- 如果需要使用cookie -->
+<script src="/bower_components/jquery.cookie/jquery.cookie.js"></script>
+
+<!--如果需要使用数据列表,引入以下JS-->
+<script src="/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+<script src="/bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
+<script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.edit.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.glyph.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.table.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.wide.js" type="text/javascript"></script>
+<script src="/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+
+
+<!--在提交form表单的时候,需要将form数据转换成json格式字符串时使用-->
+<script src="/bower_components/jquery.serializeJSON/jquery.serializejson.js"></script>
+<script src="/bower_components/bootstrap/js/tooltip.js"></script>
+
+<!--  右上角提示消息脚本,一般情况外部框架已经引用,就不需要再引用了 -->
+<script src="/bower_components/bootstrap-notify-master/js/bootstrap-notify.js"></script>
+
+<!--引入 config js信息-->
+<script src="/scripts/common/config.js"></script>
+<!--<script src="/scripts/nbcc/template/template.js" nerinend></script>-->
+<script src="/scripts/card/card.js"></script>
+
+</body>
+</html>

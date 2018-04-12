@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-script-type" content="text/javascript">
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>物品扫码签收</title>
+
+    <!--基础CSS样式 -->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link href="/bower_components/bootstrapvalidator/dist/css/bootstrapValidator.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
+    <link href="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+    <link href="/bower_components/jquery.fancytree/dist/skin-bootstrap/ui.fancytree.css" rel="stylesheet" type="text/css" class="skinswitcher">
+    <link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <!--strat bootstrap 所用到的css 直接引用即可-->
+    <link rel="stylesheet" href="/styles/common/sb-admin-2.css" />
+
+    <!-- 右上角提示消息样式,一般情况外部框架已经引用,就不需要再引用了 CSS -->
+    <link rel="stylesheet" href="/bower_components/bootstrap-notify-master/css/bootstrap-notify.css" />
+
+    <!--这里引入你自己的CSS文件-->
+
+    <!--如果你想获取浏览器相关的信息,引入此JS-->
+    <!-- build:js scripts/vendor/modernizr.js -->
+    <script src="/bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--如果要让IE9以下的浏览器支持HTML5的一些响应式布局特性,需要引入如下js-->
+    <!--[if lt IE 9]>
+    <script src="/scripts/common/html5shiv.js"></script>
+    <script src="/scripts/common/respond.min.js"></script>
+
+    <![endif]-->
+    <style>
+        .fancytree-active {
+            background-color: #f5f5f5;
+        }
+        .dt-select {
+            background-color: #f5f5f5;
+        }
+        span.fancytree-title {
+            display: none;
+        }
+    </style>
+</head>
+<body style="min-height: 800px">
+<div class="page-header gyl-page-header">
+    <h5>单据签收</h5>
+</div>
+
+<!--签收-->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+
+            <div class="panel-heading gyl_panel_header">
+                <i class="glyphicon glyphicon-search"></i>
+                签收信息输入
+                <!--<div class="pull-right">-->
+                    <!--<button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/templateList#queryBars">-->
+                        <!--<i class="glyphicon glyphicon-menu-down" ></i>-->
+                    <!--</button>-->
+                <!--</div>-->
+            </div>
+
+            <div id="queryBars" class="panel-collapse collapse in">
+                <div class="panel-body" style="padding-top: 10px; padding-bottom: 5px;">
+
+                        <div class="row">
+                            &nbsp;
+                            <div class="input-group input-group-lg">
+                                <!--<label class="col-sm-2 control-label" for="orgName" style="padding-right: 0px; padding-left: 0px;"><font color="red">*</font>年份：</label>-->
+                                <span class="input-group-addon" >&nbsp&nbsp&nbsp 签收单据类别：&nbsp</span>
+                                    &nbsp
+                                    <label  class="radio-inline"  style="font-size:26px;">
+                                        <input type="radio"  class="radio-inline" style="width:32px;height:32px" value="option1" name="inlineRadioOptions" id="inlineRadio1" checked="checked">&nbsp&nbsp收到签收
+                                        <!--<label class="radio-inline"  style="font-size:26px;" for="inlineRadio1" >收到签收</label>-->
+                                    </label>
+                                    <label  class="radio-inline"  style="font-size:26px;">
+                                        <input type="radio"  class="radio-inline" style="width:32px;height:32px" value="option2" name="inlineRadioOptions" id="inlineRadio2">&nbsp&nbsp退回签收
+                                        <!--<label class="radio-inline"  style="font-size:26px;" for="inlineRadio2" >退回签收</label>-->
+                                    </label>
+                            </div>
+
+                            &nbsp;
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-addon" >&nbsp&nbsp&nbsp 签收单据类型：&nbsp</span>
+                                <select class="form-control input-sm" type="text" name="category" id="category" placeholder="">
+                                    <option>费用报销流程</option>
+                                    <!--<option>对外文印流程</option>-->
+                                </select>
+                            </div>
+
+                            &nbsp;
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-addon" > &nbsp&nbsp&nbsp 签收单据编号：&nbsp</span>
+                                <input type="text" class="form-control" id="request_id" placeholder="流程ID" aria-describedby="sizing-addon1">
+                            </div>
+
+                            &nbsp;
+                            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default btn-primary btn-lg" id="BUT_OK">
+                                        <i class="glyphicon glyphicon-save-file" style="color: #3CB371; font-size: 13px;"></i>确认
+                                    </button>
+                                </div>
+                                <!--<div class="btn-group" role="group">-->
+                                <!--<button type="button" class="btn btn-default">Middle</button>-->
+                                <!--</div>-->
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default btn-lg"  id="BUT_CLEAR"  >
+                                        <i class="glyphicon glyphicon-remove"  style="color: #FF4500; font-size: 13px;" ></i>清除
+                                    </button>
+                                </div>
+                            </div>
+                            &nbsp;
+
+                        </div>
+
+                        <!--<div class="gyl-panel-line"></div>-->
+
+                    &nbsp;
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="check_modal" tabindex="-1" role="dialog" aria-labelledby="addLabel">
+    <div class="modal-dialog" style="min-width: 400px; width: 60%;" role="document">
+        <div class="modal-content">
+            <!--显示标题-->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="addHeaderLabel">退单签收确认</h5>
+            </div>
+
+            <!--显示查询-->
+            <div class="modal-body" style="padding-top: 0px;">
+                <form id="form_budgetHeader" class="form-horizontal" role="form">
+                    <div class="row">`
+                        <div class="col-sm-12">
+                            <div class="row" style="margin-right: 5px;">
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading gyl_panel_header">
+                                            退单签收确认信息输入
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <div class="input-group input-group-lg">
+                                                    <span class="input-group-addon" >确认人编号：</span>
+                                                    <input type="text" class="form-control" id="person_number" aria-describedby="sizing-addon1">
+                                                </div>
+
+                                                &nbsp;
+                                                <div class="input-group input-group-lg">
+                                                    <span class="input-group-addon" >域用户密码：</span>
+                                                    <input type="password" class="form-control" id="password" aria-describedby="sizing-addon1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!--显示按钮-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="BUT_CHECK" >确认</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 基础JS脚本 -->
+<script src="/bower_components/jquery/dist/jquery.js" ></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js" ></script>
+<script src="/bower_components/bootstrapvalidator/dist/js/bootstrapValidator.js"></script>
+<!-- 如果需要做拖拽等操作,需要引入 -->
+<script src="/bower_components/jquery-ui/jquery-ui.js" ></script>
+<script src="/bower_components/assets/js/jquery.ui-contextmenu.min.js" type="application/javascript"></script>
+<!-- 如果需要使用cookie -->
+<script src="/bower_components/jquery.cookie/jquery.cookie.js" ></script>
+
+<!--如果需要使用数据列表,引入以下JS-->
+<script src="/bower_components/datatables/media/js/jquery.dataTables.js" ></script>
+<script src="/bower_components/datatables-responsive/js/dataTables.responsive.js" ></script>
+<script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.edit.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.glyph.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.table.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.wide.js" type="text/javascript"></script>
+<script src="/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+
+<!--在提交form表单的时候,需要将form数据转换成json格式字符串时使用-->
+<script src="/bower_components/jquery.serializeJSON/jquery.serializejson.js"></script>
+<script src="/bower_components/bootstrap/js/tooltip.js"></script>
+
+<!--  右上角提示消息脚本,一般情况外部框架已经引用,就不需要再引用了 -->
+<script src="/bower_components/bootstrap-notify-master/js/bootstrap-notify.js" ></script>
+
+<!--引入 config js信息-->
+<script src="/scripts/common/config.js" ></script>
+<script src="/scripts/oie/oie.js" ></script>
+<!--<script src="/scripts/nbcc/template/template.js" nerinend></script>-->
+<!--<script src="/scripts/budget/budget.js" ></script>-->
+<!--<script src="/scripts/budget/budgetLine.js" ></script>-->
+
+</body>
+</html>

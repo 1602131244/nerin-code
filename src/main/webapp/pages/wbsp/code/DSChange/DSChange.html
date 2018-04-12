@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>设计变更管理</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../../themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <style>
+        .textbox {
+            height: 16px;
+            margin: 0;
+            padding: 0 2px;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body class="easyui-layout" id="rootlayout">
+<div id="north" data-options="region:'north',title:'项目阶段选择',split:true,collapsed:false,hideCollapsedContent:false,collapsedContent: function(title){
+         return title;}" style="height:245px">
+    <div id="Div1" class="easyui-layout" data-options="fit:true">
+        <div id="Div2" data-options="region:'north',border:false">
+            <table style="border-spacing:0">
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="easyui-menubutton"
+                                                         id="btnprjphase">本项目阶段切换</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div id="menuphase" style="width:120px;"></div>
+                    </td>
+                    <td>
+                        <input id="prjsearch" class="easyui-searchbox" style="width:250px"
+                               data-options="prompt:'其他项目简称、全称、编号、项目经理模糊查找' ">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div data-options="region:'center',border:false">
+            <div id="prjgrid">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="spewest" data-options="region:'west',title:'专业选择',split:true,hideCollapsedContent:false,collapsedContent: function(title){
+		 return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+	}" style="width:220px">
+	<div id="majortb" style="text-align:right">
+		<div style="float:left;padding-top:4px">&nbsp;<input id="modecheck" type="checkbox">标准模式&nbsp;&nbsp;</div>
+		<a id="filtermajorbtn">继续</a>&nbsp;&nbsp;
+	</div>
+	<div id="gridPrjmajors"></div>
+</div>
+<div id="dgLayout" data-options="region:'center'">
+	<div id="wbs_layout" class="easyui-layout" data-options="fit:true,border:false">
+		<div id="wbswest" data-options="region:'west',title:'图纸工作包树',split:true,collapsed:true,hideCollapsedContent:false,collapsedContent: function(title){
+				 return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+			}" style="width:280px">
+			<ul id="divtree"></ul>
+		</div>
+		<div id="wbscenter" data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+			<div id="draw_layout" class="easyui-layout" data-options="fit:true,border:false">
+				<div id="drawwest" data-options="region:'west',title:'相关图纸列表',split:true,collapsed:true,hideCollapsedContent:false,collapsedContent: function(title){
+						 return '<div style=font-weight:bold;text-align:center>'+title.split('').join('<br />')+'</div>';
+					}" style="width:500px">
+					<div id="drawtb" style="text-align:left">&nbsp;
+						<!-- <a id="searchdrawbtn">查找</a> -->
+						<input id="drawNumSearch" class="easyui-searchbox" style="width:250px" data-options="prompt:'图纸名称、图号模糊查找' ">
+						<div style="float:right;padding-top:4px"><input id="drawshowall" type="checkbox">显示更多列&nbsp;&nbsp;</div>
+					</div>
+					<table id="gridDraw"></table>
+				</div>
+				<div id="drawcenter" data-options="region:'center'" style="overflow:hidden;background-color:#f3f3fa">
+					<div id="dstabs" class="easyui-tabs" data-options="fit:true,border:false">
+						<div id="tabviewds" title="设计变更列表" data-options="closable:false" >
+							<div id="viewdstb" style="text-align:left">&nbsp;
+								<input id="viewdsSearch" class="easyui-searchbox" style="width:280px" data-options="prompt:'设计变更单号、审批流程标题、说明模糊查找' ">
+								<div style="float:right;padding-top:4px">
+									<input id="viewdsshowall" type="checkbox">显示更多列&nbsp;&nbsp;
+								</div>
+							</div>
+							<div id="gridViewDS"></div>
+						</div>
+						<div id="tabaddds" title="新增设计变更" data-options="closable:false" >
+							<div id="adddstb" style="text-align:left">&nbsp;
+								<a id="adddrawbtn"></a>&nbsp;
+								<a id="deldrawbtn"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<a id="newDSbtn">提交</a>
+								<div style="float:right;padding-top:4px">
+									<input id="adddsshowall" type="checkbox">显示更多列&nbsp;&nbsp;
+								</div>
+							</div>
+							<table id="gridDrawDS"></table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="loaddiv" class="easyui-window" style="width: 380px; height: 70px;" data-options="title:'登录 NIMS 2.0，请稍候...',minimizable:false,maximizable:false,collapsible:false,closable:false,closed:false,modal:true">
+</div>
+<div id="formuser" class="easyui-window" style="width: 645px;height:265px" data-options="title:'填写变更关键信息',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true">
+	<form id="form1" method="post" style="padding:5px">
+		<div style="float:left;padding:6px">
+			执行审批的项目负责人：
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'num',textField:'name',editable:false,hasDownArrow:false,required:true" name="pmlist" id="pmlist" style="width: 65px" />
+			&nbsp;
+			执行审批的专业负责人：
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'perNum',textField:'perName',editable:false,hasDownArrow:false,required:true" name="chgrlist" id="chgrlist" style="width: 65px" />
+			&nbsp;
+			变更原因：
+			<input class="easyui-combobox" data-options=" panelHeight: 'auto', valueField:'val',textField:'text',editable:false,hasDownArrow:false,required:true" name="dcrsnlist" id="dcrsnlist" style="width: 100px" />
+		</div>
+		<div style="clear:both">
+			<div style="float:left">
+				<div style="padding:10px 0px 2px 6px;height:15px;text-align:right">
+					修改图纸名称：
+				</div>
+				<div style="padding:10px 0px 2px 6px;height:15px;text-align:right">
+					修改图纸图号：
+				</div>
+				<div style="padding:10px 0px 2px 12px;height:15px;text-align:right">
+					子 项 名 称：
+				</div>
+			</div>
+			<div style="float:left">
+				<div style="padding:6px;height:15px">
+					<input class="easyui-textbox" data-options="required:true,prompt:'输入文字长度不可超出框内'" name="drawsName" id="drawsName" style="width: 385px" />
+				</div>
+				<div style="padding:6px;height:15px">
+					<input class="easyui-textbox" data-options="required:true,prompt:'输入文字长度不可超出框内'" name="drawsNum" id="drawsNum" style="width: 385px" />
+				</div>
+				<div style="padding:6px;height:15px">
+					<input class="easyui-textbox" data-options="required:true,prompt:'输入文字长度不可超出框内'" name="subName" id="subName" style="width: 305px" />
+				</div>
+			</div>
+		</div>
+		<div style="clear:both">
+		<div style="padding:6px">提示：<br>1、输入文字长度不可超出框内，否则可能造成变更单格式错误<br>2、将新增变更表格中所有的图纸<b>（包括未勾选行）</b>发起新的设计变更申请审批流程</div>
+		<div align="center"><br /><a id="btnuserapply">确定</a></div>
+	</form>
+</div>
+<!-- <div id="iframewindow" class="easyui-window" style="width:350px;height:190px" data-options="title:'生成设计变更通知书，请按提示操作，若无提示请等待...',minimizable:false,maximizable:false,collapsible:false,closed:true,modal:true,resizable:false">
+	<div style="text-align:center">
+		<iframe src='' id='iframepage' style="width:auto;height:auto" frameborder=0 scrolling='no' marginheight=0 marginwidth=0></iframe>
+	</div>
+</div> -->
+<script type="text/javascript" src="../../jquery.min.js"></script>
+<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/dschange.js?v=1"></script>
+<script type="text/javascript" src="js/datagrid-dnd.js"></script>
+</body>
+</html>

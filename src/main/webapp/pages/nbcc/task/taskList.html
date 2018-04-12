@@ -1,0 +1,1020 @@
+<!doctype html>
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="content-script-type" content="text/javascript">
+  <meta charset="utf-8"/>
+  <meta name="description" content=""/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>后台管理</title>
+
+
+  <!--基础CSS样式 -->
+  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+  <link href="/bower_components/bootstrapvalidator/dist/css/bootstrapValidator.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
+  <link href="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+  <link href="/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+  <link href="/bower_components/datatables/FixedColumns/css/fixedColumns.bootstrap.scss" rel="stylesheet">
+  <link href="/bower_components/jquery.fancytree/dist/skin-bootstrap/ui.fancytree.css" rel="stylesheet" type="text/css" class="skinswitcher">
+  <!--strat bootstrap 所用到的css 直接引用即可-->
+  <link rel="stylesheet" href="/styles/common/sb-admin-2.css" />
+
+  <!-- 右上角提示消息样式,一般情况外部框架已经引用,就不需要再引用了 CSS -->
+  <link rel="stylesheet" href="/bower_components/bootstrap-notify-master/css/bootstrap-notify.css" />
+
+  <!--这里引入你自己的CSS文件-->
+
+  <!--如果你想获取浏览器相关的信息,引入此JS-->
+  <!-- build:js scripts/vendor/modernizr.js -->
+  <script src="/bower_components/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--如果要让IE9以下的浏览器支持HTML5的一些响应式布局特性,需要引入如下js-->
+  <!--[if lt IE 9]>
+  <script src="/scripts/common/html5shiv.js"></script>
+  <script src="/scripts/common/respond.min.js"></script>
+
+  <![endif]-->
+  <style>
+    .dt-select {
+      background-color: #C6E2FF !important;
+    }
+    span.fancytree-title {
+      margin-left: 0px;
+    }
+
+    .highlight {
+      padding: 9px 14px;
+      margin-bottom: 14px;
+      background-color: #f7f7f9;
+      border: 1px solid #e1e1e8;
+      border-radius: 4px;
+    }
+    .table-condensed > tbody > tr > td,
+    .table-condensed > tfoot > tr > td {
+      padding: 3px;
+    }
+  </style>
+</head>
+<body style="min-height: 800px">
+<div class="page-header gyl-page-header">
+  <!--<h5>我的NBCC文本任务列表</h5>-->&nbsp;
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-info">
+
+      <div class="panel-heading gyl_panel_header">
+        <i class="glyphicon glyphicon-search"></i>
+        查询条件
+        <div class="pull-right">
+          <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/templateList#queryBars">
+            <i class="glyphicon glyphicon-menu-down" ></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="queryBars" class="panel-collapse collapse in">
+      <div class="panel-body" style="padding-top: 10px; padding-bottom: 5px;">
+          <form id="selectFrom" onsubmit="return false">
+            <input type="hidden" id="respKey" name="respKey" />
+            <div class="row">
+              <div class="col-md-1" style="padding-right: 0px;">
+                <label style="float: right;">文本类型：</label>
+              </div>
+              <div class="col-md-11" style="padding-left: 0px;">
+                <div id="div_taskType" style="margin: auto;">
+              </div>
+             </div>
+            </div>
+
+        <div class="gyl-panel-line"></div>
+
+            <div class="row">
+              <div class="col-md-1" style="padding-right: 0px;">
+                <label style="float: right; ">阶段大类：</label>
+              </div>
+              <div class="col-md-11" style="padding-left: 0px;">
+                <div id="div_stage" style="margin: auto;">
+
+                </div>
+              </div>
+            </div>
+
+            <div class="gyl-panel-line"></div>
+
+            <div class="row">
+              <div class="col-md-1" style="padding-right: 0px;">
+                <label style="width: 90px; text-align: right; padding-top: 3px;">项目：</label>
+              </div>
+              <div class="col-md-2" style="padding-left: 0px;">
+                <input class="form-control input-sm" type="text" name="projSearch" id="projSearch" placeholder="项目编号或者项目名称">
+              </div>
+              <div class="col-md-1" style="padding-right: 0px; max-width: 60px;">
+                <label style="width: 90px; text-align: right; padding-top: 3px;">文本：</label>
+              </div>
+              <div class="col-md-2" style="padding-left: 0px;">
+                <input class="form-control input-sm" type="text" name="taskName" placeholder="文本名称">
+              </div>
+              <div class="col-md-1" style="padding-right: 0px; max-width: 85px;">
+                <label style="width: 90px; text-align: right; padding-top: 3px;">项目经理：</label>
+              </div>
+              <div class="col-md-1" style="padding-left: 0px;">
+                <input class="form-control input-sm" type="text" name="projManager" id="projManager" placeholder="人员姓名">
+              </div>
+              <div class="col-md-1" style="padding-right: 0px; max-width: 70px;">
+                <label style="width: 90px; text-align: right; padding-top: 3px;">创建人：</label>
+              </div>
+              <div class="col-md-1" style="padding-left: 0px;">
+                <input class="form-control input-sm" type="text" name="creater" id="creater" placeholder="人员姓名">
+              </div>
+              <div class="col-md-2" style="padding-left: 30px;">
+                <label class="checkbox" style="margin: 3px;">
+                  <input type="checkbox" name="sign"  value="1"/>已完成任务
+                </label>
+              </div>
+            </div>
+
+            <div class="gyl-panel-line"></div>
+
+            <div class="row">
+              <div class="col-md-1" style="padding-right: 0px;">
+              </div>
+              <button type="button" class="btn btn-default btn-sm" id="bu_queryData">
+                <i class="glyphicon glyphicon-search"></i>查询
+              </button>
+              <button type="reset" class="btn btn-default btn-sm" id="bu_resetQuery">
+                <i class="glyphicon glyphicon-remove"></i>重置
+              </button>
+              <!--<div class="col-md-1" style="padding-right: 0px;">-->
+                <!--<label style="width: 90px; text-align: right; padding-top: 5px;">文本：</label>-->
+              <!--</div>-->
+              <!--<div class="col-md-3" style="padding-left: 0px;">-->
+                <!--<input class="form-control input-sm" type="text" name="taskName" placeholder="支持按文本名称模糊查询">-->
+              <!--</div>-->
+              <!--<div class="col-md-1" style="padding-right: 0px;">-->
+                <!--<label style="width: 90px; text-align: right; padding-top: 5px;">创建人：</label>-->
+              <!--</div>-->
+              <!--<div class="col-md-2" style="padding-left: 0px;">-->
+                <!--<input class="form-control input-sm" type="text" name="creater" id="creater" placeholder="支持按人员姓名模糊查询">-->
+              <!--</div>-->
+              <!--<div class="col-md-5 form-inline">-->
+                <!--<label class="checkbox">-->
+                  <!--<input type="checkbox" name="sign"  value="1"/>已完成任务-->
+                <!--</label>-->
+                <!--<button type="button" class="btn btn-default btn-sm" id="bu_queryData" style="margin-left: 20px;">-->
+                  <!--<i class="glyphicon glyphicon-search"></i>查询-->
+                <!--</button>-->
+                <!--<button type="reset" class="btn btn-default btn-sm" id="bu_resetQuery">-->
+                  <!--<i class="glyphicon glyphicon-remove"></i>重置-->
+                <!--</button>-->
+              <!--</div>-->
+            </div>
+          </form>
+      </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-info">
+      <div class="panel-heading gyl_panel_header">
+        &nbsp;
+        <div class="pull-left">
+          <i class="fa fa-table"></i>
+          查询结果
+        </div>
+
+        <div class="pull-left" style="margin-top: 0px; margin-left: 15px;">
+          <input  id="multiSelectCheck" type="checkbox" style="margin-top: 0px; width: 15px; height: 15px;"  >
+          <label for="multiSelectCheck" style="font-size:15px;">多选</label>
+        </div>
+
+        <!--<div class="pull-left" style="margin-top: -6px; margin-left: 80px;">-->
+        <div class="pull-right" style="margin-top: -6px; margin-left: 0px; width:85%">
+          <button style="height: 28px;" id="bu_add" type="button" class="btn btn-default btn-xs"><i class="fa fa-plus" style="color: #3CB371; font-size: 15px;"></i>新增任务
+          </button>
+          <button style="height: 28px;" id="bu_planChapter" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit" style="color: #4682B4; font-size: 15px;"></i>进入任务
+          </button>
+          <button style="height: 28px; display: none;" id="bu_editText" type="button" class="btn btn-default btn-xs"><i class="fa fa-file-word-o" style="font-size: 15px;"></i>编辑文本
+          </button>
+          <button  style="height: 28px; display: none;"id="bu_textReview" type="button" class="btn btn-default btn-xs"><i class="fa fa-comments-o" style="color: #B8860B;font-size: 15px;"></i>文本评审
+          </button>
+          <button style="height: 28px;" id="bu_delTask" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o" style="color: #FF4500;font-size: 15px;"></i>删除任务
+          </button>
+          <button style="height: 28px;" id="bu_share" type="button" class="btn btn-default btn-xs"><i class="fa fa-circle-o" style="color: #4B0082;font-size: 15px;"></i>设为共享
+          </button>
+          <button style="height: 28px;" id="bu_unShare" type="button" class="btn btn-default btn-xs"><i class="fa fa-minus-circle" style="color: #8B4513;font-size: 15px;"></i>取消共享
+          </button>
+        </div>
+
+
+        <!--<div class="btn-group pull-right">-->
+          <!--<div class="btn-toolbar" role="toolbar" aria-label="...">-->
+            <!--<div id="div_continueOrcancel" class="btn-group" role="group" aria-label="...">-->
+              <!--<button id="bu_continue" type="button" class="btn btn-default btn-xs"><i class="fa fa-play"></i>继续-->
+              <!--</button>-->
+              <!--<button id="bu_continue_cancel" type="button" class="btn btn-default btn-xs"><i class="fa fa-power-off"></i>取消-->
+              <!--</button>-->
+            <!--</div>-->
+          <!--<div class="btn-group" role="group" aria-label="..." style="margin-left: 5px;">-->
+            <!--<button id="bu_add" type="button" class="btn btn-default btn-xs"><i class="fa fa-plus"></i>新增任务-->
+            <!--</button>-->
+            <!--<button id="bu_planChapter" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i>策划章节-->
+            <!--</button>-->
+            <!--<button id="bu_editText" type="button" class="btn btn-default btn-xs"><i class="fa fa-file-word-o"></i>编辑文本-->
+            <!--</button>-->
+            <!--<button id="bu_textReview" type="button" class="btn btn-default btn-xs"><i class="fa fa-comments-o"></i>文本评审-->
+            <!--</button>-->
+            <!--<button id="bu_delTask" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i>删除任务-->
+            <!--</button>-->
+            <!--<button id="bu_share" type="button" class="btn btn-default btn-xs"><i class="fa fa-circle-o"></i>设为共享-->
+            <!--</button>-->
+            <!--<button id="bu_unShare" type="button" class="btn btn-default btn-xs"><i class="fa fa-minus-circle"></i>取消共享-->
+            <!--</button>-->
+          <!--</div>-->
+          <!--</div>-->
+
+        <!--</div>-->
+      </div>
+      <!-- /.panel-heading -->
+      <div class="panel-body" style="padding: 5px;">
+        <div class="dataTable_wrapper" id="dataTables-listAll">
+
+        </div>
+        <!-- /.table-responsive -->
+
+      </div>
+      <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<!-- /.row -->
+<!-- /#page-wrapper -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="addLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog" style="min-width: 900px; width: 100%; margin-bottom: 0px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="addUserLabel">新建任务</h5>
+      </div>
+
+      <div class="modal-body" style="padding-top: 5px; padding-bottom: 0px;">
+        <form id="form_taskType" class="form-horizontal" role="form">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="row" style="margin-right: 0px;">
+              <div class="col-sm-7 col-md-7">
+                <div class="panel panel-info">
+                  <div class="panel-heading gyl_panel_header">
+                    协作文本基本信息
+                  </div>
+                  <div class="panel-body">
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label" for="pro" style="padding-right: 0px; padding-left: 0px;"><font color="red">*</font>项目：</label>
+                      <div class="col-sm-10">
+                        <div class='input-group'>
+                          <input class="form-control input-sm" type="text" name="pro" id="pro" placeholder="请选择" />
+                          <input type="hidden" name="taskId" id="taskId" />
+                          <input type="hidden" name="proId" id="proId" />
+                                    <span class="input-group-btn">
+                                      <button class="btn btn-default" style="height: 25px; font-size: 11px;" type="button" id="b_searchPro"><i class="glyphicon glyphicon-search"></i></button>
+                                    </span>
+                        </div>
+                        <select class="selectpicker form-control input-sm" style="display: none;" data-live-search="true" name="sel_pro" id="sel_pro" data-size="8">
+
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label" for="proFullName" style="padding-right: 0px; padding-left: 0px;"><font color="red">*</font>当前项目：</label>
+                      <div class="col-sm-10">
+                        <textarea class="form-control" name="proFullName" id="proFullName" rows="2" readonly="readonly"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label" for="designPhase" style="padding-right: 0px; padding-left: 0px;"><font color="red">*</font>当前阶段：</label>
+                      <div class="col-sm-10">
+                        <select id='designPhase' name="designPhase" class='selectpickerPhase form-control input-sm' placeholder='请选择' data-live-search='true' data-size='13'></select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label" for="taskType" style="padding-right: 0px; padding-left: 0px;"><font color="red">*</font>文本类型：</label>
+                      <div class="col-sm-10">
+                        <select id='taskType' name="taskType" class='form-control input-sm' placeholder='请选择'></select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label" for="taskName" style="padding-right: 0px; padding-left: 0px;"><font color="red">*</font>文本名称：</label>
+                      <div class="col-sm-10">
+                        <input class="form-control input-sm" type="text" name="taskName" id="taskName" placeholder="">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label" style="padding-right: 0px; padding-left: 0px;"><font color="red">*</font>来源目录：</label>
+                      <div class="col-sm-4">
+                        <div class="btn-group" data-toggle="buttons">
+                          <label class="btn btn-primary2 active gyl-btn-sm" style="width: 80px;" name="l_tag">
+                            <input type="radio" name="attribute11" id="option1" autocomplete="off" value="TEMPLATE" checked>模板
+                          </label>
+                          <div id="bus_l_tag" style="width: 200px; height: 35px; position:absolute; right:0; z-index: 999; display: none;"></div>
+                          <label class="btn btn-primary2 gyl-btn-sm" style="width: 80px;" name="l_tag">
+                            <input type="radio" name="attribute11" id="option2" autocomplete="off" value="TASK">历史文本
+                          </label>
+                        </div>
+                      </div>
+                      <label class="col-sm-2 control-label" style="padding-right: 0px; padding-left: 0px;"><font color="red">*</font>复制信息：</label>
+                      <div class="col-sm-4">
+                        <select id='taskNoteSele' name="taskNoteSele" class='form-control input-sm' style="width:100%" placeholder='请选择'></select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label" for="tag1" style="padding-right: 0px; padding-left: 0px;"><font color="red">*</font>来源名称：</label>
+                      <div class="col-sm-10">
+                        <textarea class="form-control" name="tag1" id="tag1" rows="2" readonly="readonly"></textarea>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="panel panel-info">
+                  <div class="panel-heading gyl_panel_header">
+                    来源目录列表
+                  </div>
+                  <div class="panel-body">
+                    <div id="dataTables-listAll2" style="display: none;">
+
+                    </div>
+
+                    <div id="dataTables-listAll3" style="display: none;">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-5 col-md-5" style="padding: 0px;">
+                <div class="panel panel-info">
+                  <div class="panel-heading gyl_panel_header">
+                    来源目录结构预览
+                    <div class="btn-group pull-right">
+                      <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default btn-xs" id="bu_fancyTreeExpanded_review"
+                        ><i class="glyphicon glyphicon-menu-down"></i>展开
+                        </button>
+                        <button type="button" class="btn btn-default btn-xs" id="bu_fancyTreeeCollapse_review"
+                        ><i class="glyphicon glyphicon-menu-up"></i>收缩
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel-body" style="padding: 5px;">
+                    <div class="row" style="margin: auto; overflow-x:auto; width: 100%; overflow-y: auto; height: 600px;">
+                    <table id="treetable" class="table table-condensed table-hover table-bordered">
+                      <colgroup>
+                        <col width="120px"></col>
+                        <col width="*"></col>
+                        <col width="90"></col>
+                        <col width="65"></col>
+                        <col width="65"></col>
+                      </colgroup>
+                      <thead>
+                      <tr> <th>章节编号</th> <th>章节名称</th> <th>项目角色</th> <th>分配专业</th> <th>查看文本</th> </tr>
+                      </thead>
+                      <tbody>
+                      <tr> <td></td> <td></td> <td></td> <td></td> <td></td> </tr>
+                      </tbody>
+                    </table>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+          </div>
+        </div>
+        </div>
+       </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="saveHeader">下一步</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal 章节 -->
+<div class="modal fade" id="chapter_modal" tabindex="-1" role="dialog" aria-labelledby="addLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog" style="min-width: 900px; width: 100%; margin-bottom: 0px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="addChapterLabel">模板章节定义</h5>
+      </div>
+
+      <div class="modal-body" style="padding: 5px 8px 0px 8px;">
+        <div id="div_work">
+          <object name="activexLauncher" style='display: none' id='activexLauncher' classid='CLSID:590BC6F2-05CE-4C14-A230-79DFF11F707F' codebase='ActiveX'></object>
+        <div class="row" style="margin: auto;">
+          <button id="bu_addback" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="fa fa-reply"></i>上一步</button>
+          <button id="bu_checkOut" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="fa fa-download"></i>签出</button>
+          <button id="bu_checkIn" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="fa fa-upload"></i>签入</button>
+
+          <div class="btn-group" id="bu_chapterGroup">
+            <button type="button" class="btn btn-default dropdown-toggle btn-sm" style="padding: 3px 10px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="请选择一行后再进行新增">
+              <i class="fa fa-plus"></i>新增章节<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#1" id="bu_addChapter">新增章节</a></li>
+              <li><a href="#1" id="bu_addChapterChildren">新增子章节</a></li>
+            </ul>
+          </div>
+          <button id="bu_delChapter" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;" data-toggle="tooltip" data-placement="top" title="请勾选后再进行删除"><i class="fa fa-trash-o"></i>删除章节</button>
+          <button id="bu_authorityChange" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="fa fa-retweet"></i>权限转移</button>
+          <button id="bu_save" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="glyphicon glyphicon-floppy-saved"></i>保存</button>
+          <button id="bu_cancel" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="glyphicon glyphicon-floppy-remove"></i>取消</button>
+          <button id="bu_release" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="fa fa-sign-in"></i>发布</button>
+          <!--<button id="bu_content" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="fa fa-file-word-o"></i>文本内容</button>-->
+          <!--<button id="bu_download" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="fa fa fa-download"></i>下载合并文本</button>-->
+          <button id="bu_mergeword" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="fa fa-file-word-o"></i>生成合并文本</button>
+          <button id="bu_editword" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="fa fa-pencil-square-o"></i>编辑合并文本</button>
+          <button id="bu_audit_js" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="fa fa-building"></i>专业校审</button>
+          <button id="bu_un_audit_js" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="fa fa-building"></i>专业校审状态回退</button>
+          <div class="btn-group" id="bu_gsjps">
+            <button type="button" class="btn btn-default dropdown-toggle btn-sm" style="padding: 3px 10px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-bank"></i>公司级评审<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#1" id="bu_apply_gsjps">公司级评审申请</a></li>
+              <li><a href="#1" id="bu_submit_gsjps">提交公司级评审</a></li>
+              <li><a href="#1" id="bu_write_gsjps">填写公司级评审结论表</a></li>
+            </ul>
+          </div>
+          <button id="bu_submitAudit" type="button" class="btn btn-default btn-sm" style="padding: 3px 10px;"><i class="fa fa-thumbs-o-up"></i>提交审批</button>
+          <div class="btn-group" id="bu_batch">
+            <button type="button" class="btn btn-default dropdown-toggle btn-sm" style="padding: 3px 10px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="">
+              <i class="fa fa-gear"></i>批量操作<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#1" id="bu_setWorkBag">分配工作包</a></li>
+              <li><a href="#1" id="bu_setSpecialty">修改专业</a></li>
+              <li><a href="#1" id="bu_setOpen">设置公开</a></li>
+              <li><a href="#1" id="bu_setUnOpen">设置非公开</a></li>
+              <li><a href="#1" id="bu_setEnabled">设置启用</a></li>
+              <li><a href="#1" id="bu_setUnEnabled">设置非启用</a></li>
+              <li><a href="#1" id="bu_fancyTreeExpanded">展开章节</a></li>
+              <li><a href="#1" id="bu_fancyTreeeCollapse">收起章节</a></li>
+            </ul>
+          </div>
+        </div>
+        <div style="margin: 5px 0px 5px 0px; border-bottom: 1px solid #eee;"></div>
+
+        <div class="panel panel-info" style="margin-bottom: 5px;">
+          <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">
+            筛选章节
+          </div>
+          <div class="panel-body" style="padding-top: 5px; padding-bottom: 5px;">
+            <div class="row">
+              <div class="col-md-1" style="padding-right: 0px; width: 60px;">
+                <label style="width: 50px; text-align: right; padding-top: 5px;">专业：</label>
+              </div>
+              <div class="col-md-2" style="padding-left: 0px;">
+                <select id='sel_query_specialty' name="attribute1" class='form-control input-sm' placeholder='请选择'></select>
+              </div>
+              <div class="col-md-1" style="padding-right: 0px;">
+                <label style="width: 90px; text-align: right; padding-top: 5px;">章节状态：</label>
+              </div>
+              <div class="col-md-2" style="padding-left: 0px;">
+                <select id='sel_query_chapteStatus' name="attribute1" class='form-control input-sm' placeholder='请选择'></select>
+              </div>
+              <div class="col-md-5 form-inline">
+                <label class="checkbox">
+                  <input type="checkbox" name="show_eff" id="show_eff" value="1" />显示未启用
+                </label>
+                <button type="button" class="btn btn-default btn-sm" id="bu_queryChapter" style="margin-left: 20px; padding: 2px 10px;">
+                  <i class="glyphicon glyphicon-search"></i>筛选
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div class="panel panel-info" style="margin-bottom: 5px;">
+          <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">
+            封面信息
+          </div>
+          <div class="panel-body" style="padding: 5px;">
+            <table id="taskCover" class="table table-bordered" style="width: 570px; margin-bottom: 0px;">
+              <thead>
+              <tr>
+                <th width="140">项目角色</th>
+                <th width="140">专业</th>
+                <th width="140">节点责任人</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel panel-info">
+          <div class="panel-heading gyl_panel_header" style="padding: 0 0 0 15px;">
+            章节定义及分配<font color="red">（红色标识行标识该行工作包已失效，该工作包不会统计进度也无法填写工时，请修改章节关联的工作包信息）</font>
+          </div>
+          <div class="panel-body" style="padding: 5px;">
+
+            <!--<div class="dataTables_wrapper form-inline dt-bootstrap no-footer" id="dataTables-data_wrapper_copy">-->
+              <!--<div class="row">-->
+                <!--<div class="col-sm-12">-->
+                  <!--<div class="dataTables_scroll">-->
+
+                    <!--<div style="position: relative; overflow: auto; width: 100%;" class="dataTables_scrollBody">-->
+                      <!--<table style="width: 2232px;" aria-describedby="dataTables-data_info" role="grid"-->
+                             <!--class="table  table-bordered table-hover dataTable no-footer" id="dataTables-data_copy"-->
+                             <!--border="0" cellpadding="0" cellspacing="0">-->
+
+                      <!--</table>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+            <div class="row" style="margin: auto; overflow-x:auto; width: 100%; overflow-y: auto; height: 600px;">
+              <table id="treetableChapter" style="width: 1600px; margin-top: 0px !important;" class="table table-condensed table-hover table-bordered table-responsive dataTable">
+                <!--<colgroup>-->
+                  <!--<col width="30px"></col>-->
+                  <!--<col width="70px"></col>-->
+                  <!--<col width="60px"></col>-->
+                  <!--<col width="200px"></col>-->
+                  <!--<col width="80px"></col>-->
+                  <!--<col width="70px"></col>-->
+                  <!--<col width="40px"></col>-->
+                  <!--<col width="40px"></col>-->
+                  <!--<col width="130px"></col>-->
+                  <!--<col width="50px"></col>-->
+                  <!--<col width="50px"></col>-->
+                  <!--<col width="50px"></col>-->
+                  <!--<col width="50px"></col>-->
+                  <!--<col width="80px"></col>-->
+                  <!--<col width="50px"></col>-->
+                  <!--<col width="140px"></col>-->
+                  <!--<col width="70px"></col>-->
+                <!--</colgroup>-->
+                <thead>
+                <tr>
+                  <th style="padding: 3px;" width="30"> <span class="fancytree-checkbox glyphicon glyphicon-unchecked" id="chAll_treetableChapter"></span> </th>
+                  <th width="120">章节编号</th>
+                  <th width="70">章节编号</th>
+                  <th width="200">章节名称</th>
+                  <th width="80">项目角色</th>
+                  <th width="80">分配专业</th>
+                  <th width="30">启用</th>
+                  <th width="30">公开</th>
+                  <th width="130">工作包</th>
+                  <th width="40">设计人</th>
+                  <th width="40">校审人</th>
+                  <th width="40">审核人</th>
+                  <th width="40">审定人</th>
+                  <th width="70">节点责任人</th>
+                  <th width="40">授权人</th>
+                  <th width="140">系统界面链接</th>
+                  <th width="110">状态</th>
+                  <th width="40">签出人</th>
+                  <th width="60">进入文本</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>
+                  <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>
+                </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="selSpecialtyModal" tabindex="-1" role="dialog" aria-labelledby="selSpecialtyModalLabel">
+  <div class="modal-dialog" style="width: 450px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="selSpecialtyModalLabel">请选择签出专业</h5>
+      </div>
+
+      <div class="modal-body">
+        <div class="panel panel-info" style="margin-bottom: 0px;">
+          <div class="panel-heading gyl_panel_header">
+            专业列表
+          </div>
+          <div class="panel-body" style="padding: 8px;">
+            <div class="dataTable_wrapper" id="dataTables-selSpecialtys">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default confirmButton" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary confirmButton" id="specialty_checkOut">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="confirmModalLabel">提示</h5>
+      </div>
+
+      <div class="modal-body">
+        <div id="content-message">
+          执行[签入]操作前<br>如需要保存章节信息，请点击[保存章节并签入]，否则请点击[不保存章节并签入]
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success confirmButton" data-dismiss="modal" id="save_checkIn">保存章节并签入</button>
+        <button type="button" class="btn btn-danger confirmButton" id="unsave_checkIn">不保存章节并签入</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="responsibleModal" tabindex="-1" role="dialog" aria-labelledby="responsibleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="responsibleModalLabel">权限转移<font color="red">（该操作用于更换章节的节点责任人）</font></h5>
+      </div>
+
+      <div class="modal-body">
+        <div id="dataTables-responsibles"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default confirmButton" data-dismiss="modal" id="confirm_console">取消</button>
+        <button type="button" class="btn btn-primary confirmButton" id="responsible_ok">确认</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="auditModal" tabindex="-1" role="dialog" aria-labelledby="auditModalLabel">
+  <div class="modal-dialog" style="width: 60%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="auditModalLabel">专业校审</h5>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-8">
+            <div id="dataTables-audits"></div>
+          </div>
+          <div class="col-md-4" style="padding-left: 0px;">
+            <div class="panel panel-info">
+              <div class="panel-heading gyl_panel_header">
+                待提交章节信息预览
+              </div>
+              <div class="panel-body" id="div_auditMadal_chapters" style="padding: 8px;">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default confirmButton" data-dismiss="modal" id="audit_console">取消</button>
+        <button type="button" class="btn btn-primary confirmButton" id="audit_ok">确认</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="unAuditModal" tabindex="-1" role="dialog" aria-labelledby="unAuditModalLabel">
+  <div class="modal-dialog" style="width: 60%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="unAuditModalLabel">专业校审状态回退</h5>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-8">
+            <div id="dataTables-unAudits"></div>
+          </div>
+          <div class="col-md-4" style="padding-left: 0px;">
+            <div class="panel panel-info">
+              <div class="panel-heading gyl_panel_header">
+                待回退章节信息预览
+              </div>
+              <div class="panel-body" id="div_unAuditMadal_chapters" style="padding: 8px;">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default confirmButton" data-dismiss="modal" id="unAudit_console">取消</button>
+        <button type="button" class="btn btn-primary confirmButton" id="unAudit_ok">确认</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="workBagModal" tabindex="-1" role="dialog" aria-labelledby="workBagModalLabel">
+  <div class="modal-dialog" style="width: 520px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="workBagModalLabel">工作包基本信息</h5>
+      </div>
+
+      <div class="modal-body" style="padding-top: 0px; padding-bottom: 0px;">
+        <form id="form_workBag" class="form-horizontal" role="form">
+          <div class="row">`
+            <div class="col-sm-12" style="margin-top: -10px;">
+              <div class="panel panel-info">
+                <div class="panel-body" style="padding-top: 10px;">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label"  style="padding-right: 0px; padding-left: 0px;">阶段：</label>
+                    <div class="col-sm-9" style="padding-left: 3px;">
+                      <input class="form-control input-sm" type="text" name="bag_jd" id="bag_jd" placeholder="">
+                      <input type="hidden" name="bag_jdCode" id="bag_jdCode" />
+                      <input type="hidden" name="workBagNo" id="workBagNo" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label" style="padding-right: 0px; padding-left: 0px;">专业：</label>
+                    <div class="col-sm-9" style="padding-left: 3px;" id="div_bag_zy">
+                    </div>
+                  </div>
+
+                  <div class="form-inline form-group" style="padding-left: 30px;">
+                    <label>专业起始日期：</label>
+                    <div class='input-group date' id='datetimepicker1' style="width: 160px;">
+                      <input type='text' class="form-control input-sm" id="startDateActive" name="startDateActive" readonly="readonly" />
+                                    <span class="input-group-addon" style="padding: 3px 8px; font-size: 13px;">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                    </div>
+                    <label>至</label>
+                    <div class='input-group date' id='datetimepicker2' style="width: 160px;">
+                      <input type='text' class="form-control input-sm" id="endDateActive" name="endDateActive" readonly="readonly" />
+                                    <span class="input-group-addon" style="padding: 3px 8px; font-size: 13px;">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label" style="padding-right: 0px; padding-left: 0px;">工作包：</label>
+                    <div class="col-sm-9" style="padding-left: 3px;" id="div_bagType"></div>
+                  </div>
+
+                  <div class="form-inline form-group" style="padding-left: 30px;">
+                    <label>计划起始日期：</label>
+                    <div class='input-group date' id='datetimepicker3' style="width: 160px;">
+                      <input type='text' class="form-control input-sm" id="start_finishDateActive" name="start_finishDateActive" />
+                                    <span class="input-group-addon" style="padding: 3px 8px; font-size: 13px;">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                    </div>
+                    <label>至</label>
+                    <div class='input-group date' id='datetimepicker4' style="width: 160px;">
+                      <input type='text' class="form-control input-sm" id="end_finishDateActive" name="end_finishDateActive" />
+                                    <span class="input-group-addon" style="padding: 3px 8px; font-size: 13px;">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label"  style="padding-right: 0px; padding-left: 0px;">设计人：</label>
+                    <div class="col-sm-9" style="padding-left: 3px;" id="div_bag_ren"></div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label"  style="padding-right: 0px; padding-left: 0px;">校审人：</label>
+                    <div class="col-sm-9" style="padding-left: 3px;" id="div_bag_ren2"></div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label"  style="padding-right: 0px; padding-left: 0px;">审核人：</label>
+                    <div class="col-sm-9" style="padding-left: 3px;" id="div_bag_ren3"></div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label"  style="padding-right: 0px; padding-left: 0px;">审定人：</label>
+                    <div class="col-sm-9" style="padding-left: 3px;" id="div_bag_ren4"></div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label"  style="padding-right: 0px; padding-left: 0px;">计划工时（h）：</label>
+                    <div class="col-sm-9" style="padding-left: 3px;">
+                      <input class="form-control input-sm" type="text" name="bag_workHour" id="bag_workHour" placeholder="">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default confirmButton" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary confirmButton" id="save_workBag">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="viewDutyModal" tabindex="-1" role="dialog" aria-labelledby="viewDutyLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog" style="min-width: 500px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span-->
+                <!--aria-hidden="true">&times;</span></button>-->
+        <h5 class="modal-title" id="viewDutyLabel">选择职责</h5>
+      </div>
+
+      <div class="modal-body" style="padding: 5px;">
+        <div class="panel panel-info">
+          <div class="panel-heading gyl_panel_header">
+            职责列表
+          </div>
+          <div class="panel-body" style="padding: 5px;">
+            <div class="dataTable_wrapper" id="dataTables-viewDutyAll">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary confirmButton" id="save_userDuty">确定</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="batchSpecialtyModal" tabindex="-1" role="dialog" aria-labelledby="viewDutyLabel">
+  <div class="modal-dialog" style="max-width: 300px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span-->
+        <!--aria-hidden="true">&times;</span></button>-->
+        <h5 class="modal-title" id="batchSpecialtyLabel">批量修改专业</h5>
+      </div>
+
+      <div class="modal-body" style="padding: 5px;">
+        <div class="panel panel-info">
+          <div class="panel-heading gyl_panel_header">
+            专业列表
+          </div>
+          <div class="panel-body" style="padding: 5px;">
+            <select id="setBatchSpecialty" class="form-control input-sm" onchange="javascript:setSpecialty(this);"></select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default confirmButton" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="batchWorkBagModal" tabindex="-1" role="dialog" aria-labelledby="viewDutyLabel">
+  <div class="modal-dialog" style="min-width: 300px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span-->
+        <!--aria-hidden="true">&times;</span></button>-->
+        <h5 class="modal-title" id="batchWorkBagLabel">批量修改工作包</h5>
+      </div>
+
+      <div class="modal-body" style="padding: 5px;">
+        <div class="panel panel-info" style="margin-bottom: 5px;">
+          <div class="panel-heading gyl_panel_header">
+            工作包列表
+          </div>
+          <div class="panel-body" style="padding: 5px;">
+            <div id="div_batchWorkBag">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default confirmButton" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="plug_inModal" tabindex="-1" role="dialog" aria-labelledby="plug_inModalLabel">
+  <div class="modal-dialog" style="width: 520px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title">插件下载提示</h5>
+      </div>
+      <div class="modal-body" style="padding-top: 0px; padding-bottom: 0px; text-align: center;">
+        <div id="plugMsg"></div>
+        <div>您的电脑未安装NBCC_WORD插件，请点击下载并安装成功后，重新打开IE浏览器</div>
+        <a style="margin-top: 10px;" target="_blank" href="../../../download/nbcc_word.zip">下载</a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default confirmButton" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 基础JS脚本 -->
+<script src="/bower_components/jquery/dist/jquery.js" ></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js" ></script>
+<script src="/bower_components/moment/min/moment.min.js" ></script>
+<script src="/bower_components/moment/locale/zh-cn.js" ></script>
+<script src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js" ></script>
+<script src="/bower_components/bootstrapvalidator/dist/js/bootstrapValidator.js"></script>
+<!-- 如果需要做拖拽等操作,需要引入 -->
+<script src="/bower_components/jquery-ui/jquery-ui.js" ></script>
+<!-- 如果需要使用cookie -->
+<script src="/bower_components/jquery.cookie/jquery.cookie.js" ></script>
+
+<!--如果需要使用数据列表,引入以下JS-->
+<script src="/bower_components/datatables/media/js/jquery.dataTables.js" ></script>
+<script src="/bower_components/datatables-responsive/js/dataTables.responsive.js" ></script>
+<script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.edit.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.glyph.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.table.js" type="text/javascript"></script>
+<script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.wide.js" type="text/javascript"></script>
+<script src="/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+<script src="/bower_components/datatables/FixedColumns/js/dataTables.fixedColumns.js"></script>
+
+<!--在提交form表单的时候,需要将form数据转换成json格式字符串时使用-->
+<script src="/bower_components/jquery.serializeJSON/jquery.serializejson.js"></script>
+
+<!--  右上角提示消息脚本,一般情况外部框架已经引用,就不需要再引用了 -->
+<script src="/bower_components/bootstrap-notify-master/js/bootstrap-notify.js" ></script>
+<script src="/bower_components/bootstrap/js/popover.js" ></script>
+
+  <!--引入 config js信息-->
+  <script src="/scripts/common/config.js" ></script>
+  <script src="/scripts/common/ztable-min.js" ></script>
+  <script src="/scripts/common/jquery.params.js" nerinend></script>
+  <script src="/scripts/nbcc/task/task.js" nerinend></script>
+  <script src="/scripts/nbcc/task/taskChapter.js" nerinend></script>
+
+</body>
+</html>

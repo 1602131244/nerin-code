@@ -1,0 +1,391 @@
+<form id="PoBasicForm">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-info">
+
+                <div class="panel-heading gyl_panel_header">
+                    文印基本信息
+                    <div class="btn-group pull-right">
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button id="SavePlt" type="button" class="btn btn-default btn-xs"><i
+                                    class="glyphicon glyphicon-floppy-save"></i>保存
+                            </button>
+                            <button id="SubmitPlt" type="button" class="btn btn-default btn-xs"><i
+                                    class="glyphicon glyphicon-floppy-saved"></i> 提交
+                            </button>
+                            <button id="ViewOA" type="button" class="btn btn-default btn-xs"><i
+                                    class="glyphicon glyphicon-link"></i> 查看审批单据
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="PoBasicInfo" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <!--2分：1/2 布局 -->
+                        <div class="row" style="margin: auto;">
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;" for="PltNum">文印单号：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm" name="PltNum"
+                                           id="PltNum"
+                                           placeholder="" readonly="readonly" style="width: 120px">
+                                </div>
+                            </div>
+                            <div class="col-md-1" style="padding-right: 0px;color: red;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="PltContent">*文印内容：</label>
+                            </div>
+                            <div class="col-md-7" style="padding-left: 0px;">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm" name="PltContent"
+                                           id="PltContent"
+                                           placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <!--第二行：3分：1/3 1/3 1/3 布局 -->
+                        <div class="row" style="margin: auto;">
+                            <!--文印状态-->
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="PltStatus">文印状态：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group" style="width: 120px;">
+                                    <input type="text" class="form-control input-sm" name="PltStatus"
+                                           id="PltStatus"
+                                           placeholder="" disabled="disabled">
+                                </div>
+                            </div>
+                            <!--文印类型 -->
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="PltCategory">文印类型：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group" style="width: 120px;">
+                                    <input type="text" class="form-control input-sm" name="PltCategory"
+                                           id="PltCategory"
+                                           placeholder="" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="CreationDate">创建时间：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group" style="width: 120px;">
+                                    <input type="text" class="form-control input-sm " name="CreationDate"
+                                           id="CreationDate"
+                                           placeholder="" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                        <!--第三行 -->
+                        <div class="row" style="margin: auto;">
+                            <!--文印状态-->
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="ProjectNum">项目编号：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm" name="ProjectNum"
+                                           id="ProjectNum"
+                                           placeholder="" readonly="readonly">
+                                </div>
+                            </div>
+                            <!--文印类型 -->
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="TaskName">子项名称：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group" style="width: 120px;">
+                                    <input type="text" class="form-control input-sm" name="TaskName"
+                                           id="TaskName"
+                                           placeholder="" readonly="readonly">
+                                </div>
+                            </div>
+                            <!-- 创建时间-->
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="MainSpciality">专业：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group" style="width: 120px;">
+                                    <input type="text" class="form-control input-sm" name="MainSpciality"
+                                           id="MainSpciality"
+                                           placeholder="" readonly="readonly" style="width: 120px;">
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--第四行 -->
+                        <div class="row" style="margin: auto;">
+                            <!--项目名称-->
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="ProjectName">项目名称：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm" name="ProjectName"
+                                           id="ProjectName"
+                                           placeholder="" readonly="readonly">
+                                </div>
+                            </div>
+                            <!--项目负责人 -->
+                            <div class="col-md-1" style="padding-right: 0px;color: red;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="ProjectManager">*项目负责人：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group" style="width: 120px;">
+                                    <select class="form-control input-sm" name="ProjectManager"
+                                            id="ProjectManager">
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- 专业负责人-->
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;" for="">专业负责人：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm" name="SpecManager"
+                                           id="SpecManager"
+                                           placeholder="" readonly="readonly" style="width: 120px;">
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--第五行-->
+                        <div class="row" style="margin: auto;">
+                            <!--项目秘书-->
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;" for="ProjectSecretary">项目秘书：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm" name="ProjectSecretary"
+                                           id="ProjectSecretary"
+                                           placeholder="" readonly="readonly" style="width: 120px;">
+                                </div>
+                            </div>
+                            <!-- 设备名称-->
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="Attribute7">设备名称：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm" name="Attribute7"
+                                           id="Attribute7"
+                                           placeholder="" readonly="readonly">
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--第六行-->
+                        <div class="row" style="margin: auto;">
+                            <!--文印途径 -->
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px; color: red;"
+                                       for="Attribute5">*文印途径：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group" style="width: 120px;">
+                                    <select class="form-control input-sm" name="Attribute5"
+                                            id="Attribute5">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="PltRequestor">申请人：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm" name="PltRequestor"
+                                           id="PltRequestor"
+                                           placeholder="" readonly="readonly" style="width: 120px;">
+                                </div>
+                            </div>
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="PltDepartment">申请部门：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm" name="PltDepartment"
+                                           id="PltDepartment"
+                                           placeholder="" readonly="readonly" style="width: 120px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-info">
+
+                <div class="panel-heading gyl_panel_header">
+                    文印选项
+                    <div class="btn-group pull-right">
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button id="EditPltDetail" type="button" class="btn btn-default btn-xs"><i
+                                    class="glyphicon glyphicon-pencil"></i>填写文印要求
+                            </button>
+                            <button id="ViewPltDetail" type="button" class="btn btn-default btn-xs"><i
+                                    class="glyphicon glyphicon-list-alt"></i> 查看文印明细
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="PoOptions" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <!--3分：1/3 布局 -->
+                        <div class="row" style="margin: auto;">
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;" for="TotalNum">总份数：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group" style="width: 100px;float: left">
+                                    <input type="text" class="form-control input-sm" name="TotalNum"
+                                           id="TotalNum"
+                                           placeholder="" readonly="readonly">
+                                </div>
+                                <div class="form-group" style="float: left;">套（份）</div>
+                            </div>
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="ContractNum">合同份数：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group" style="width: 100px;float: left;">
+                                    <input type="text" class="form-control input-sm" name="ContractNum"
+                                           id="ContractNum"
+                                           placeholder="" readonly="readonly">
+                                </div>
+                                <div class="form-group" style="float: left;">套（份）</div>
+
+                            </div>
+                            <!--类型 -->
+                            <div class="col-md-1" style="padding-right: 0px;color:red;">
+                                <label style="float: right;padding-top: 5px;" for="PaperType">*类型：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group" style="width: 120px;">
+                                    <select class="form-control input-sm" name="PaperType"
+                                            id="PaperType">
+                                        <option value="">请选择</option>
+                                        <option value="WHITE">白图</option>
+                                        <option value="BLUE_YD">蓝图(有底图)</option>
+                                        <option value="BLUE_WD">蓝图(无底图)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!--第二行：3分：1/3 1/3 1/3 布局 -->
+                        <div class="row" style="margin: auto;">
+                            <!--发送业主-->
+                            <div class="col-md-1" style="padding-right: 0px;">
+                                <label style="float: right;padding-top: 5px;color:red;"
+                                       for="SendOwner">*发送业主：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group" style="width: 100px;float: left;">
+                                    <input type="text" class="form-control input-sm" name="SendOwner"
+                                           id="SendOwner" onkeyup="this.value=this.value.replace(/\D/g,'');setPrintCount();"
+                                           placeholder="">
+                                </div>
+                                <div class="form-group" style="float: left;">套（份）</div>
+
+                            </div>
+                            <!--施工服务-->
+                            <div class="col-md-1" style="padding-right: 0px;color:red;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="SgService">*施工服务：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group" style="width: 100px;float: left">
+                                    <input type="text" class="form-control input-sm" name="SgService"
+                                           id="SgService" onkeyup="this.value=this.value.replace(/\D/g,'');setPrintCount();"
+                                           placeholder="">
+                                </div>
+                                <div class="form-group" style="float: left;">套（份）</div>
+                            </div>
+                            <!--是否归档 -->
+                            <div class="col-md-1" style="padding-right: 0px;color:red;">
+                                <label style="float: right;padding-top: 5px;"
+                                       for="ArchiveFlag">*是否归档：</label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0px;">
+                                <div class="form-group" style="width: 120px">
+                                    <select class="form-control input-sm" name="ArchiveFlag" onchange="setPrintCount();"
+                                            id="ArchiveFlag">
+                                        <option value="">请选择</option>
+                                        <option value="1">是</option>
+                                        <option value="0">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="div_file">
+        <div class="col-lg-12">
+            <div class="panel panel-info">
+
+                <div class="panel-heading gyl_panel_header">
+                    &nbsp;
+                    <div class="btn-group pull-left">
+                    上传文本附件（效果图、彩色插页等）
+                        </div>
+                    <div class="btn-group pull-left">
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button id="bu_fileUpload" type="button" class="btn btn-default btn-xs"><i
+                                    class="fa fa-upload"></i>上传附件
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-collapse collapse in">
+                    <div class="panel-body" style="padding: 5px;">
+                        <!--<div class="dataTable_wrapper" id="dataTables-fileAll">-->
+
+                        <!--</div>-->
+                        <table id="t_file" class="table table-bordered" style="margin-bottom: 0px;">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center;">标题</th>
+                                <th width="260" style="text-align: center;">说明</th>
+                                <th width="230" style="text-align: center;">文档类型</th>
+                                <th width="80" style="text-align: center;">作者</th>
+                                <th width="180" style="text-align: center;">日期</th>
+                                <th width="80" style="text-align: center;">文件信息</th>
+                                <th width="60" style="text-align: center;">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

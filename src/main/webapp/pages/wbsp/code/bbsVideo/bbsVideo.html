@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>bbsVideo</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../../themes/black/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<script type="text/javascript" src="../../jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../../locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="js/trainingVideo.js"></script>
+	<script type="text/javascript" src="js/CollapseTitle.js"></script>
+	<script type="text/javascript" src="ckplayer/ckplayer.js"></script>
+	<style>
+		.textbox{
+			height:20px;
+			margin:0;
+			padding:0 2px;
+			box-sizing:content-box;
+		}
+	</style>
+</head>
+<body>
+<div style="height:461px;width:968px" class="easyui-layout">
+	<div data-options="region:'east',title:'视频列表',split:false,collapsed:false,collapsible:false" style="width:200px">
+		<table id="macros"></table>
+	</div>
+	<div id='center' data-options="region:'center',title:'title'" style="overflow:hidden;background-color:black">
+		<div id='a1' style='margin: 0 auto;text-align:center;'></div>
+	</div>
+</body>
+</html>

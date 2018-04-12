@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-script-type" content="text/javascript">
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>部门年度预算</title>
+
+    <!--基础CSS样式 -->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link href="/bower_components/bootstrapvalidator/dist/css/bootstrapValidator.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
+    <link href="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+    <link href="/bower_components/jquery.fancytree/dist/skin-bootstrap/ui.fancytree.css" rel="stylesheet" type="text/css" class="skinswitcher">
+    <link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <!--strat bootstrap 所用到的css 直接引用即可-->
+    <link rel="stylesheet" href="/styles/common/sb-admin-2.css" />
+
+    <!-- 右上角提示消息样式,一般情况外部框架已经引用,就不需要再引用了 CSS -->
+    <link rel="stylesheet" href="/bower_components/bootstrap-notify-master/css/bootstrap-notify.css" />
+
+    <!--这里引入你自己的CSS文件-->
+
+    <!--如果你想获取浏览器相关的信息,引入此JS-->
+    <!-- build:js scripts/vendor/modernizr.js -->
+    <script src="/bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--如果要让IE9以下的浏览器支持HTML5的一些响应式布局特性,需要引入如下js-->
+    <!--[if lt IE 9]>
+    <script src="/scripts/common/html5shiv.js"></script>
+    <script src="/scripts/common/respond.min.js"></script>
+
+    <![endif]-->
+    <style>
+        .fancytree-active {
+            background-color: #f5f5f5;
+        }
+        .dt-select {
+            background-color: #C6E2FF !important;
+        }
+        span.fancytree-title {
+            display: none;
+        }
+    </style>
+</head>
+<body style="min-height: 800px">
+    <div class="page-header gyl-page-header">
+        <h5>部门预算填报管理</h5>
+    </div>
+
+    <!--查询条件部分-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-info">
+
+                <div class="panel-heading gyl_panel_header">
+                    <i class="glyphicon glyphicon-search"></i>
+                    查询条件
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default btn-xs" data-toggle="collapse"  href="/templateList#queryBars">
+                            <i class="glyphicon glyphicon-menu-down" ></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="queryBars" class="panel-collapse collapse in">
+                    <div class="panel-body" style="padding-top: 10px; padding-bottom: 5px;">
+                        <form id="selectFrom" onsubmit="return false">
+
+                            <div class="row">
+                                <div class="col-md-1" style="padding-right: 0px;">
+                                    <label style="width: 90px; text-align: right; padding-top: 5px;">组织：</label>
+                                </div>
+                                <div class="col-md-3" style="padding-left: 0px;">
+                                    <input class="form-control input-sm" type="text" name="orgName" id="orgNameS" placeholder="组织名称">
+                                </div>
+
+                                <div class="col-md-1" style="padding-right: 0px; max-width: 60px;">
+                                    <label style="width: 50px; text-align: right; padding-top: 5px;">年份：</label>
+                                </div>
+                                <div class="col-md-1" style="padding-left: 0px;">
+                                    <input class="form-control input-sm" type="text" name="year" id="yearS"   placeholder="年份">
+                                </div>
+
+                                <div class="col-md-1" style="padding-right: 0px; max-width: 85px;">
+                                    <label style="width: 90px; text-align: right; padding-top: 5px;">任务名称：</label>
+                                </div>
+                                <div class="col-md-2" style="padding-left: 0px;">
+                                    <input class="form-control input-sm" type="text" name="name" id="nameS" placeholder="任务名称">
+                                </div>
+
+                                <div class="col-md-1" style="padding-right: 0px; max-width: 70px;">
+                                    <label style="width: 90px; text-align: right; padding-top: 5px;">创建人：</label>
+                                </div>
+                                <div class="col-md-2" style="padding-left: 0px;">
+                                    <input class="form-control input-sm" type="text" name="creater" id="createrS" placeholder="人员姓名">
+                                </div>
+
+                                <!--<button type="button" style="height: 26px;" class="btn btn-default btn-sm pull-right" id="bu_queryData" >-->
+                                    <!--<i class="glyphicon glyphicon-search" style="color: #3CB371; font-size: 13px;"></i>查询-->
+                                <!--</button>                                -->
+                                <button type="reset" style="height: 27px;" class="btn btn-default btn-sm pull-right" id="bu_resetQuery">
+                                    <i class="glyphicon glyphicon-remove"  style="color: #FF4500; font-size: 13px;" ></i>重置
+                                </button>
+
+                            </div>
+
+                            <div class="gyl-panel-line"></div>
+
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!--查询结果部分-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-info">
+                <div class="panel-heading gyl_panel_header">
+                    &nbsp;
+                    <div class="pull-left">
+                        <i class="fa fa-table"></i>
+                        查询结果
+                    </div>
+
+                    <div class="pull-right" style="margin-top: -6px; margin-left: 0px; width:85%">
+
+                        <button type="button" style="height: 29px; width: 100px;" class="btn btn-default btn-sm" id="bu_queryData" >
+                            <i class="glyphicon glyphicon-search" style="color: #3CB371; font-size: 13px;"></i>查询预算任务
+                        </button>
+
+                        <button style="height: 29px;  width: 100px;" id="bu_add" type="button" class="btn btn-default btn-xs">
+                            <i class="fa fa-plus" style="color: #3CB371; font-size: 13px;"></i>新增预算任务
+                        </button>
+                        <button  style="height: 29px;  width: 100px;"id="bu_editHeader" type="button" class="btn btn-default btn-xs">
+                            <i class="fa fa-comments-o" style="color: #B8860B;font-size: 13px;"></i>修改预算任务
+                        </button>
+                        <button style="height: 29px;  width: 100px;" id="bu_delHeader" type="button" class="btn btn-default btn-xs">
+                            <i class="fa fa-trash-o" style="color: #FF4500;font-size: 13px;"></i>删除预算任务
+                        </button>
+                        <button style="height: 29px;  width: 100px;" id="bu_importLines" type="button" class="btn btn-default btn-xs">
+                            <i class="fa fa-edit" style="color: #4682B4; font-size: 13px;"></i>导入往年预算
+                        </button>
+                        <button style="height: 29px;  width: 100px;" id="bu_editLines" type="button" class="btn btn-default btn-xs">
+                            <i class="fa fa-file-word-o" style="font-size: 13px;"></i>编辑预算明细
+                        </button>
+                        <button style="height: 29px;  width: 100px;" id="bu_fill_process_h" type="button" class="btn btn-default btn-xs">
+                            <i class="fa fa-edit" style="color: #4682B4; font-size: 13px;"></i>发起填报流程
+                        </button>
+                    </div>
+
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="dataTable_wrapper" id="dataTables-listAll">
+
+                    </div>
+                    <!-- /.table-responsive -->
+
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="addLabel">
+        <div class="modal-dialog" style="min-width: 400px; width: 60%;" role="document">
+            <div class="modal-content">
+                <!--显示标题-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" id="addHeaderLabel">新增部门年度预算任务</h5>
+                </div>
+
+                <!--显示查询-->
+                <div class="modal-body" style="padding-top: 0px;">
+                    <form id="form_budgetHeader" class="form-horizontal" role="form">
+                        <div class="row">`
+                            <div class="col-sm-12">
+                                <div class="row" style="margin-right: 5px;">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading gyl_panel_header">
+                                                预算任务基本信息
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label" for="orgName" style="padding-right: 0px; padding-left: 0px;"><font color="red">*</font>公司名称：</label>
+                                                        <div class="col-sm-10">
+                                                            <div class='input-group'>
+                                                                <input class="form-control input-sm" type="text" name="orgName" id="orgName" placeholder="请选择" />
+                                                                <input type="hidden" name="budgetId" id="budgetId" />
+                                                                <input type="hidden" name="orgId" id="orgId" />
+                                                                <span class="input-group-btn">
+                                                                  <button class="btn btn-default" style="height: 25px; font-size: 11px;" type="button" id="b_searchOrg"><i class="glyphicon glyphicon-search"></i></button>
+                                                                </span>
+                                                            </div>
+                                                            <select class="selectpicker form-control input-sm" style="display: none;" data-live-search="true" name="sel_org" id="sel_org" data-size="8">
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <!--<label for="Year">年份</label>-->
+                                                        <label class="col-sm-2 control-label" for="year" style="padding-right: 0px; padding-left: 0px;"><font color="red">*</font>年份：</label>
+                                                        <div class="col-sm-10">
+                                                            <select class="form-control input-sm" type="text" name="year" id="year" placeholder=""></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <!--<label for="type">预算任务名称</label>-->
+                                                        <label class="col-sm-2 control-label" for="orgName" style="padding-right: 0px; padding-left: 0px;"><font color="red">*</font>预算任务名称：</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control input-sm" id="budgetName" name="budgetName" placeholder="">
+                                                            <!--<input type="text" class="form-control input-sm" id="budgetName" name="budgetName" placeholder="预算任务名称">-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!--显示按钮-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="saveHeader" >保存</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editLines_modal" tabindex="-1" role="dialog" aria-labelledby="addLabel">
+        <div class="modal-dialog" style="min-width: 900px; width: 98%;" role="document">
+            <div class="modal-content">
+                <!--显示标题-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" id="editLineLabel">编辑部门年度预算任务明细</h5>
+                </div>
+
+                <!--显示筛选条件-->
+                <div class="modal-body" style="padding-top: 0px;">
+                    <form id="form_budgetLine" class="form-horizontal" role="form">
+                        <div class="row">`
+                            <div class="col-sm-12">
+                                <div class="row" style="margin-right: 5px;">
+                                    <div class="col-sm-12 col-md-12">
+
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading gyl_panel_header">
+                                                &nbsp;
+                                                <div class="pull-left">
+                                                    <i class="fa fa-table"></i>
+                                                    部门年度预算任务明细结果
+                                                </div>
+
+                                                <div class="pull-right" style="margin-top: -6px; margin-left: 0px; width:80%">
+                                                    <button style="height: 29px;  width: 100px;" id="bu_add_line" type="button" class="btn btn-default btn-xs">
+                                                        <i class="fa fa-plus" style="color: #3CB371; font-size: 13px;"></i>新增行
+                                                    </button>
+                                                    <button style="height: 29px;  width: 100px;" id="bu_del_line" type="button" class="btn btn-default btn-xs">
+                                                        <i class="fa fa-trash-o" style="color: #FF4500;font-size: 13px;"></i>删除行
+                                                    </button>
+                                                    <button style="height: 29px;  width: 100px;" id="bu_save_line" type="button" class="btn btn-default btn-xs">
+                                                        <i class="fa fa-save" style="font-size: 13px;"></i>批准/保存
+                                                    </button>
+                                                    <button style="height: 29px;  width: 100px;" id="bu_fill_process" type="button" class="btn btn-default btn-xs">
+                                                        <i class="fa fa-edit" style="color: #4682B4; font-size: 13px;"></i>发起填报流程
+                                                    </button>
+                                                    <button style="height: 29px;  width: 100px;" id="bu_approval_process" type="button" class="btn btn-default btn-xs" disabled ="disabled">
+                                                        <i class="fa fa-cubes" style="color: #4682B4; font-size: 13px;"></i>发起审批流程
+                                                    </button>
+
+                                                    <button style="height: 29px;  width: 100px;" id="bu_excle" type="button" class="btn btn-default btn-xs">
+                                                        <i class="fa fa-file-excel-o" style="color: #959fff; font-size: 13px;"></i>导出数据
+                                                    </button>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="panel-body">
+                                                <div class="dataTable_wrapper" id="dataTables-listLineAll">
+
+                                                </div>
+                                                <!-- /.table-responsive -->
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 基础JS脚本 -->
+    <script src="/bower_components/jquery/dist/jquery.js" ></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.js" ></script>
+    <script src="/bower_components/bootstrapvalidator/dist/js/bootstrapValidator.js"></script>
+    <!-- 如果需要做拖拽等操作,需要引入 -->
+    <script src="/bower_components/jquery-ui/jquery-ui.js" ></script>
+    <script src="/bower_components/assets/js/jquery.ui-contextmenu.min.js" type="application/javascript"></script>
+    <!-- 如果需要使用cookie -->
+    <script src="/bower_components/jquery.cookie/jquery.cookie.js" ></script>
+
+    <!--如果需要使用数据列表,引入以下JS-->
+    <script src="/bower_components/datatables/media/js/jquery.dataTables.js" ></script>
+    <script src="/bower_components/datatables-responsive/js/dataTables.responsive.js" ></script>
+    <script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+    <script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.js" type="text/javascript"></script>
+    <script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+    <script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.edit.js" type="text/javascript"></script>
+    <script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.glyph.js" type="text/javascript"></script>
+    <script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.table.js" type="text/javascript"></script>
+    <script src="/bower_components/jquery.fancytree/dist/src/jquery.fancytree.wide.js" type="text/javascript"></script>
+    <script src="/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+
+    <!--在提交form表单的时候,需要将form数据转换成json格式字符串时使用-->
+    <script src="/bower_components/jquery.serializeJSON/jquery.serializejson.js"></script>
+    <script src="/bower_components/bootstrap/js/tooltip.js"></script>
+
+    <!--  右上角提示消息脚本,一般情况外部框架已经引用,就不需要再引用了 -->
+    <script src="/bower_components/bootstrap-notify-master/js/bootstrap-notify.js" ></script>
+
+    <!--引入 config js信息-->
+    <script src="/scripts/common/config.js" ></script>
+    <!--<script src="/scripts/nbcc/template/template.js" nerinend></script>-->
+    <script src="/scripts/budget/budget.js" ></script>
+    <script src="/scripts/budget/budgetLine.js" ></script>
+
+</body>
+</html>
